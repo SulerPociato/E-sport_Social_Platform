@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.soecode.lyf.dao.GameDao">
+    <!-- 目的：为dao接口方法提供sql语句配置 -->
+
+    <resultMap id="GameResultMap" type="Game">
+        <id column="id" property="gameId" />
+        <result column="name" property="name" />
+        <result column="description" property="description" />
+        <result column="cover_image" property="coverImage" />
+        <result column="category" property="category" />
+        <result column="status" property="status" />
+    </resultMap>
+
+    <select id="queryById" resultMap="GameResultMap" parameterType="long">
+        SELECT
+            id as game_id,
+            name,
+            description,
+            cover_image,
+            category,
+            status
+        FROM
+            game
+        WHERE
+            id = #{gameId}
+    </select>
+
+    <select id="queryAll" resultMap="GameResultMap">
+        SELECT
+            id as game_id,
+            name,
+            description,
+            cover_image,
+            category,
+            status
+        FROM
+            game
+        WHERE status = 1
+        ORDER BY id
+            LIMIT #{offset}, #{limit}
+    </select>
+
+    <select id="queryByCategory" resultMap="GameResultMap">
+        SELECT
+            id as game_id,
+            name,
+            description,
+            cover_image,
+            category,
+            status
+        FROM
+            game
+        WHERE category = #{category} AND status = 1
+        ORDER BY id
+            LIMIT #{offset}, #{limit}
+    </select>
+
+    <insert id="addGame" parameterType="Game" useGeneratedKeys="true" keyProperty="gameId">
+        INSERT INTO game (name, description, cover_image, category, status)
+        VALUES (#{name}, #{description}, #{coverImage}, #{category}, #{status})
+    </insert>
+
+    <update id="updateGame" parameterType="Game">
+        UPDATE game
+        SET name = #{name},
+            description = #{description},
+            cover_image = #{coverImage},
+            category = #{category},
+            status = #{status}
+        WHERE id = #{gameId}
+    </update>
+
+    <update id="deleteGame" parameterType="long">
+        UPDATE game
+        SET status = 0
+        WHERE id = #{gameId}
+    </update>
+</mapper>

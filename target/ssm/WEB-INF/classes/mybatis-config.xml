@@ -14,4 +14,12 @@
 		<!-- 开启驼峰命名转换:Table{create_time} -> Entity{createTime} -->
 		<setting name="mapUnderscoreToCamelCase" value="true" />
 	</settings>
+	
+	<!-- 配置类型别名 -->
+	<typeAliases>
+		<!-- 电竞平台相关实体 -->
+		<typeAlias alias="Game" type="com.soecode.lyf.entity.Game" />
+		<typeAlias alias="User" type="com.soecode.lyf.entity.User" />
+		<typeAlias alias="CompanionService" type="com.soecode.lyf.entity.CompanionService" />
+	</typeAliases>
 </configuration>
