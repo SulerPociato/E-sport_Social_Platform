@@ -3,7 +3,7 @@
     String basePath = request.getScheme() + "://"  
             + request.getServerName() + ":" + request.getServerPort()  
             + path + "/";  
-    pageContext.setAttribute("basePath",basePath);    
+    request.setAttribute("basePath", basePath);
 %>
 
-<%@include file="bootstrap.jsp" %>
+<%@include file="bootstrap.jsp"%>

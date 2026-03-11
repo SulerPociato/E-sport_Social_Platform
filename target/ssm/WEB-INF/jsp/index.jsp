@@ -172,7 +172,7 @@
     </div>
 
     <div class="card">
-      <h2>陪玩服务</h2>
+      <h2>俱乐部服务</h2>
       <p>选择专业的游戏陪玩，提升您的游戏体验和技能水平</p>
       <ul class="features">
         <li>专业陪玩认证体系</li>
@@ -180,7 +180,7 @@
         <li>实时在线匹配系统</li>
         <li>服务评价和反馈机制</li>
       </ul>
-      <a href="${basePath}companion/list" class="btn">查看陪玩</a>
+      <a href="${basePath}companion/list" class="btn">查看俱乐部</a>
     </div>
   </div>
 

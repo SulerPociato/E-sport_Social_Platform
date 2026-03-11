@@ -6,7 +6,7 @@
     <title>游戏列表 - 游戏陪玩平台</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <%@ include file="../common/head.jsp" %>
+    <%@ include file="/WEB-INF/jsp/common/head.jsp" %>
     <style>
         * {
             margin: 0;
@@ -157,7 +157,7 @@
         </div>
     </c:if>
 </div>
-
+</div>>
 <script>
     $(document).ready(function() {
         // 页面加载完成后的初始化操作

@@ -1,13 +1,7 @@
--- 开黑电竞平台数据库结构（修复版）
--- 解决MySQL版本兼容性问题
 
 CREATE DATABASE IF NOT EXISTS e_sport_platform DEFAULT CHARSET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 USE e_sport_platform;
-
--- 设置SQL模式以兼容不同MySQL版本
-SET @@sql_mode = sys.list_drop(@@sql_mode, 'NO_ZERO_DATE');
-SET @@sql_mode = sys.list_drop(@@sql_mode, 'NO_ZERO_IN_DATE');
 
 -- 用户表
 CREATE TABLE user (
