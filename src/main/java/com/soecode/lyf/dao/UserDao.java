@@ -32,4 +32,11 @@ public interface UserDao {
      * 删除用户
      */
     int delete(long userId);
+
+    /**
+     * 根据用户名查询用户
+     * @param username 用户名
+     * @return 用户对象
+     */
+    User queryByUsername(String username);
 }

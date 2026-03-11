@@ -30,6 +30,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public User getByUsername(String username) {
+        return userDao.queryByUsername(username);
+    }
+
+    @Override
     public boolean addUser(User user) {
         try {
             int result = userDao.insert(user);

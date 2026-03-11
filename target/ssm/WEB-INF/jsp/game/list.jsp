@@ -107,7 +107,7 @@
         <p>浏览我们丰富的游戏库，包含各种热门游戏和经典作品</p>
     </div>
 
-    <div class="main-content">
+<%--    <div class="main-content">--%>
 
     <div class="row">
         <c:forEach items="${list}" var="game">

@@ -99,3 +99,4 @@ SELECT '数据库创建成功！' as message;
 SELECT COUNT(*) as user_count FROM user;
 SELECT COUNT(*) as game_count FROM game;
 SELECT COUNT(*) as service_count FROM companion_service;
+

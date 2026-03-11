@@ -30,4 +30,11 @@ public interface UserService {
      * 删除用户
      */
     boolean deleteUser(long userId);
+
+    /**
+     * 根据用户名获取用户
+     * @param username 用户名
+     * @return 用户对象
+     */
+    User getByUsername(String username);
 }
