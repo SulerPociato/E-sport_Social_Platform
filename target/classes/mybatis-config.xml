@@ -18,8 +18,8 @@
 	<!-- 配置类型别名 -->
 	<typeAliases>
 		<!-- 电竞平台相关实体 -->
-		<typeAlias alias="Game" type="com.soecode.lyf.entity.Game" />
+		<typeAlias alias="Order" type="com.soecode.lyf.entity.Order" />
 		<typeAlias alias="User" type="com.soecode.lyf.entity.User" />
-		<typeAlias alias="CompanionService" type="com.soecode.lyf.entity.CompanionService" />
+		<typeAlias alias="Club" type="com.soecode.lyf.entity.Club" />
 	</typeAliases>
 </configuration>
