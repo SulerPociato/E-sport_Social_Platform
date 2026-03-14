@@ -2,53 +2,34 @@ package com.soecode.lyf.entity;
 
 import java.util.Date;
 
-/**
- * 用户实体
- */
 public class User {
 
-    private long userId; // 用户ID
-    private String username; // 用户名
-    private String password; // 密码
-    private String email; // 邮箱
-    private String phone; // 手机号
-    private String nickname; // 昵称
-    private String avatar; // 头像
-    private int gender; // 性别: 0-未知, 1-男, 2-女
-    private Date birthday; // 生日
-    private String gameId; // 游戏ID
-    private int level; // 等级
-    private double rating; // 评分
-    private int status; // 状态: 0-禁用, 1-正常
-    private Date createTime; // 创建时间
-    private Date updateTime; // 更新时间
+    private Long userId;
+    private String username;
+    private String password;
+    private String email;
+    private String phone;
+    private String nickname;
+    private String avatar;
+    private Integer gender;
+    private String description;    // 个人描述
+    private Integer orderCount;    // 订单数
+    private Integer playerType;    // 打手类型:0个人打手 1俱乐部打手 2俱乐部管理员
+    private Long clubId;           // 所属俱乐部ID
+    private Integer status;
+    private Date createTime;
+    private Date updateTime;
 
+    // 无参构造
     public User() {
     }
 
-    public User(long userId, String username, String password, String email, String phone,
-                String nickname, String avatar, int gender, Date birthday, String gameId,
-                int level, double rating, int status) {
-        this.userId = userId;
-        this.username = username;
-        this.password = password;
-        this.email = email;
-        this.phone = phone;
-        this.nickname = nickname;
-        this.avatar = avatar;
-        this.gender = gender;
-        this.birthday = birthday;
-        this.gameId = gameId;
-        this.level = level;
-        this.rating = rating;
-        this.status = status;
-    }
-
-    public long getUserId() {
+    // Getter 和 Setter
+    public Long getUserId() {
         return userId;
     }
 
-    public void setUserId(long userId) {
+    public void setUserId(Long userId) {
         this.userId = userId;
     }
 
@@ -100,51 +81,51 @@ public class User {
         this.avatar = avatar;
     }
 
-    public int getGender() {
+    public Integer getGender() {
         return gender;
     }
 
-    public void setGender(int gender) {
+    public void setGender(Integer gender) {
         this.gender = gender;
     }
 
-    public Date getBirthday() {
-        return birthday;
+    public String getDescription() {
+        return description;
     }
 
-    public void setBirthday(Date birthday) {
-        this.birthday = birthday;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
-    public String getGameId() {
-        return gameId;
+    public Integer getOrderCount() {
+        return orderCount;
     }
 
-    public void setGameId(String gameId) {
-        this.gameId = gameId;
+    public void setOrderCount(Integer orderCount) {
+        this.orderCount = orderCount;
     }
 
-    public int getLevel() {
-        return level;
+    public Integer getPlayerType() {
+        return playerType;
     }
 
-    public void setLevel(int level) {
-        this.level = level;
+    public void setPlayerType(Integer playerType) {
+        this.playerType = playerType;
     }
 
-    public double getRating() {
-        return rating;
+    public Long getClubId() {
+        return clubId;
     }
 
-    public void setRating(double rating) {
-        this.rating = rating;
+    public void setClubId(Long clubId) {
+        this.clubId = clubId;
     }
 
-    public int getStatus() {
+    public Integer getStatus() {
         return status;
     }
 
-    public void setStatus(int status) {
+    public void setStatus(Integer status) {
         this.status = status;
     }
 
@@ -166,9 +147,22 @@ public class User {
 
     @Override
     public String toString() {
-        return "User [userId=" + userId + ", username=" + username + ", password=" + password + ", email=" + email
-                + ", phone=" + phone + ", nickname=" + nickname + ", avatar=" + avatar + ", gender=" + gender
-                + ", birthday=" + birthday + ", gameId=" + gameId + ", level=" + level + ", rating=" + rating
-                + ", status=" + status + ", createTime=" + createTime + ", updateTime=" + updateTime + "]";
+        return "User{" +
+                "userId=" + userId +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", email='" + email + '\'' +
+                ", phone='" + phone + '\'' +
+                ", nickname='" + nickname + '\'' +
+                ", avatar='" + avatar + '\'' +
+                ", gender=" + gender +
+                ", description='" + description + '\'' +
+                ", orderCount=" + orderCount +
+                ", playerType=" + playerType +
+                ", clubId=" + clubId +
+                ", status=" + status +
+                ", createTime=" + createTime +
+                ", updateTime=" + updateTime +
+                '}';
     }
 }
