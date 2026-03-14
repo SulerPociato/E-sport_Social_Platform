@@ -175,4 +175,40 @@ public class UserController {
         model.addAttribute("user", user);
         return "user/detail";
     }
+
+    /**
+     * 显示登录页面
+     */
+    @RequestMapping(value = "/login", method = RequestMethod.GET)
+    public String showLoginPage() {
+        return "login";
+    }
+
+    /**
+     * 处理登录请求
+     */
+    @RequestMapping(value = "/login", method = RequestMethod.POST)
+    public String login(String username, String password, Model model) {
+        // 这里应该实现实际的登录逻辑
+        // 暂时返回登录页面
+        return "login";
+    }
+
+    /**
+     * 显示注册页面
+     */
+    @RequestMapping(value = "/register", method = RequestMethod.GET)
+    public String showRegisterPage() {
+        return "register";
+    }
+
+    /**
+     * 处理注册请求
+     */
+    @RequestMapping(value = "/register", method = RequestMethod.POST)
+    public String register(User user, Model model) {
+        // 这里应该实现实际的注册逻辑
+        // 暂时重定向到登录页面
+        return "redirect:/user/login";
+    }
 }
