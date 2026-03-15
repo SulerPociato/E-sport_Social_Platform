@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper
-    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.soecode.lyf.dao.UserDao">
-    
+
     <resultMap id="UserResultMap" type="User">
         <id column="id" property="userId" />
         <result column="username" property="username" />
@@ -13,60 +13,69 @@
         <result column="nickname" property="nickname" />
         <result column="avatar" property="avatar" />
         <result column="gender" property="gender" />
-        <result column="birthday" property="birthday" />
-        <result column="game_id" property="gameId" />
-        <result column="level" property="level" />
-        <result column="rating" property="rating" />
+        <result column="description" property="description" />
+        <result column="order_count" property="orderCount" />
+        <result column="player_type" property="playerType" />
+        <result column="club_id" property="clubId" />
         <result column="status" property="status" />
         <result column="create_time" property="createTime" />
         <result column="update_time" property="updateTime" />
     </resultMap>
 
     <select id="queryAll" resultMap="UserResultMap">
-        SELECT 
+        SELECT
             id, username, password, email, phone, nickname,
-            avatar, gender, birthday, game_id, level, rating, 
-            status, create_time, update_time
+            avatar, gender, description, order_count,
+            player_type, club_id, status, create_time, update_time
         FROM user
         ORDER BY create_time DESC
     </select>
 
     <select id="queryById" parameterType="long" resultMap="UserResultMap">
-        SELECT 
+        SELECT
             id, username, password, email, phone, nickname,
-            avatar, gender, birthday, game_id, level, rating, 
-            status, create_time, update_time
+            avatar, gender, description, order_count,
+            player_type, club_id, status, create_time, update_time
         FROM user
         WHERE id = #{userId}
     </select>
 
+    <select id="queryByUsername" parameterType="string" resultMap="UserResultMap">
+        SELECT
+            id, username, password, email, phone, nickname,
+            avatar, gender, description, order_count,
+            player_type, club_id, status, create_time, update_time
+        FROM user
+        WHERE username = #{username}
+    </select>
+
     <insert id="insert" parameterType="User" useGeneratedKeys="true" keyProperty="userId">
         INSERT INTO user(
-            username, password, email, phone, nickname, avatar, 
-            gender, birthday, game_id, level, rating, status, 
-            create_time, update_time
+            username, password, email, phone, nickname, avatar,
+            gender, description, order_count, player_type, club_id,
+            status, create_time, update_time
         ) VALUES (
-            #{username}, #{password}, #{email}, #{phone}, #{nickname}, #{avatar},
-            #{gender}, #{birthday}, #{gameId}, #{level}, #{rating}, #{status},
-            NOW(), NOW()
-        )
+                     #{username}, #{password}, #{email}, #{phone}, #{nickname}, #{avatar},
+                     #{gender}, #{description}, #{orderCount}, #{playerType}, #{clubId},
+                     #{status}, NOW(), NOW()
+                 )
     </insert>
 
     <update id="update" parameterType="User">
         UPDATE user SET
-            username = #{username},
-            password = #{password},
-            email = #{email},
-            phone = #{phone},
-            nickname = #{nickname},
-            avatar = #{avatar},
-            gender = #{gender},
-            birthday = #{birthday},
-            game_id = #{gameId},
-            level = #{level},
-            rating = #{rating},
-            status = #{status},
-            update_time = NOW()
+                        username = #{username},
+                        password = #{password},
+                        email = #{email},
+                        phone = #{phone},
+                        nickname = #{nickname},
+                        avatar = #{avatar},
+                        gender = #{gender},
+                        description = #{description},
+                        order_count = #{orderCount},
+                        player_type = #{playerType},
+                        club_id = #{clubId},
+                        status = #{status},
+                        update_time = NOW()
         WHERE id = #{userId}
     </update>
 
