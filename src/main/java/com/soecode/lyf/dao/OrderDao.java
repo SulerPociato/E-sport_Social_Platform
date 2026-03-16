@@ -62,6 +62,11 @@ public interface OrderDao {
     int delete(long orderId);
 
     /**
+     * 物理删除订单（永久删除）
+     */
+    int deletePermanently(long orderId);
+
+    /**
      * 统计订单数量
      */
     int countAll();

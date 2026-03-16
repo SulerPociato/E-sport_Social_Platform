@@ -75,9 +75,14 @@ public interface OrderService {
     boolean cancelOrder(long orderId);
 
     /**
-     * 删除订单
+     * 删除订单（逻辑删除）
      */
     boolean deleteOrder(long orderId);
+
+    /**
+     * 物理删除订单（永久删除）
+     */
+    boolean deleteOrderPermanently(long orderId);
 
     /**
      * 统计订单总数
