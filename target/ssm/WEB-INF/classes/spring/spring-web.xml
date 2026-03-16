@@ -37,10 +37,13 @@
 	 <!-- 4.扫描web相关的bean -->
 	 <context:component-scan base-package="com.soecode.lyf.web" />
 	 
-	 <!-- 5.配置欢迎页面 -->
-	 <mvc:view-controller path="/" view-name="index"/>
+	 <!-- 5.配置欢迎页面 - 由HomeController处理 -->
+	 <!-- <mvc:view-controller path="/" view-name="index"/> -->
 
     <mvc:resources mapping="/uploads/**" location="/uploads/"/>
+
+    <!-- 配置静态资源访问 -->
+    <mvc:resources mapping="/images/**" location="/images/"/>
 
 
 </beans>

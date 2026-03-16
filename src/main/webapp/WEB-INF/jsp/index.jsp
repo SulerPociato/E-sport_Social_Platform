@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="zh-CN">
@@ -154,19 +155,19 @@
         <div class="login-right">
           <div class="center-btn-con">
             <a href="javascript:void(0);" id="personalCenterBtn" class="center-btn">
-              <img src="/images/intro.svg" alt="个人中心" class="btn-icon">
+                <img src="${pageContext.request.contextPath}/images/intro.svg" alt="个人中心" class="btn-icon">
               <span class="btn-text">个人中心</span>
             </a>
             <a href="javascript:void(0);" id="securityCenterBtn" class="center-btn">
-              <img src="/images/password.svg" alt="修改密码" class="btn-icon">
+                <img src="${pageContext.request.contextPath}/images/password.svg" alt="修改密码" class="btn-icon">
               <span class="btn-text">修改密码</span>
             </a>
             <a href="javascript:void(0);" id="walletBtn" class="center-btn">
-              <img src="/images/cash.svg" alt="我的钱包" class="btn-icon">
+                <img src="${pageContext.request.contextPath}/images/cash.svg" alt="我的钱包" class="btn-icon">
               <span class="btn-text">我的钱包</span>
             </a>
             <a href="javascript:void(0);" id="clubManagementBtn" class="center-btn">
-              <img src="/images/club.svg" alt="俱乐部管理" class="btn-icon">
+                <img src="${pageContext.request.contextPath}/images/club.svg" alt="俱乐部管理" class="btn-icon">
               <span class="btn-text">我的俱乐部</span>
             </a>
           </div>
@@ -192,115 +193,30 @@
     <div class="order-card">
       <h1>订单管理</h1>
       <ul class="order-features">
-        <li class="order-item"
-            data-id="1"
-            data-type="job"
-            data-game="三角洲行动"
-            data-amount="500"
-            data-details="需要一名经验丰富的玩家协助完成三角洲行动游戏中的护航任务，要求熟悉游戏机制，有团队合作精神。">
-          <div class="order-card-name">三角洲护航</div>
-          <div class="order-card-intro">¥500 - 三角洲行动</div>
-        </li>
-        <li class="order-item"
-            data-id="2"
-            data-type="bounty"
-            data-game="王者荣耀"
-            data-amount="300"
-            data-details="寻找王者荣耀陪玩，要求段位在王者以上，能够提供专业的游戏指导和陪玩服务。">
-          <div class="order-card-name">王者荣耀陪玩</div>
-          <div class="order-card-intro">¥300 - 王者荣耀</div>
-        </li>
-        <li class="order-item"
-            data-id="3"
-            data-type="job"
-            data-game="火影忍者"
-            data-amount="200"
-            data-details="需要完成火影忍者游戏中的3000分任务，要求熟悉角色技能，有快速完成任务的能力。">
-          <div class="order-card-name">火影3000</div>
-          <div class="order-card-intro">¥200 - 火影忍者</div>
-        </li>
-        <li class="order-item"
-            data-id="4"
-            data-type="bounty"
-            data-game="无畏契约"
-            data-amount="800"
-            data-details="寻找无畏契约代练，要求熟悉游戏机制，能够高效完成代练任务，保证账号安全。">
-          <div class="order-card-name">无畏契约代练</div>
-          <div class="order-card-intro">¥800 - 无畏契约</div>
-        </li>
-        <li class="order-item"
-            data-id="5"
-            data-type="job"
-            data-game="三角洲行动"
-            data-amount="450"
-            data-details="需要完成三角洲行动游戏中的护航任务，要求有良好的沟通能力和团队协作精神。">
-          <div class="order-card-name">三角洲护航</div>
-          <div class="order-card-intro">¥450 - 三角洲行动</div>
-        </li>
-        <li class="order-item"
-            data-id="6"
-            data-type="bounty"
-            data-game="王者荣耀"
-            data-amount="350"
-            data-details="寻找王者荣耀陪玩，要求声音好听，能够提供愉快的游戏体验，段位不限。">
-          <div class="order-card-name">王者荣耀陪玩</div>
-          <div class="order-card-intro">¥350 - 王者荣耀</div>
-        </li>
-        <li class="order-item"
-            data-id="7"
-            data-type="job"
-            data-game="火影忍者"
-            data-amount="250"
-            data-details="需要完成火影忍者游戏中的3000分任务，要求有耐心，能够按时完成任务。">
-          <div class="order-card-name">火影3000</div>
-          <div class="order-card-intro">¥250 - 火影忍者</div>
-        </li>
-        <li class="order-item"
-            data-id="8"
-            data-type="bounty"
-            data-game="无畏契约"
-            data-amount="700"
-            data-details="寻找无畏契约代练，要求信誉良好，能够保证代练质量，按时交付。">
-          <div class="order-card-name">无畏契约代练</div>
-          <div class="order-card-intro">¥700 - 无畏契约</div>
-        </li>
-        <li class="order-item"
-            data-id="9"
-            data-type="job"
-            data-game="火影忍者"
-            data-amount="220"
-            data-details="需要完成火影忍者游戏中的3000分任务，要求熟悉游戏操作，能够快速上手。">
-          <div class="order-card-name">火影3000</div>
-          <div class="order-card-intro">¥220 - 火影忍者</div>
-        </li>
-        <li class="order-item"
-            data-id="10"
-            data-type="bounty"
-            data-game="无畏契约"
-            data-amount="750"
-            data-details="寻找无畏契约代练，要求有丰富的代练经验，能够处理各种游戏问题。">
-          <div class="order-card-name">无畏契约代练</div>
-          <div class="order-card-intro">¥750 - 无畏契约</div>
-        </li>
-        <li class="order-item"
-            data-id="11"
-            data-type="job"
-            data-game="火影忍者"
-            data-amount="280"
-            data-details="需要完成火影忍者游戏中的3000分任务，要求有责任心，能够保证任务质量。">
-          <div class="order-card-name">火影3000</div>
-          <div class="order-card-intro">¥280 - 火影忍者</div>
-        </li>
-        <li class="order-item"
-            data-id="12"
-            data-type="bounty"
-            data-game="无畏契约"
-            data-amount="650"
-            data-details="寻找无畏契约代练，要求价格合理，服务态度好，能够及时沟通。">
-          <div class="order-card-name">无畏契约代练</div>
-          <div class="order-card-intro">¥650 - 无畏契约</div>
-        </li>
+
+        <!-- 如果没有订单数据，显示默认提示 -->
+        <c:if test="${empty orderList}">
+          <li class="order-item">
+            <div class="order-card-name">暂无订单</div>
+            <div class="order-card-intro">请创建新的订单</div>
+          </li>
+        </c:if>
+
+        <!-- 动态订单数据 -->
+        <c:forEach var="order" items="${orderList}" varStatus="status">
+          <li class="order-item"
+              data-id="${order.orderId}"
+              data-type="${order.status == 0 ? 'job' : 'bounty'}"
+              data-game="${not empty order.gameName ? order.gameName : '未知游戏'}"
+              data-amount="${not empty order.amount ? order.amount : 0}"
+              data-details="${not empty order.detail ? order.detail : '暂无描述'}">
+            <div class="order-card-name">${not empty order.gameName ? order.gameName : '未知游戏'} - ${order.status == 0 ? '待支付' : order.status == 1 ? '已支付' : order.status == 2 ? '进行中' : order.status == 3 ? '已完成' : '已取消'}</div>
+            <div class="order-card-intro">¥${not empty order.totalAmount ? order.totalAmount : 0} - 订单号: ${not empty order.orderNo ? order.orderNo : '未知订单'}</div>
+            <div class="order-card-detail">${not empty order.detail ? order.detail : '暂无描述'}</div>
+          </li>
+        </c:forEach>
       </ul>
+
 
       <!-- 搜索框区域 -->
       <div class="order-search-con">
@@ -441,8 +357,8 @@
 
           <!-- 订单详情 -->
           <div class="form-group-club">
-            <label for="orderDetails">订单详情</label>
-            <textarea id="orderDetails" name="orderDetails" rows="5" placeholder="请详细描述订单内容..." maxlength="999" required></textarea>
+            <label for="detail">订单详情</label>
+            <textarea id="detail" name="detail" rows="5" placeholder="请详细描述订单内容..." maxlength="999" required></textarea>
             <div class="char-count">
               <span id="charCount">0</span>/999
             </div>
@@ -2225,50 +2141,94 @@
     });
 
     // 处理订单表单提交
-    if (postOrderForm) {
-      postOrderForm.addEventListener('submit', function(event) {
-        // 阻止表单默认提交行为
-        event.preventDefault();
+        if (postOrderForm) {
+          postOrderForm.addEventListener('submit', function(event) {
+            // 阻止表单默认提交行为
+            event.preventDefault();
 
-        // 获取表单数据
-        const orderType = document.getElementById('orderType').value;
-        const gameName = document.getElementById('gameName').value.trim();
-        const orderAmount = document.getElementById('orderAmount').value;
-        const orderDetails = document.getElementById('orderDetails').value.trim();
+            // 获取表单数据
+            const orderType = document.getElementById('orderType').value;
+            const gameName = document.getElementById('gameName').value.trim();
+            const orderAmount = document.getElementById('orderAmount').value;
+            const detail = document.getElementById('detail').value.trim();
 
-        // 表单验证
-        if (!orderType) {
-          alert('请选择订单类型');
-          return;
+            // 表单验证
+            if (!orderType) {
+              alert('请选择订单类型');
+              return;
+            }
+
+            if (!gameName) {
+              alert('请输入游戏名称');
+              return;
+            }
+
+            if (!orderAmount || parseFloat(orderAmount) <= 0) {
+              alert('请输入有效的订单金额');
+              return;
+            }
+
+            if (!detail) {
+              alert('请输入订单详情');
+              return;
+            }
+
+            // 显示加载状态
+            const submitBtn = this.querySelector('.btn-primary');
+            const originalText = submitBtn.textContent;
+            submitBtn.textContent = '创建订单中...';
+            submitBtn.disabled = true;
+
+            // 构建订单数据
+            const orderData = new URLSearchParams();
+            orderData.append('gameName', gameName);
+            orderData.append('detail', detail);
+            orderData.append('amount', orderAmount);
+            orderData.append('quantity', '1'); // 默认1小时
+            orderData.append('totalAmount', orderAmount);
+            // 这里需要获取当前登录用户ID和选择的打手ID
+            // 在实际应用中，这些数据应该从用户会话或选择器中获取
+            orderData.append('customerId', '1'); // 临时值，实际应从session获取
+            orderData.append('playerId', '2'); // 临时值，实际应从选择器获取
+
+            // 调用创建订单接口
+            fetch('/ssm_war/order/create', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+              body: orderData
+            })
+              .then(response => response.json())
+              .then(data => {
+                submitBtn.textContent = originalText;
+                submitBtn.disabled = false;
+
+                if (data.success) {
+                  alert('订单发布成功！');
+                  
+                  // 关闭弹窗
+                  postOrderModal.style.display = 'none';
+                  document.body.style.overflow = 'auto';
+
+                  // 重置表单
+                  postOrderForm.reset();
+                  charCount.textContent = '0';
+
+                  // 刷新页面或跳转到订单列表
+                  setTimeout(() => {
+                    window.location.href = '/ssm_war/order/list';
+                  }, 1000);
+                } else {
+                  alert('订单发布失败：' + data.error);
+                }
+              })
+              .catch(error => {
+                submitBtn.textContent = originalText;
+                submitBtn.disabled = false;
+                alert('网络错误，请稍后重试');
+                console.error('创建订单错误:', error);
+              });
+          });
         }
-
-        if (!gameName) {
-          alert('请输入游戏名称');
-          return;
-        }
-
-        if (!orderAmount || parseFloat(orderAmount) <= 0) {
-          alert('请输入有效的订单金额');
-          return;
-        }
-
-        if (!orderDetails) {
-          alert('请输入订单详情');
-          return;
-        }
-
-        // 显示成功消息
-        alert('订单发布成功！');
-
-        // 关闭弹窗
-        postOrderModal.style.display = 'none';
-        document.body.style.overflow = 'auto';
-
-        // 重置表单
-        postOrderForm.reset();
-        charCount.textContent = '0';
-      });
-    }
   });
 
   // 管理订单弹窗功能
@@ -3272,7 +3232,7 @@
   }
   body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-image: url('/images/background.png'); /* 替换为您的背景图片路径 */
+      background-image: url('${pageContext.request.contextPath}/images/background.png');/* 替换为您的背景图片路径 */
     background-size: cover; /* 背景图片覆盖整个页面 */
     background-position: center; /* 背景图片居中 */
     background-repeat: no-repeat; /* 不重复背景图片 */

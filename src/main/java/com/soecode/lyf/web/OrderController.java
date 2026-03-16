@@ -87,6 +87,22 @@ public class OrderController {
     }
 
     /**
+     * 首页订单列表
+     */
+    @RequestMapping(value = "/index", method = RequestMethod.GET)
+    public String index(Model model) {
+        try {
+            List<Order> orders = orderService.getAllOrders(0, 10); // 获取前10个订单
+            model.addAttribute("orderList", orders);
+            return "index";
+        } catch (Exception e) {
+            logger.error("获取首页订单列表失败: {}", e.getMessage());
+            model.addAttribute("error", "获取订单列表失败");
+            return "error";
+        }
+    }
+
+    /**
      * 支付订单（API接口）
      */
     @RequestMapping(value = "/{orderId}/pay", method = RequestMethod.POST)
