@@ -2,14 +2,19 @@ package com.soecode.lyf.web;
 
 import com.soecode.lyf.dto.Result;
 import com.soecode.lyf.entity.User;
+import com.soecode.lyf.service.AccountService;
 import com.soecode.lyf.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpSession;
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 @Controller
@@ -20,6 +25,9 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private AccountService accountService;
 
     /**
      * 用户登录
@@ -69,6 +77,7 @@ public class UserController {
         // 其他字段可选，保持null
         boolean success = userService.addUser(user);
         if (success) {
+            accountService.getOrCreateAccount(user.getUserId()); // 创建账户
             return new Result<>(true, "注册成功");
         } else {
             return new Result<>(false, "注册失败，请稍后重试");
@@ -184,15 +193,6 @@ public class UserController {
         return "login";
     }
 
-    /**
-     * 处理登录请求
-     */
-    @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public String login(String username, String password, Model model) {
-        // 这里应该实现实际的登录逻辑
-        // 暂时返回登录页面
-        return "login";
-    }
 
     /**
      * 显示注册页面
@@ -202,13 +202,91 @@ public class UserController {
         return "register";
     }
 
-    /**
-     * 处理注册请求
-     */
-    @RequestMapping(value = "/register", method = RequestMethod.POST)
-    public String register(User user, Model model) {
-        // 这里应该实现实际的注册逻辑
-        // 暂时重定向到登录页面
-        return "redirect:/user/login";
+    @RequestMapping(value = "/changePassword", method = RequestMethod.POST, produces = "application/json;charset=utf-8")
+    @ResponseBody
+    public Result<String> changePassword(HttpSession session, String oldPassword, String newPassword) {
+        User sessionUser = (User) session.getAttribute("user");
+        if (sessionUser == null) {
+            return new Result<>(false, "未登录");
+        }
+        User user = userService.getById(sessionUser.getUserId());
+        if (user == null) {
+            session.invalidate();
+            return new Result<>(false, "用户不存在");
+        }
+        // 验证旧密码（目前是明文，根据实际加密方式调整）
+        if (!user.getPassword().equals(oldPassword)) {
+            return new Result<>(false, "旧密码错误");
+        }
+        // 更新密码
+        user.setPassword(newPassword);
+        boolean success = userService.updateUser(user);
+        if (success) {
+            return new Result<>(true, "密码修改成功");
+        } else {
+            return new Result<>(false, "密码修改失败");
+        }
     }
+
+
+
+    @RequestMapping(value = "/uploadAvatar", method = RequestMethod.POST)
+    @ResponseBody
+    public Result<String> uploadAvatar(HttpSession session, @RequestParam("avatar") MultipartFile file) {
+        User sessionUser = (User) session.getAttribute("user");
+        if (sessionUser == null) {
+            return new Result<>(false, "未登录");
+        }
+        if (file.isEmpty()) {
+            return new Result<>(false, "文件不能为空");
+        }
+        try {
+            // 生成唯一文件名
+            String originalFilename = file.getOriginalFilename();
+            String suffix = originalFilename.substring(originalFilename.lastIndexOf("."));
+            String filename = System.currentTimeMillis() + "_" + sessionUser.getUserId() + suffix;
+
+            // 保存路径
+            String savePath = session.getServletContext().getRealPath("/uploads/avatars/");
+            File dir = new File(savePath);
+            if (!dir.exists()) {
+                dir.mkdirs();
+            }
+            File serverFile = new File(dir, filename);
+            file.transferTo(serverFile);
+
+            // 生成访问URL
+            String avatarUrl = session.getServletContext().getContextPath() + "/uploads/avatars/" + filename;
+
+            // 从数据库重新获取完整的用户信息（包含密码）
+            User fullUser = userService.getById(sessionUser.getUserId());
+            if (fullUser == null) {
+                return new Result<>(false, "用户不存在");
+            }
+
+            // 设置新头像
+            fullUser.setAvatar(avatarUrl);
+            boolean updated = userService.updateUser(fullUser);
+
+            if (!updated) {
+                logger.error("更新用户头像失败，userId: {}", sessionUser.getUserId());
+                return new Result<>(false, "头像上传成功，但保存到数据库失败");
+            }
+
+            // 更新 session 中的用户信息（去掉密码）
+            fullUser.setPassword(null);
+            session.setAttribute("user", fullUser);
+
+            Result<String> result = new Result<>();
+            result.setSuccess(true);
+            result.setData(avatarUrl);
+            return result;
+        } catch (IOException e) {
+            logger.error("上传头像失败", e);
+            return new Result<>(false, "上传失败：" + e.getMessage());
+        }
+    }
+
+
+
 }

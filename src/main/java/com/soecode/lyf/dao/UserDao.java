@@ -17,6 +17,13 @@ public interface UserDao {
     User queryById(long userId);
 
     /**
+     * 根据用户名查询用户
+     * @param username 用户名
+     * @return 用户对象
+     */
+    User queryByUsername(String username);
+
+    /**
      * 添加用户
      */
     int insert(User user);
