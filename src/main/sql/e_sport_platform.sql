@@ -35,6 +35,8 @@ CREATE TABLE club (
 CREATE TABLE `order` (
                          id BIGINT PRIMARY KEY AUTO_INCREMENT,
                          order_no VARCHAR(50) UNIQUE NOT NULL COMMENT '订单号',
+                         game_name VARCHAR(50) NOT NULL COMMENT '游戏名称',
+                         detail VARCHAR(50) NOT NULL COMMENT '描述',
                          customer_id BIGINT NOT NULL COMMENT '下单用户',
                          player_id BIGINT NOT NULL COMMENT '接单打手',
                          amount DECIMAL(10,2) NOT NULL COMMENT '单价',
@@ -50,3 +52,14 @@ CREATE TABLE `order` (
                          INDEX idx_player_id (player_id),
                          INDEX idx_order_no (order_no)
 ) ENGINE=InnoDB COMMENT='订单表';
+
+-- 插入测试用户数据
+INSERT INTO user (username, password, email, phone, nickname, avatar, gender, description, order_count, player_type, club_id, status) VALUES
+('customer1', '123456', 'customer1@test.com', '13800000001', '测试客户1', NULL, 1, '测试客户账号', 0, 0, NULL, 1),
+('player1', '123456', 'player1@test.com', '13800000002', '测试打手1', NULL, 1, '专业打手', 0, 1, NULL, 1),
+('player2', '123456', 'player2@test.com', '13800000003', '测试打手2', NULL, 2, '资深打手', 0, 1, NULL, 1);
+
+-- 插入测试订单数据
+INSERT INTO `order` (order_no, game_name, detail, customer_id, player_id, amount, quantity, total_amount, status) VALUES
+('ORD20250316001', '英雄联盟', '排位赛代练', 1, 2, 50.00, 2.00, 100.00, 1),
+('ORD20250316002', '王者荣耀', '巅峰赛代练', 1, 3, 40.00, 3.00, 120.00, 2);

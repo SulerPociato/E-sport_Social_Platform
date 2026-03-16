@@ -10,6 +10,8 @@ public class Order {
 
     private long orderId; // 订单ID
     private String orderNo; // 订单号
+    private String gameName; // 游戏名称
+    private String detail; // 描述
     private long customerId; // 下单用户ID
     private long playerId; // 接单打手ID
     private BigDecimal amount; // 单价
@@ -27,11 +29,13 @@ public class Order {
     public Order() {
     }
 
-    public Order(long orderId, String orderNo, long customerId, long playerId,
+    public Order(long orderId, String orderNo, String gameName, String detail, long customerId, long playerId,
                  BigDecimal amount, BigDecimal quantity, BigDecimal totalAmount,
                  int status, Date payTime, Date completeTime, Date createTime) {
         this.orderId = orderId;
         this.orderNo = orderNo;
+        this.gameName = gameName;
+        this.detail = detail;
         this.customerId = customerId;
         this.playerId = playerId;
         this.amount = amount;
@@ -58,6 +62,22 @@ public class Order {
 
     public void setOrderNo(String orderNo) {
         this.orderNo = orderNo;
+    }
+
+    public String getGameName() {
+        return gameName;
+    }
+
+    public void setGameName(String gameName) {
+        this.gameName = gameName;
+    }
+
+    public String getDetail() {
+        return detail;
+    }
+
+    public void setDetail(String detail) {
+        this.detail = detail;
     }
 
     public long getCustomerId() {

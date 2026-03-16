@@ -86,6 +86,16 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public boolean createOrder(Order order) {
         try {
+            // 验证必填字段
+            if (order.getGameName() == null || order.getGameName().trim().isEmpty()) {
+                logger.error("创建订单失败: 游戏名称不能为空");
+                return false;
+            }
+            if (order.getDetail() == null || order.getDetail().trim().isEmpty()) {
+                logger.error("创建订单失败: 订单描述不能为空");
+                return false;
+            }
+            
             // 生成订单号
             String orderNo = "ORD" + System.currentTimeMillis();
             order.setOrderNo(orderNo);
