@@ -2263,16 +2263,31 @@
         const orderAmount = this.getAttribute('data-amount');
         const orderDetails = this.getAttribute('data-details');
 
+        // 调试信息
+        console.log('订单ID:', orderId);
+        console.log('订单类型:', orderType);
+        console.log('游戏名称:', gameName);
+        console.log('订单金额:', orderAmount);
+        console.log('订单详情:', orderDetails);
+
+        // 确保orderId不为空
+        if (!orderId || orderId === 'null' || orderId === 'undefined') {
+          console.error('订单ID为空或无效:', orderId);
+          alert('订单信息不完整，无法操作');
+          return;
+        }
+        
         // 存储当前订单ID
         currentOrderId = orderId;
+        console.log('当前订单ID已设置为:', currentOrderId);
 
         // 设置弹窗内容
-        manageOrderTitle.textContent = '管理订单 - ' + this.textContent.trim();
+        manageOrderTitle.textContent = '管理订单 - ' + gameName;
         manageOrderType.value = orderType;
         manageGameName.value = gameName;
         manageOrderAmount.value = orderAmount;
         manageOrderDetails.value = orderDetails;
-        manageCharCount.textContent = orderDetails.length;
+        manageCharCount.textContent = orderDetails ? orderDetails.length : 0;
 
         // 显示弹窗
         manageOrderModal.style.display = 'flex';
@@ -2316,11 +2331,20 @@
         // 阻止表单默认提交行为
         event.preventDefault();
 
+        console.log('修改订单表单提交，当前订单ID:', currentOrderId);
+        
+        if (!currentOrderId || currentOrderId === 'null' || currentOrderId === 'undefined') {
+          alert('请先选择要修改的订单');
+          return;
+        }
+
         // 获取表单数据
         const orderType = manageOrderType.value;
         const gameName = manageGameName.value.trim();
         const orderAmount = manageOrderAmount.value;
         const orderDetails = manageOrderDetails.value.trim();
+
+        console.log('修改订单参数:', { orderType, gameName, orderAmount, orderDetails });
 
         // 表单验证
         if (!orderType) {
@@ -2343,53 +2367,116 @@
           return;
         }
 
-        // 更新订单数据
-        const currentOrder = document.querySelector(`.order-item[data-id="${currentOrderId}"]`);
-        if (currentOrder) {
-          currentOrder.setAttribute('data-type', orderType);
-          currentOrder.setAttribute('data-game', gameName);
-          currentOrder.setAttribute('data-amount', orderAmount);
-          currentOrder.setAttribute('data-details', orderDetails);
+        // 调用后端API修改订单
+        fetch('/ssm_war/order/' + currentOrderId + '/update', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+          },
+          body: new URLSearchParams({
+            gameName: gameName,
+            amount: orderAmount,
+            detail: orderDetails,
+            status: (orderType === 'job' ? 0 : 1)
+          })
+        })
+        .then(response => response.json())
+        .then(data => {
+          if (data.success) {
+            // 更新前端订单数据
+            const currentOrder = document.querySelector(`.order-item[data-id="${currentOrderId}"]`);
+            if (currentOrder) {
+              currentOrder.setAttribute('data-type', orderType);
+              currentOrder.setAttribute('data-game', gameName);
+              currentOrder.setAttribute('data-amount', orderAmount);
+              currentOrder.setAttribute('data-details', orderDetails);
 
-          // 更新显示名称（如果游戏名称改变）
-          const orderName = gameName + ' ' + (orderType === 'job' ? '求职' : '悬赏');
-          currentOrder.textContent = orderName;
-        }
+              // 更新显示内容
+              const orderNameDiv = currentOrder.querySelector('.order-card-name');
+              const orderIntroDiv = currentOrder.querySelector('.order-card-intro');
+              const orderDetailDiv = currentOrder.querySelector('.order-card-detail');
+              
+              if (orderNameDiv) {
+                orderNameDiv.textContent = gameName + ' - ' + (orderType === 'job' ? '求职订单' : '悬赏订单');
+              }
+              if (orderIntroDiv) {
+                orderIntroDiv.textContent = '¥' + orderAmount + ' - 订单号: ' + currentOrder.getAttribute('data-orderNo');
+              }
+              if (orderDetailDiv) {
+                orderDetailDiv.textContent = orderDetails;
+              }
+            }
 
-        // 显示成功消息
-        alert('订单修改成功！');
-
-        // 关闭弹窗
-        manageOrderModal.style.display = 'none';
-        document.body.style.overflow = 'auto';
+            alert('订单修改成功！');
+            // 关闭弹窗
+            manageOrderModal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+          } else {
+            alert('订单修改失败：' + data.message);
+          }
+        })
+        .catch(error => {
+          console.error('修改订单失败:', error);
+          alert('修改订单失败，请稍后重试');
+        });
       });
     }
 
     // 处理删除订单
     if (deleteOrderBtn) {
       deleteOrderBtn.addEventListener('click', function() {
-        if (!currentOrderId) {
+        console.log('删除按钮被点击，当前订单ID:', currentOrderId);
+        
+        if (!currentOrderId || currentOrderId === 'null' || currentOrderId === 'undefined') {
           alert('请先选择要删除的订单');
           return;
         }
 
         // 确认删除
         if (confirm('确定要删除这个订单吗？此操作不可撤销。')) {
-          // 删除订单项
-          const currentOrder = document.querySelector(`.order-item[data-id="${currentOrderId}"]`);
-          if (currentOrder) {
-            currentOrder.remove();
-          }
+          console.log('开始删除订单，ID:', currentOrderId);
+          
+          // 调用后端API删除订单
+          // 调用物理删除API
+          fetch('/ssm_war/order/' + currentOrderId + '/delete-permanently', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/x-www-form-urlencoded',
+            }
+          })
+          .then(response => response.json())
+          .then(data => {
+            if (data.success) {
+              // 删除前端订单项
+              const currentOrder = document.querySelector(`.order-item[data-id="${currentOrderId}"]`);
+              if (currentOrder) {
+                currentOrder.remove();
+              }
 
-          // 显示成功消息
-          alert('订单删除成功！');
+              // 检查是否还有订单，如果没有显示默认提示
+              const remainingOrders = document.querySelectorAll('.order-item');
+              if (remainingOrders.length === 0) {
+                const orderList = document.querySelector('.order-features');
+                if (orderList) {
+                  orderList.innerHTML = '<li class="order-item"><div class="order-card-name">暂无订单</div><div class="order-card-intro">请创建新的订单</div></li>';
+                }
+              }
 
-          // 关闭弹窗
-          manageOrderModal.style.display = 'none';
-          document.body.style.overflow = 'auto';
+              alert('订单删除成功！');
+              // 关闭弹窗
+              manageOrderModal.style.display = 'none';
+              document.body.style.overflow = 'auto';
 
-          // 重置当前订单ID
-          currentOrderId = null;
+              // 重置当前订单ID
+              currentOrderId = null;
+            } else {
+              alert('订单删除失败：' + data.message);
+            }
+          })
+          .catch(error => {
+            console.error('删除订单失败:', error);
+            alert('删除订单失败，请稍后重试');
+          });
         }
       });
     }

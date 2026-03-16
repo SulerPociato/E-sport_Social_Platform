@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.soecode.lyf.dao.OrderDao;
 import com.soecode.lyf.entity.Order;
@@ -16,6 +17,7 @@ import com.soecode.lyf.service.OrderService;
  * 订单服务实现类
  */
 @Service
+@Transactional
 public class OrderServiceImpl implements OrderService {
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
@@ -173,6 +175,26 @@ public class OrderServiceImpl implements OrderService {
             return result > 0;
         } catch (Exception e) {
             logger.error("删除订单失败，订单ID: {}, 错误: {}", orderId, e.getMessage());
+            return false;
+        }
+    }
+
+    @Override
+    public boolean deleteOrderPermanently(long orderId) {
+        try {
+            // 添加确认逻辑，防止误删
+            Order order = orderDao.queryById(orderId);
+            if (order == null) {
+                logger.error("物理删除失败：订单不存在，订单ID: {}", orderId);
+                return false;
+            }
+            
+            logger.warn("执行物理删除操作，订单ID: {}, 订单号: {}", orderId, order.getOrderNo());
+            
+            int result = orderDao.deletePermanently(orderId);
+            return result > 0;
+        } catch (Exception e) {
+            logger.error("物理删除订单失败，订单ID: {}, 错误: {}", orderId, e.getMessage());
             return false;
         }
     }

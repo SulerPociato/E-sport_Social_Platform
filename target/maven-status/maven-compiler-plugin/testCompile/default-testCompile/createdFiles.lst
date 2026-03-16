@@ -1,0 +1,5 @@
+com\soecode\lyf\BaseTest.class
+com\soecode\lyf\web\BookControllerTest.class
+com\soecode\lyf\dao\GameDaoTest.class
+com\soecode\lyf\service\impl\GameServiceImplTest.class
+com\soecode\lyf\web\AbstractContextControllerTests.class

@@ -1,5 +1,6 @@
 package com.soecode.lyf.web;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -179,11 +180,46 @@ public class OrderController {
     }
 
     /**
-     * 删除订单
+     * 修改订单（API接口）
+     */
+    @RequestMapping(value = "/{orderId}/update", method = RequestMethod.POST)
+    @ResponseBody
+    public Result<Boolean> update(@PathVariable("orderId") Long orderId,
+                                 @RequestParam("gameName") String gameName,
+                                 @RequestParam("amount") Double amount,
+                                 @RequestParam("detail") String detail,
+                                 @RequestParam("status") Integer status) {
+        try {
+            // 获取原始订单信息
+            Order originalOrder = orderService.getOrderById(orderId);
+            if (originalOrder == null) {
+                return new Result<Boolean>(false, "订单不存在");
+            }
+            
+            // 更新订单信息
+            originalOrder.setGameName(gameName);
+            originalOrder.setAmount(BigDecimal.valueOf(amount));
+            originalOrder.setDetail(detail);
+            originalOrder.setStatus(status);
+            
+            boolean result = orderService.updateOrder(originalOrder);
+            if (result) {
+                return new Result<Boolean>(true, "订单修改成功");
+            } else {
+                return new Result<Boolean>(false, "订单修改失败");
+            }
+        } catch (Exception e) {
+            logger.error("修改订单失败，订单ID: {}, 错误: {}", orderId, e.getMessage());
+            return new Result<Boolean>(false, "修改订单失败: " + e.getMessage());
+        }
+    }
+
+    /**
+     * 删除订单（逻辑删除）
      */
     @RequestMapping(value = "/{orderId}/delete", method = RequestMethod.POST)
     @ResponseBody
-    public Result<Boolean> delete(@PathVariable("orderId") Long orderId) {
+    public Result<Boolean> delete(@PathVariable Long orderId) {
         try {
             boolean result = orderService.deleteOrder(orderId);
             if (result) {
@@ -193,7 +229,34 @@ public class OrderController {
             }
         } catch (Exception e) {
             logger.error("删除订单失败，订单ID: {}, 错误: {}", orderId, e.getMessage());
-            return new Result<Boolean>(false, "删除订单失败: " + e.getMessage());
+            return new Result<>(false, "删除订单失败: " + e.getMessage());
+        }
+    }
+
+    /**
+     * 物理删除订单（永久删除）
+     */
+    @RequestMapping(value = "/{orderId}/delete-permanently", method = RequestMethod.POST)
+    @ResponseBody
+    public Result<Boolean> deletePermanently(@PathVariable Long orderId) {
+        try {
+            // 添加额外的确认逻辑
+            Order order = orderService.getOrderById(orderId);
+            if (order == null) {
+                return new Result<Boolean>(false, "订单不存在");
+            }
+            
+            logger.warn("执行物理删除操作，订单ID: {}, 订单号: {}", orderId, order.getOrderNo());
+            
+            boolean result = orderService.deleteOrderPermanently(orderId);
+            if (result) {
+                return new Result<Boolean>(true, "订单已永久删除");
+            } else {
+                return new Result<Boolean>(false, "订单永久删除失败");
+            }
+        } catch (Exception e) {
+            logger.error("物理删除订单失败，订单ID: {}, 错误: {}", orderId, e.getMessage());
+            return new Result<>(false, "物理删除订单失败: " + e.getMessage());
         }
     }
 

@@ -166,6 +166,8 @@
         UPDATE `order`
         SET
             order_no = #{orderNo},
+            game_name = #{gameName},
+            detail = #{detail},
             customer_id = #{customerId},
             player_id = #{playerId},
             amount = #{amount},
@@ -185,12 +187,17 @@
         WHERE id = #{orderId}
     </update>
 
-    <!-- 删除订单（逻辑删除） -->
-    <update id="delete" parameterType="long">
-        UPDATE `order`
-        SET status = 5  <!-- 5表示已删除状态 -->
+    <!-- 删除订单（物理删除） -->
+    <delete id="delete" parameterType="long">
+        DELETE FROM `order`
         WHERE id = #{orderId}
-    </update>
+    </delete>
+
+    <!-- 物理删除订单（永久删除） -->
+    <delete id="deletePermanently" parameterType="long">
+        DELETE FROM `order`
+        WHERE id = #{orderId}
+    </delete>
 
     <!-- 统计订单总数 -->
     <select id="countAll" resultType="int">

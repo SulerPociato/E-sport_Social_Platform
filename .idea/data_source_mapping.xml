@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<project version="4">
-  <component name="DataSourcePerFileMappings">
-    <file url="file://$PROJECT_DIR$/src/main/sql/account.sql" value="78031186-33e2-4a1d-ae9c-13a01d312d4f" />
-    <file url="file://$PROJECT_DIR$/src/main/sql/e_sport_platform.sql" value="78031186-33e2-4a1d-ae9c-13a01d312d4f" />
-  </component>
-</project>
