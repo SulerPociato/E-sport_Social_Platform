@@ -6,6 +6,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 </head>
 <body>
 <!-- 顶部区域 -->
@@ -116,7 +117,7 @@
     <div class="admin-card">
       <h1>8889游戏平台</h1>
       <div class="admin-card-2">
-        <div class="login-left">
+          <div class="login-left" id="loginLeftOriginal">
           <div class="form-group">
             <div>
               <label for="account" class="form-label-1">账号</label>
@@ -144,7 +145,7 @@
             <label for="remember" class="remember-label">记住我</label>
           </div>
           <div class="login-btn-con">
-            <button class="login-btn">登录</button>
+              <button class="login-btn" onclick="login()">登录</button>
           </div>
           <div class="register">
             <a href="javascript:void(0);" id="registerBtn" class="register-link">还没有账户？点击创建</a>
@@ -170,8 +171,23 @@
             </a>
           </div>
         </div>
+          <!-- 用户信息区域（初始隐藏） -->
+          <div id="userInfoDiv" class="user-info-left" style="display: none;">
+              <h3>欢迎, <span id="displayNickname"></span></h3>
+              <img id="displayAvatar" src="" alt="头像" style="width:80px;height:80px; border-radius:50%; margin:10px 0;"/><br/>
+              <p>邮箱: <span id="displayEmail"></span></p>
+              <p>手机: <span id="displayPhone"></span></p>
+              <p>个人描述: <span id="displayDescription"></span></p>
+              <button onclick="logout()">退出登录</button>
+          </div>
       </div>
     </div>
+
+
+
+
+
+
     <!-- 订单卡片 -->
     <div class="order-card">
       <h1>订单管理</h1>
@@ -556,55 +572,50 @@
       </div>
     </div>
   </div>
-  <!-- 钱包充值弹窗 -->
-  <div id="walletModal" class="modal">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h2>我的钱包</h2>
-        <span class="close-modal">&times;</span>
-      </div>
-      <div class="modal-body">
-        <!-- 余额显示 -->
-        <div class="wallet-balance">
-          <div class="balance-label">我的余额</div>
-          <div class="balance-amount">¥ 0.00</div>
+    <!-- 钱包充值弹窗 -->
+    <div id="walletModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>我的钱包</h2>
+                <span class="close-modal">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="wallet-balance">
+                    <div class="balance-label">我的余额</div>
+                    <div class="balance-amount">¥ 0.00</div>
+                </div>
+                <form id="walletForm">
+                    <!-- 充值金额选择 -->
+                    <div class="form-group-club">
+                        <label for="rechargeAmount">充值金额</label>
+                        <div class="amount-options">
+                            <button type="button" class="amount-option" data-amount="6">6元</button>
+                            <button type="button" class="amount-option" data-amount="30">30元</button>
+                            <button type="button" class="amount-option" data-amount="98">98元</button>
+                            <button type="button" class="amount-option" data-amount="198">198元</button>
+                            <button type="button" class="amount-option" data-amount="328">328元</button>
+                            <button type="button" class="amount-option" data-amount="648">648元</button>
+                        </div>
+                        <div class="custom-amount">
+                            <input type="number" id="customAmount" name="customAmount" placeholder="自定义金额" min="1" step="0.01">
+                        </div>
+                    </div>
+                    <!-- 支付方式选择（可暂时保留或简化） -->
+                    <div class="form-group-club">
+                        <label for="paymentMethod">支付方式</label>
+                        <select id="paymentMethod" name="paymentMethod" class="form-input" required>
+                            <option value="">请选择支付方式</option>
+                            <option value="wechat">微信支付</option>
+                            <option value="alipay">支付宝支付</option>
+                        </select>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary">确认充值</button>
+                    </div>
+                </form>
+            </div>
         </div>
-
-        <form id="walletForm">
-          <!-- 充值金额选择 -->
-          <div class="form-group-club">
-            <label for="rechargeAmount">充值金额</label>
-            <div class="amount-options">
-              <button type="button" class="amount-option" data-amount="6">6元</button>
-              <button type="button" class="amount-option" data-amount="30">30元</button>
-              <button type="button" class="amount-option" data-amount="98">98元</button>
-              <button type="button" class="amount-option" data-amount="198">198元</button>
-              <button type="button" class="amount-option" data-amount="328">328元</button>
-              <button type="button" class="amount-option" data-amount="648">648元</button>
-            </div>
-            <div class="custom-amount">
-              <input type="number" id="customAmount" name="customAmount" placeholder="自定义金额" min="1" step="0.01">
-            </div>
-          </div>
-
-          <!-- 支付方式选择 -->
-          <div class="form-group-club">
-            <label for="paymentMethod">支付方式</label>
-            <select id="paymentMethod" name="paymentMethod" class="form-input" required>
-              <option value="">请选择支付方式</option>
-              <option value="wechat">微信支付</option>
-              <option value="alipay">支付宝支付</option>
-            </select>
-          </div>
-
-          <!-- 确认充值按钮 -->
-          <div class="form-actions">
-            <button type="submit" class="btn btn-primary">确认充值</button>
-          </div>
-        </form>
-      </div>
     </div>
-  </div>
   <!-- 修改密码弹窗 -->
   <div id="securityCenterModal" class="modal">
     <div class="modal-content">
@@ -617,6 +628,10 @@
           <h3 class="security-title">设置密码</h3>
           <p class="security-subtitle">请设置强度较高的密码</p>
         </div>
+
+          <div class="form-group-club security-form-group">
+              <input type="password" id="oldPassword" placeholder="请输入旧密码" class="text-align-left">
+          </div>
 
         <div class="form-group-club security-form-group">
           <input type="password" id="newPassword" placeholder="请输入密码" class="text-align-left">
@@ -643,47 +658,41 @@
       </div>
     </div>
   </div>
-  <!-- 用户注册弹窗 -->
-  <div id="registerModal" class="modal">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h2>用户注册</h2>
-        <span class="close-modal">&times;</span>
-      </div>
-      <div class="modal-body">
-        <form id="registerForm">
-          <!-- 账号 -->
-          <div class="form-group-club">
-            <label for="registerAccount">账号</label>
-            <input type="text" id="registerAccount" name="registerAccount" placeholder="请输入账号" required>
-          </div>
+    <!-- 用户注册弹窗 -->
+    <div id="registerModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>用户注册</h2>
+                <span class="close-modal">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="registerForm">
+                    <!-- 账号 -->
+                    <div class="form-group-club">
+                        <label for="registerAccount">账号</label>
+                        <input type="text" id="registerAccount" name="username" placeholder="请输入账号" required>
+                    </div>
 
-          <!-- 密码 -->
-          <div class="form-group-club">
-            <label for="registerPassword">密码</label>
-            <input type="password" id="registerPassword" name="registerPassword" placeholder="请输入密码" required>
-          </div>
+                    <!-- 密码 -->
+                    <div class="form-group-club">
+                        <label for="registerPassword">密码</label>
+                        <input type="password" id="registerPassword" name="password" placeholder="请输入密码" required>
+                    </div>
 
-          <!-- 姓名 -->
-          <div class="form-group-club">
-            <label for="registerName">姓名</label>
-            <input type="text" id="registerName" name="registerName" placeholder="请输入真实姓名" required>
-          </div>
+                    <!-- 昵称 -->
+                    <div class="form-group-club">
+                        <label for="registerNickname">昵称</label>
+                        <input type="text" id="registerNickname" name="nickname" placeholder="请输入昵称" required>
+                    </div>
 
-          <!-- 身份证号 -->
-          <div class="form-group-club">
-            <label for="registerIdCard">身份证号</label>
-            <input type="text" id="registerIdCard" name="registerIdCard" placeholder="请输入身份证号码" required maxlength="18">
-          </div>
-
-          <!-- 创建按钮 -->
-          <div class="form-actions">
-            <button type="submit" class="btn btn-primary">创建账户</button>
-          </div>
-        </form>
-      </div>
+                    <!-- 创建按钮 -->
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary">创建账户</button>
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
-  </div>
   <!-- 俱乐部管理弹窗 -->
   <div id="clubManagementModal" class="modal">
     <div class="modal-content">
@@ -885,6 +894,142 @@
 
 
 <script>
+    // 检查登录状态，若已登录返回用户信息，否则提示并返回 null
+    function requireLogin() {
+        return fetch('/ssm_war/user/current')
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    return data.data;
+                } else {
+                    alert('请先登录。');
+                    return null;
+                }
+            })
+            .catch(() => {
+                alert('请先登录。');
+                return null;
+            });
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        // 个人中心按钮
+        const personalBtn = document.getElementById('personalCenterBtn');
+        if (personalBtn) {
+            personalBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                requireLogin().then(user => {
+                    if (user) {
+                        const modal = document.getElementById('personalCenterModal');
+                        if (modal) {
+                            // 填充用户信息（根据弹窗实际 input id 调整）
+                            const nameInput = document.getElementById('personalName');
+                            const introInput = document.getElementById('personalIntro');
+                            if (nameInput) nameInput.value = user.nickname || '';
+                            if (introInput) introInput.value = user.description || '';
+                            modal.style.display = 'flex';
+                            document.body.style.overflow = 'hidden';
+                        }
+                    }
+                });
+            });
+        }
+
+        // 修改密码按钮
+        const securityBtn = document.getElementById('securityCenterBtn');
+        if (securityBtn) {
+            securityBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                requireLogin().then(user => {
+                    if (user) {
+                        const modal = document.getElementById('securityCenterModal');
+                        if (modal) {
+                            // 清空密码输入框
+                            const newPwd = document.getElementById('newPassword');
+                            const confirmPwd = document.getElementById('confirmPassword');
+                            if (newPwd) newPwd.value = '';
+                            if (confirmPwd) confirmPwd.value = '';
+                            // 如果有重置密码指示器的函数，可调用
+                            if (typeof window.resetSecurityForm === 'function') {
+                                window.resetSecurityForm();
+                            }
+                            modal.style.display = 'flex';
+                            document.body.style.overflow = 'hidden';
+                        }
+                    }
+                });
+            });
+        }
+
+// 我的钱包按钮
+        const walletBtn = document.getElementById('walletBtn');
+        if (walletBtn) {
+            walletBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                requireLogin().then(user => {
+                    if (user) {
+                        const modal = document.getElementById('walletModal');
+                        if (modal) {
+                            // 加载真实余额
+                            fetch('/ssm_war/account/balance')
+                                .then(response => response.json())
+                                .then(data => {
+                                    if (data.success) {
+                                        const balanceSpan = document.querySelector('.balance-amount');
+                                        if (balanceSpan) {
+                                            balanceSpan.textContent = '¥ ' + data.data.toFixed(2);
+                                        }
+                                    } else {
+                                        alert('获取余额失败');
+                                    }
+                                })
+                                .catch(error => console.error('获取余额错误:', error));
+
+                            modal.style.display = 'flex';
+                            document.body.style.overflow = 'hidden';
+                        }
+                    }
+                });
+            });
+        }
+
+        // 我的俱乐部按钮
+        const clubBtn = document.getElementById('clubManagementBtn');
+        if (clubBtn) {
+            clubBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                requireLogin().then(user => {
+                    if (user) {
+                        const modal = document.getElementById('clubManagementModal');
+                        if (modal) {
+                            modal.style.display = 'flex';
+                            document.body.style.overflow = 'hidden';
+                        }
+                    }
+                });
+            });
+        }
+
+        // 统一处理所有弹窗的关闭按钮（如果原来没有，可以加上）
+        document.querySelectorAll('.close-modal').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const modal = this.closest('.modal');
+                if (modal) {
+                    modal.style.display = 'none';
+                    document.body.style.overflow = 'auto';
+                }
+            });
+        });
+
+        // 点击弹窗外部关闭（可选）
+        window.addEventListener('click', function(event) {
+            if (event.target.classList.contains('modal')) {
+                event.target.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }
+        });
+    });
+
   // 俱乐部详情弹窗功能
   document.addEventListener('DOMContentLoaded', function() {
     // 获取弹窗元素
@@ -2374,40 +2519,50 @@
       });
     }
 
-    // 处理头像上传
-    function handlePersonalAvatarUpload(file) {
-      if (!file) return;
+// 处理头像上传
+      function handlePersonalAvatarUpload(file) {
+          if (!file) return;
 
-      // 验证文件类型
-      const validTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
-      if (!validTypes.includes(file.type)) {
-        showPersonalAvatarError('请选择有效的图片格式（JPG、PNG、GIF、WEBP）');
-        return;
+          const validTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+          if (!validTypes.includes(file.type)) {
+              showPersonalAvatarError('请选择有效的图片格式（JPG、PNG、GIF、WEBP）');
+              return;
+          }
+          if (file.size > 2 * 1024 * 1024) {
+              showPersonalAvatarError('图片大小不能超过 2MB');
+              return;
+          }
+
+          hidePersonalAvatarError();
+
+          const formData = new FormData();
+          formData.append('avatar', file);
+
+          // 临时隐藏预览，显示加载状态（可选）
+          defaultPersonalAvatar.style.display = 'none';
+          personalAvatarDisplay.style.display = 'none';
+
+          fetch('/ssm_war/user/uploadAvatar', {
+              method: 'POST',
+              body: formData
+          })
+              .then(response => response.json())
+              .then(data => {
+                  if (data.success) {
+                      personalAvatarDisplay.src = data.data;
+                      personalAvatarDisplay.style.display = 'block';
+                      removePersonalAvatarBtn.style.display = 'block';
+                  } else {
+                      showPersonalAvatarError(data.error || '上传失败');
+                      resetPersonalAvatar();
+                  }
+              })
+              .catch(error => {
+                  console.error('上传头像错误:', error);
+                  showPersonalAvatarError('网络错误，请稍后重试');
+                  resetPersonalAvatar();
+              });
       }
-
-      // 验证文件大小（2MB）
-      if (file.size > 2 * 1024 * 1024) {
-        showPersonalAvatarError('图片大小不能超过 2MB');
-        return;
-      }
-
-      // 清空错误信息
-      hidePersonalAvatarError();
-
-      // 创建文件阅读器来预览图片
-      const reader = new FileReader();
-      reader.onload = function(e) {
-        // 显示预览图片
-        personalAvatarDisplay.src = e.target.result;
-        personalAvatarDisplay.style.display = 'block';
-        defaultPersonalAvatar.style.display = 'none';
-        removePersonalAvatarBtn.style.display = 'block';
-
-        // 存储文件
-        selectedPersonalAvatarFile = file;
-      };
-      reader.readAsDataURL(file);
-    }
 
     // 重置头像
     function resetPersonalAvatar() {
@@ -2416,7 +2571,7 @@
       defaultPersonalAvatar.style.display = 'flex';
       removePersonalAvatarBtn.style.display = 'none';
       personalAvatarInput.value = '';
-      selectedPersonalAvatarFile = null;
+      //selectedPersonalAvatarFile = null;
       hidePersonalAvatarError();
     }
 
@@ -2431,309 +2586,417 @@
       personalAvatarError.style.display = 'none';
     }
 
-    // 加载用户数据（模拟）
-    function loadUserData() {
-      // 这里可以模拟从服务器加载用户数据
-      document.getElementById('personalName').value = '张三';
-      document.getElementById('personalIntro').value = '热爱游戏的玩家，擅长各种竞技类游戏，有丰富的游戏经验。';
-      personalCharCount.textContent = document.getElementById('personalIntro').value.length;
-
-      // 如果有头像，可以在这里设置
-      // personalAvatarDisplay.src = '/images/user_avatar.png';
-      // personalAvatarDisplay.style.display = 'block';
-      // defaultPersonalAvatar.style.display = 'none';
-    }
+// 加载用户数据（从服务器获取）
+      function loadUserData() {
+          fetch('/ssm_war/user/current')
+              .then(response => response.json())
+              .then(data => {
+                  if (data.success) {
+                      const user = data.data;
+                      document.getElementById('personalName').value = user.nickname || '';
+                      document.getElementById('personalIntro').value = user.description || '';
+                      personalCharCount.textContent = user.description ? user.description.length : 0;
+                      if (user.avatar) {
+                          personalAvatarDisplay.src = user.avatar;
+                          personalAvatarDisplay.style.display = 'block';
+                          defaultPersonalAvatar.style.display = 'none';
+                          removePersonalAvatarBtn.style.display = 'block';
+                      } else {
+                          resetPersonalAvatar();
+                      }
+                  } else {
+                      alert('获取用户信息失败');
+                  }
+              })
+              .catch(error => {
+                  console.error('加载用户数据错误:', error);
+                  alert('网络错误，请稍后重试');
+              });
+      }
 
     // 处理个人中心表单提交
-    if (personalCenterForm) {
-      personalCenterForm.addEventListener('submit', function(event) {
-        // 阻止表单默认提交行为
-        event.preventDefault();
+      if (personalCenterForm) {
+          personalCenterForm.addEventListener('submit', function(event) {
+              event.preventDefault();
 
-        // 获取表单数据
-        const personalName = document.getElementById('personalName').value.trim();
-        const personalIntro = document.getElementById('personalIntro').value.trim();
+              const nickname = document.getElementById('personalName').value.trim();
+              const description = document.getElementById('personalIntro').value.trim();
 
-        // 表单验证
-        if (!personalName) {
-          alert('请输入您的姓名');
-          return;
-        }
+              if (!nickname) {
+                  alert('请输入昵称');
+                  return;
+              }
 
-        if (!personalIntro) {
-          alert('请输入个人简介');
-          return;
-        }
+              // 构建请求数据（头像暂时不处理，只更新文本）
+              const formData = new URLSearchParams();
+              formData.append('nickname', nickname);
+              formData.append('description', description);
 
-        // 显示成功消息
-        alert('个人信息修改完成！');
+              // 显示加载状态
+              const submitBtn = this.querySelector('.btn-primary');
+              const originalText = submitBtn.textContent;
+              submitBtn.textContent = '保存中...';
+              submitBtn.disabled = true;
 
-        // 关闭弹窗
-        personalCenterModal.style.display = 'none';
-        document.body.style.overflow = 'auto';
-      });
-    }
+              fetch('/ssm_war/user/updateProfile', {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                  body: formData
+              })
+                  .then(response => response.json())
+                  .then(data => {
+                      submitBtn.textContent = originalText;
+                      submitBtn.disabled = false;
+                      if (data.success) {
+                          alert('修改成功');
+                          personalCenterModal.style.display = 'none';
+                          document.body.style.overflow = 'auto';
+                          // 刷新左侧用户信息（简单处理：刷新整个页面）
+                          location.reload();
+                      } else {
+                          alert(data.error || '修改失败');
+                      }
+                  })
+                  .catch(error => {
+                      submitBtn.textContent = originalText;
+                      submitBtn.disabled = false;
+                      alert('网络错误，请稍后重试');
+                      console.error('更新个人信息错误:', error);
+                  });
+          });
+      }
   });
 
-  // 钱包充值弹窗功能
-  document.addEventListener('DOMContentLoaded', function() {
-    // 获取DOM元素
-    const walletBtn = document.getElementById('walletBtn');
-    const walletModal = document.getElementById('walletModal');
-    const closeWalletModalBtn = document.querySelector('#walletModal .close-modal');
-    const walletForm = document.getElementById('walletForm');
-    const amountOptions = document.querySelectorAll('.amount-option');
-    const customAmountInput = document.getElementById('customAmount');
-    const balanceAmount = document.querySelector('.balance-amount');
+    // 钱包充值弹窗功能
+    document.addEventListener('DOMContentLoaded', function() {
+        // 获取DOM元素
+        const walletBtn = document.getElementById('walletBtn');
+        const walletModal = document.getElementById('walletModal');
+        const closeWalletModalBtn = document.querySelector('#walletModal .close-modal');
+        const walletForm = document.getElementById('walletForm');
+        const amountOptions = document.querySelectorAll('.amount-option');
+        const customAmountInput = document.getElementById('customAmount');
+        const balanceAmount = document.querySelector('.balance-amount');
 
-    // 当前选择的金额
-    let selectedAmount = 0;
+        // 当前选择的金额
+        let selectedAmount = 0;
+        // 当前支付订单号
+        let currentOrderNo = null;
 
-    // 打开钱包弹窗
-    if (walletBtn) {
-      walletBtn.addEventListener('click', function() {
-        console.log('钱包按钮被点击');
-        walletModal.style.display = 'flex';
-        document.body.style.overflow = 'hidden';
+        // 打开钱包弹窗
+        if (walletBtn) {
+            walletBtn.addEventListener('click', function() {
+                console.log('钱包按钮被点击');
+                walletModal.style.display = 'flex';
+                document.body.style.overflow = 'hidden';
 
-        // 重置选择状态
-        resetAmountSelection();
+                // 重置选择状态
+                resetAmountSelection();
+                // 加载余额数据
+                loadBalanceData();
+            });
+        }
 
-        // 加载余额数据（这里可以模拟从服务器加载）
-        loadBalanceData();
-      });
-    }
+        // 关闭钱包弹窗
+        if (closeWalletModalBtn) {
+            closeWalletModalBtn.addEventListener('click', function() {
+                walletModal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            });
+        }
 
-    // 关闭钱包弹窗
-    if (closeWalletModalBtn) {
-      closeWalletModalBtn.addEventListener('click', function() {
-        walletModal.style.display = 'none';
-        document.body.style.overflow = 'auto';
-      });
-    }
+        // 阻止点击弹窗外部关闭
+        window.addEventListener('click', function(event) {
+            if (event.target === walletModal) {
+                // 点击遮罩层不关闭
+            }
+        });
 
-    // 阻止点击弹窗外部关闭
-    window.addEventListener('click', function(event) {
-      if (event.target === walletModal) {
-        // 点击遮罩层不关闭，只能通过×关闭
-        // 这里不执行任何操作
-      }
+        // 金额选项点击事件
+        amountOptions.forEach(option => {
+            option.addEventListener('click', function() {
+                amountOptions.forEach(opt => opt.classList.remove('active'));
+                this.classList.add('active');
+                selectedAmount = parseFloat(this.getAttribute('data-amount'));
+                customAmountInput.value = '';
+                console.log('选择金额:', selectedAmount);
+            });
+        });
+
+        // 自定义金额输入事件
+        if (customAmountInput) {
+            customAmountInput.addEventListener('input', function() {
+                const value = parseFloat(this.value);
+                if (!isNaN(value) && value > 0) {
+                    selectedAmount = value;
+                    amountOptions.forEach(opt => opt.classList.remove('active'));
+                    console.log('自定义金额:', selectedAmount);
+                } else if (this.value === '') {
+                    selectedAmount = 0;
+                }
+            });
+        }
+
+        // 重置金额选择状态
+        function resetAmountSelection() {
+            amountOptions.forEach(opt => opt.classList.remove('active'));
+            customAmountInput.value = '';
+            selectedAmount = 0;
+        }
+
+        // 加载余额数据（从后端获取）
+        function loadBalanceData() {
+            fetch('/ssm_war/account/balance')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        if (balanceAmount) {
+                            balanceAmount.textContent = '¥ ' + data.data.toFixed(2);
+                        }
+                    } else {
+                        console.error('获取余额失败:', data.error);
+                        if (balanceAmount) {
+                            balanceAmount.textContent = '¥ 0.00';
+                        }
+                    }
+                })
+                .catch(error => {
+                    console.error('获取余额错误:', error);
+                    if (balanceAmount) {
+                        balanceAmount.textContent = '¥ 0.00';
+                    }
+                });
+        }
+
+        // 处理钱包表单提交（替换原来的提交事件）
+        if (walletForm) {
+            walletForm.addEventListener('submit', function(event) {
+                event.preventDefault();
+
+                const paymentMethod = document.getElementById('paymentMethod').value;
+                if (!paymentMethod) {
+                    alert('请选择支付方式');
+                    return;
+                }
+                if (selectedAmount <= 0) {
+                    alert('请选择或输入充值金额');
+                    return;
+                }
+
+                // 显示加载状态
+                const submitBtn = this.querySelector('.btn-primary');
+                const originalText = submitBtn.textContent;
+                submitBtn.textContent = '创建订单中...';
+                submitBtn.disabled = true;
+
+                // 调用创建支付订单接口
+                const formData = new URLSearchParams();
+                formData.append('amount', selectedAmount);
+                formData.append('method', paymentMethod);
+
+                fetch('/ssm_war/account/createPayment', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: formData
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        submitBtn.textContent = originalText;
+                        submitBtn.disabled = false;
+
+                        if (data.success) {
+                            const orderNo = data.data.orderNo;
+                            const payUrl = data.data.payUrl;
+                            currentOrderNo = orderNo;
+
+                            // 显示二维码弹窗
+                            showQrCodeModal(payUrl, orderNo);
+                        } else {
+                            alert(data.error || '创建订单失败');
+                        }
+                    })
+                    .catch(error => {
+                        submitBtn.textContent = originalText;
+                        submitBtn.disabled = false;
+                        alert('网络错误，请稍后重试');
+                        console.error('创建订单错误:', error);
+                    });
+            });
+        }
+
+        // 显示二维码弹窗的函数
+        function showQrCodeModal(payUrl, orderNo) {
+            let qrModal = document.getElementById('qrCodeModal');
+            if (!qrModal) {
+                qrModal = document.createElement('div');
+                qrModal.id = 'qrCodeModal';
+                qrModal.className = 'modal';
+                qrModal.innerHTML = `
+                <div class="modal-content" style="width:300px;">
+                    <div class="modal-header">
+                        <h2>扫码支付</h2>
+                        <span class="close-modal" onclick="document.getElementById('qrCodeModal').style.display='none'">&times;</span>
+                    </div>
+                    <div class="modal-body" style="text-align:center;">
+                        <div id="qrcode"></div>
+                        <p>请使用微信/支付宝扫码</p>
+                        <button id="payCompleteBtn" class="btn btn-primary" style="margin-top:15px;">支付完成</button>
+                    </div>
+                </div>
+            `;
+                document.body.appendChild(qrModal);
+            }
+
+            // 清空并重新生成二维码
+            const qrDiv = document.getElementById('qrcode');
+            qrDiv.innerHTML = '';
+            new QRCode(qrDiv, {
+                text: payUrl,
+                width: 200,
+                height: 200
+            });
+
+            // 绑定支付完成按钮
+            const payCompleteBtn = document.getElementById('payCompleteBtn');
+            // 移除之前的监听，避免重复绑定
+            payCompleteBtn.replaceWith(payCompleteBtn.cloneNode(true));
+            const newBtn = document.getElementById('payCompleteBtn');
+            newBtn.addEventListener('click', function() {
+                fetch('/ssm_war/account/paymentCallback', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: new URLSearchParams({ orderNo: orderNo })
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            alert('支付成功！');
+                            qrModal.style.display = 'none';
+                            walletModal.style.display = 'none';
+                            document.body.style.overflow = 'auto';
+                            walletForm.reset();
+                            resetAmountSelection();
+                            loadBalanceData(); // 刷新余额
+                        } else {
+                            alert(data.error || '支付失败');
+                        }
+                    })
+                    .catch(error => {
+                        alert('网络错误，请稍后重试');
+                        console.error('支付回调错误:', error);
+                    });
+            });
+
+            qrModal.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
     });
-
-    // 金额选项点击事件
-    amountOptions.forEach(option => {
-      option.addEventListener('click', function() {
-        // 移除所有选项的active类
-        amountOptions.forEach(opt => opt.classList.remove('active'));
-
-        // 为当前选项添加active类
-        this.classList.add('active');
-
-        // 获取选择的金额
-        selectedAmount = parseFloat(this.getAttribute('data-amount'));
-
-        // 清空自定义金额输入框
-        customAmountInput.value = '';
-
-        console.log('选择金额:', selectedAmount);
-      });
-    });
-
-    // 自定义金额输入事件
-    if (customAmountInput) {
-      customAmountInput.addEventListener('input', function() {
-        const value = parseFloat(this.value);
-
-        if (!isNaN(value) && value > 0) {
-          selectedAmount = value;
-
-          // 移除所有预设金额的active类
-          amountOptions.forEach(opt => opt.classList.remove('active'));
-
-          console.log('自定义金额:', selectedAmount);
-        } else if (this.value === '') {
-          selectedAmount = 0;
-        }
-      });
-    }
-
-    // 重置金额选择状态
-    function resetAmountSelection() {
-      amountOptions.forEach(opt => opt.classList.remove('active'));
-      customAmountInput.value = '';
-      selectedAmount = 0;
-    }
-
-    // 加载余额数据（模拟）
-    function loadBalanceData() {
-      // 这里可以模拟从服务器获取余额数据
-      const mockBalance = 1234.56; // 模拟余额
-      if (balanceAmount) {
-        balanceAmount.textContent = '¥ ' + mockBalance.toFixed(2);
-      }
-    }
-
-    // 处理钱包表单提交
-    if (walletForm) {
-      walletForm.addEventListener('submit', function(event) {
-        // 阻止表单默认提交行为
-        event.preventDefault();
-
-        // 获取表单数据
-        const paymentMethod = document.getElementById('paymentMethod').value;
-
-        // 表单验证
-        if (selectedAmount <= 0) {
-          alert('请选择或输入充值金额');
-          return;
-        }
-
-        if (!paymentMethod) {
-          alert('请选择支付方式');
-          return;
-        }
-
-        // 显示加载状态
-        const submitBtn = this.querySelector('.btn-primary');
-        const originalText = submitBtn.textContent;
-        submitBtn.textContent = '充值中...';
-        submitBtn.disabled = true;
-
-        // 模拟充值请求
-        setTimeout(() => {
-          // 恢复按钮状态
-          submitBtn.textContent = originalText;
-          submitBtn.disabled = false;
-
-          // 显示充值成功消息
-          alert('充值成功！\n充值金额：¥ ' + selectedAmount.toFixed(2) + '\n支付方式：' +
-                  (paymentMethod === 'wechat' ? '微信支付' : '支付宝支付'));
-
-          // 关闭弹窗
-          walletModal.style.display = 'none';
-          document.body.style.overflow = 'auto';
-
-          // 重置表单
-          walletForm.reset();
-          resetAmountSelection();
-
-          // 更新余额显示（模拟）
-          const currentBalance = parseFloat(balanceAmount.textContent.replace('¥ ', ''));
-          const newBalance = currentBalance + selectedAmount;
-          balanceAmount.textContent = '¥ ' + newBalance.toFixed(2);
-
-        }, 1500);
-      });
-    }
-  });
 
   // 用户注册弹窗功能
   document.addEventListener('DOMContentLoaded', function() {
-    // 获取DOM元素
-    const registerBtn = document.getElementById('registerBtn');
-    const registerModal = document.getElementById('registerModal');
-    const closeRegisterModalBtn = document.querySelector('#registerModal .close-modal');
-    const registerForm = document.getElementById('registerForm');
+      // 获取DOM元素
+      const registerBtn = document.getElementById('registerBtn');
+      const registerModal = document.getElementById('registerModal');
+      const closeRegisterModalBtn = document.querySelector('#registerModal .close-modal');
+      const registerForm = document.getElementById('registerForm');
 
-    // 打开注册弹窗
-    if (registerBtn) {
-      registerBtn.addEventListener('click', function() {
-        console.log('注册按钮被点击');
-        registerModal.style.display = 'flex';
-        document.body.style.overflow = 'hidden';
-
-        // 重置表单
-        registerForm.reset();
-      });
-    }
-
-    // 关闭注册弹窗
-    if (closeRegisterModalBtn) {
-      closeRegisterModalBtn.addEventListener('click', function() {
-        registerModal.style.display = 'none';
-        document.body.style.overflow = 'auto';
-      });
-    }
-
-    // 阻止点击弹窗外部关闭
-    window.addEventListener('click', function(event) {
-      if (event.target === registerModal) {
-        // 点击遮罩层不关闭，只能通过×关闭
-        // 这里不执行任何操作
+      // 打开注册弹窗
+      if (registerBtn) {
+          registerBtn.addEventListener('click', function() {
+              console.log('注册按钮被点击');
+              registerModal.style.display = 'flex';
+              document.body.style.overflow = 'hidden';
+              // 重置表单
+              registerForm.reset();
+          });
       }
-    });
 
-    // 处理注册表单提交
-    if (registerForm) {
-      registerForm.addEventListener('submit', function(event) {
-        // 阻止表单默认提交行为
-        event.preventDefault();
+      // 关闭注册弹窗
+      if (closeRegisterModalBtn) {
+          closeRegisterModalBtn.addEventListener('click', function() {
+              registerModal.style.display = 'none';
+              document.body.style.overflow = 'auto';
+          });
+      }
 
-        // 获取表单数据
-        const account = document.getElementById('registerAccount').value.trim();
-        const password = document.getElementById('registerPassword').value.trim();
-        const name = document.getElementById('registerName').value.trim();
-        const idCard = document.getElementById('registerIdCard').value.trim();
-
-        // 表单验证
-        if (!account) {
-          alert('请输入账号');
-          document.getElementById('registerAccount').focus();
-          return;
-        }
-
-        if (!password) {
-          alert('请输入密码');
-          document.getElementById('registerPassword').focus();
-          return;
-        }
-
-        if (!name) {
-          alert('请输入姓名');
-          document.getElementById('registerName').focus();
-          return;
-        }
-
-        if (!idCard) {
-          alert('请输入身份证号');
-          document.getElementById('registerIdCard').focus();
-          return;
-        }
-
-        // 身份证号格式验证
-        const idCardRegex = /^[1-9]\d{5}(18|19|20)\d{2}((0[1-9])|(1[0-2]))(([0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]$/;
-        if (!idCardRegex.test(idCard)) {
-          alert('请输入正确的身份证号码');
-          document.getElementById('registerIdCard').focus();
-          return;
-        }
-
-        // 显示加载状态
-        const submitBtn = this.querySelector('.btn-primary');
-        const originalText = submitBtn.textContent;
-        submitBtn.textContent = '注册中...';
-        submitBtn.disabled = true;
-
-        // 模拟网络请求延迟
-        setTimeout(() => {
-          // 恢复按钮状态
-          submitBtn.textContent = originalText;
-          submitBtn.disabled = false;
-
-          // 模拟成功响应
-          alert('注册成功！欢迎加入8889游戏平台');
-
-          // 关闭弹窗
-          registerModal.style.display = 'none';
-          document.body.style.overflow = 'auto';
-
-          // 重置表单
-          registerForm.reset();
-        }, 1500);
+      // 阻止点击弹窗外部关闭
+      window.addEventListener('click', function(event) {
+          if (event.target === registerModal) {
+              // 点击遮罩层不关闭，只能通过×关闭
+          }
       });
-    }
-  });
 
+      // 处理注册表单提交
+      if (registerForm) {
+          registerForm.addEventListener('submit', function(event) {
+              event.preventDefault();
+
+              // 获取表单数据
+              const username = document.getElementById('registerAccount').value.trim();
+              const password = document.getElementById('registerPassword').value.trim();
+              const nickname = document.getElementById('registerNickname').value.trim();
+
+              // 表单验证
+              if (!username) {
+                  alert('请输入账号');
+                  document.getElementById('registerAccount').focus();
+                  return;
+              }
+              if (!password) {
+                  alert('请输入密码');
+                  document.getElementById('registerPassword').focus();
+                  return;
+              }
+              if (!nickname) {
+                  alert('请输入昵称');
+                  document.getElementById('registerNickname').focus();
+                  return;
+              }
+
+              // 显示加载状态
+              const submitBtn = this.querySelector('.btn-primary');
+              const originalText = submitBtn.textContent;
+              submitBtn.textContent = '注册中...';
+              submitBtn.disabled = true;
+
+              // 构建表单数据
+              const formData = new URLSearchParams();
+              formData.append('username', username);
+              formData.append('password', password);
+              formData.append('nickname', nickname);
+
+              // 发送请求
+              fetch('/ssm_war/user/register', {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                  body: formData
+              })
+                  .then(response => response.json())
+                  .then(data => {
+                      // 恢复按钮状态
+                      submitBtn.textContent = originalText;
+                      submitBtn.disabled = false;
+
+                      if (data.success) {
+                          alert('注册成功，请登录');
+                          registerModal.style.display = 'none';
+                          document.body.style.overflow = 'auto';
+                          registerForm.reset();
+                          // 切换回登录界面
+                          //showLogin();
+                      } else {
+                          alert(data.error || '注册失败，请稍后重试');
+                      }
+                  })
+                  .catch(error => {
+                      submitBtn.textContent = originalText;
+                      submitBtn.disabled = false;
+                      alert('网络错误，请稍后重试');
+                      console.error('注册错误:', error);
+                  });
+          });
+      }
+  });
   // 修改密码弹窗功能
   document.addEventListener('DOMContentLoaded', function() {
     // 获取DOM元素
@@ -2797,19 +3060,22 @@
     }
 
     // 重置安全表单
-    function resetSecurityForm() {
-      if (newPasswordInput) newPasswordInput.value = '';
-      if (confirmPasswordInput) confirmPasswordInput.value = '';
-      if (lengthIndicator) {
-        lengthIndicator.style.backgroundColor = 'transparent';
-        lengthIndicator.style.borderColor = '#ccc';
+      function resetSecurityForm() {
+          if (newPasswordInput) newPasswordInput.value = '';
+          if (confirmPasswordInput) confirmPasswordInput.value = '';
+          // 清空旧密码输入框
+          const oldPwd = document.getElementById('oldPassword');
+          if (oldPwd) oldPwd.value = '';
+          if (lengthIndicator) {
+              lengthIndicator.style.backgroundColor = 'transparent';
+              lengthIndicator.style.borderColor = '#ccc';
+          }
+          if (matchIndicator) {
+              matchIndicator.style.backgroundColor = 'transparent';
+              matchIndicator.style.borderColor = '#ccc';
+          }
+          if (confirmPasswordBtn) confirmPasswordBtn.disabled = true;
       }
-      if (matchIndicator) {
-        matchIndicator.style.backgroundColor = 'transparent';
-        matchIndicator.style.borderColor = '#ccc';
-      }
-      if (confirmPasswordBtn) confirmPasswordBtn.disabled = true;
-    }
 
     // 监听密码输入事件
     if (newPasswordInput && confirmPasswordInput) {
@@ -2817,34 +3083,65 @@
       confirmPasswordInput.addEventListener('input', validatePassword);
     }
 
-    // 处理确认密码修改
-    if (confirmPasswordBtn) {
-      confirmPasswordBtn.addEventListener('click', function() {
-        const newPassword = newPasswordInput.value;
+// 处理确认密码修改
+      if (confirmPasswordBtn) {
+          confirmPasswordBtn.addEventListener('click', function() {
+              const oldPassword = document.getElementById('oldPassword').value; // 获取旧密码
+              const newPassword = newPasswordInput.value;
+              const confirmPassword = confirmPasswordInput.value;
 
-        // 显示加载状态
-        const originalText = confirmPasswordBtn.textContent;
-        confirmPasswordBtn.textContent = '修改中...';
-        confirmPasswordBtn.disabled = true;
+              // 简单验证
+              if (!oldPassword) {
+                  alert('请输入旧密码');
+                  return;
+              }
+              if (newPassword !== confirmPassword) {
+                  alert('两次新密码不一致');
+                  return;
+              }
+              // 可以复用原有的长度验证，但按钮已通过验证启用，此处省略
 
-        // 模拟网络请求延迟
-        setTimeout(() => {
-          // 恢复按钮状态
-          confirmPasswordBtn.textContent = originalText;
-          confirmPasswordBtn.disabled = false;
+              // 显示加载状态
+              const originalText = confirmPasswordBtn.textContent;
+              confirmPasswordBtn.textContent = '修改中...';
+              confirmPasswordBtn.disabled = true;
 
-          // 显示成功消息
-          alert('密码修改成功！');
+              // 构建请求数据
+              const formData = new URLSearchParams();
+              formData.append('oldPassword', oldPassword);
+              formData.append('newPassword', newPassword);
 
-          // 关闭弹窗
-          securityCenterModal.style.display = 'none';
-          document.body.style.overflow = 'auto';
+              // 发送真实请求
+              fetch('/ssm_war/user/changePassword', {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                  body: formData
+              })
+                  .then(response => response.json())
+                  .then(data => {
+                      // 恢复按钮状态
+                      confirmPasswordBtn.textContent = originalText;
+                      confirmPasswordBtn.disabled = false;
 
-          // 重置表单
-          resetSecurityForm();
-        }, 1000);
-      });
-    }
+                      if (data.success) {
+                          alert('密码修改成功！');
+                          // 关闭弹窗
+                          securityCenterModal.style.display = 'none';
+                          document.body.style.overflow = 'auto';
+                          // 重置表单（包括旧密码）
+                          resetSecurityForm();
+                      } else {
+                          alert(data.error || '修改失败');
+                      }
+                  })
+                  .catch(error => {
+                      confirmPasswordBtn.textContent = originalText;
+                      confirmPasswordBtn.disabled = false;
+                      alert('网络错误，请稍后重试');
+                      console.error('修改密码错误:', error);
+                  });
+          });
+      }
 
     // 阻止点击弹窗外部关闭
     window.addEventListener('click', function(event) {
@@ -2862,6 +3159,105 @@
       }
     });
   });
+
+      // 登录函数
+    function login() {
+        var username = document.getElementById('account').value;
+        var password = document.getElementById('password').value;
+
+        if (!username || !password) {
+            alert('请输入账号和密码');
+            return;
+        }
+
+        var formData = new URLSearchParams();
+        formData.append('username', username);
+        formData.append('password', password);
+
+        fetch('/ssm_war/user/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: formData
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // 隐藏左侧登录表单
+                    document.getElementById('loginLeftOriginal').style.display = 'none';
+                    // 显示用户信息区域
+                    document.getElementById('userInfoDiv').style.display = 'block';
+                    // 填充用户信息
+                    document.getElementById('displayNickname').innerText = data.data.nickname || '';
+                    document.getElementById('displayAvatar').src = data.data.avatar || '';
+                    document.getElementById('displayEmail').innerText = data.data.email || '';
+                    document.getElementById('displayPhone').innerText = data.data.phone || '';
+                    document.getElementById('displayDescription').innerText = data.data.description || '';
+
+                    // 显示右侧按钮
+                    const loginRight = document.querySelector('.login-right');
+                    if (loginRight) loginRight.style.display = ''; // 恢复默认显示
+                } else {
+                    alert(data.error || '登录失败');
+                }
+            })
+            .catch(error => {
+                alert('网络错误，请稍后重试');
+                console.error('登录错误:', error);
+            });
+    }
+
+      // 退出登录函数
+    function logout() {
+        fetch('/ssm_war/user/logout')
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // 显示左侧登录表单
+                    document.getElementById('loginLeftOriginal').style.display = 'block';
+                    // 隐藏用户信息区域
+                    document.getElementById('userInfoDiv').style.display = 'none';
+                    // 清空输入框
+                    document.getElementById('account').value = '';
+                    document.getElementById('password').value = '';
+
+                    // 隐藏右侧按钮
+                    const loginRight = document.querySelector('.login-right');
+                    if (loginRight) loginRight.style.display = 'none';
+                } else {
+                    alert('退出失败');
+                }
+            });
+    }
+
+      // 页面加载时检查是否已登录
+    // 页面加载时检查是否已登录
+    document.addEventListener('DOMContentLoaded', function() {
+        fetch('/ssm_war/user/current')
+            .then(response => response.json())
+            .then(data => {
+                const loginRight = document.querySelector('.login-right'); // 右侧按钮容器
+                if (data.success) {
+                    // 已登录：隐藏左侧登录表单，显示用户信息区域
+                    document.getElementById('loginLeftOriginal').style.display = 'none';
+                    document.getElementById('userInfoDiv').style.display = 'block';
+                    // 填充用户信息
+                    document.getElementById('displayNickname').innerText = data.data.nickname || '';
+                    document.getElementById('displayAvatar').src = data.data.avatar || '';
+                    document.getElementById('displayEmail').innerText = data.data.email || '';
+                    document.getElementById('displayPhone').innerText = data.data.phone || '';
+                    document.getElementById('displayDescription').innerText = data.data.description || '';
+                    // 显示右侧按钮
+                    if (loginRight) loginRight.style.display = ''; // 恢复默认显示
+                } else {
+                    // 未登录：显示左侧登录表单，隐藏用户信息区域
+                    document.getElementById('loginLeftOriginal').style.display = 'block';
+                    document.getElementById('userInfoDiv').style.display = 'none';
+                    // 隐藏右侧按钮
+                    if (loginRight) loginRight.style.display = 'none';
+                }
+            })
+            .catch(error => console.error('获取用户信息失败:', error));
+    });
 </script>
 
 
@@ -4640,6 +5036,38 @@
   .btn-secondary:hover {
     transform: scale(1.05);
     box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+  }
+
+  /* 用户信息卡片样式 */
+  .user-info-left {
+      flex: 1.5;
+      border-right: 2px solid rgba(0,0,0,0.4);
+      padding-right: 2%;
+      padding-left: 2%;
+      background: #222222;
+      color: white;
+      text-align: center;
+      box-sizing: border-box;
+  }
+  .user-info-left h3 {
+      margin: 10px 0;
+  }
+  .user-info-left p {
+      margin: 5px 0;
+  }
+  .user-info-left button {
+      margin-top: 15px;
+      padding: 8px 16px;
+      background: #000;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      width: 100%;
+  }
+  .user-info-left button:hover {
+      background: #FEDE00;
+      color: #000;
   }
 </style>
 </html>

@@ -18,6 +18,13 @@ public interface UserService {
     User getById(long userId);
 
     /**
+     * 根据用户名获取用户
+     * @param username 用户名
+     * @return 用户对象
+     */
+    User getByUsername(String username);
+
+    /**
      * 添加用户
      */
     boolean addUser(User user);

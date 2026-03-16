@@ -34,16 +34,6 @@
         WHERE club_id = #{clubId}
     </select>
 
-    <select id="queryById" parameterType="long" resultMap="ClubResultMap">
-        SELECT
-            club_id,
-            club_name,
-            description,
-            admin_id,
-            create_time
-        FROM Club
-        WHERE club_id = #{clubId}
-    </select>
 
     <insert id="insert" parameterType="Club">
         INSERT INTO Club (
