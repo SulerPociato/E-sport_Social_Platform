@@ -5,7 +5,6 @@
   <title>8889游戏</title>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 </head>
 <body>
 <!-- 顶部区域 -->
@@ -116,7 +115,7 @@
     <div class="admin-card">
       <h1>8889游戏平台</h1>
       <div class="admin-card-2">
-        <div class="login-left">
+        <div class="login-left" id="loginLeftOriginal">
           <div class="form-group">
             <div>
               <label for="account" class="form-label-1">账号</label>
@@ -150,22 +149,53 @@
             <a href="javascript:void(0);" id="registerBtn" class="register-link">还没有账户？点击创建</a>
           </div>
         </div>
+        <!-- 登录后的用户信息展示 -->
+        <div class="login-left-intro" id="userInfoDiv" style="display: none;">
+          <!-- 用户基本信息（头像、用户名、UID）水平排列 -->
+          <div class="login-left-intro-user-basic-info">
+            <div class="login-left-intro-user-avatar-container">
+              <img id="displayAvatar" src="${pageContext.request.contextPath}/images/default_club.png" alt="用户头像" class="login-left-intro-user-avatar">
+            </div>
+            <div class="login-left-intro-user-text-info">
+              <div id="displayNickname" class="login-left-intro-user-name">张三</div>
+              <div id="displayUserId" class="login-left-intro-user-uid">UID: 88890001</div>
+            </div>
+          </div>
+
+          <!-- 订单统计信息 -->
+          <div class="login-left-intro-user-stats">
+            <div class="login-left-intro-stat-item">
+              <span class="login-left-intro-stat-label">发布订单数</span>
+              <span class="login-left-intro-stat-value">15</span>
+            </div>
+            <div class="login-left-intro-stat-item">
+              <span class="login-left-intro-stat-label">完成订单数</span>
+              <span class="login-left-intro-stat-value">12</span>
+            </div>
+          </div>
+
+          <!-- 个人简介 -->
+          <div class="login-left-intro-user-intro">
+            <div class="login-left-intro-intro-label">个人简介</div>
+            <div id="displayDescription" class="login-left-intro-intro-content">热爱游戏的玩家，擅长各种竞技类游戏，有丰富的游戏经验。希望在这里找到志同道合的游戏伙伴！</div>
+          </div>
+        </div>
         <div class="login-right">
           <div class="center-btn-con">
             <a href="javascript:void(0);" id="personalCenterBtn" class="center-btn">
-              <img src="/images/intro.svg" alt="个人中心" class="btn-icon">
+              <img src="${pageContext.request.contextPath}/images/intro.svg" alt="个人中心" class="btn-icon">
               <span class="btn-text">个人中心</span>
             </a>
             <a href="javascript:void(0);" id="securityCenterBtn" class="center-btn">
-              <img src="/images/password.svg" alt="修改密码" class="btn-icon">
+              <img src="${pageContext.request.contextPath}/images/password.svg" alt="修改密码" class="btn-icon">
               <span class="btn-text">修改密码</span>
             </a>
             <a href="javascript:void(0);" id="walletBtn" class="center-btn">
-              <img src="/images/cash.svg" alt="我的钱包" class="btn-icon">
+              <img src="${pageContext.request.contextPath}/images/cash.svg" alt="我的钱包" class="btn-icon">
               <span class="btn-text">我的钱包</span>
             </a>
             <a href="javascript:void(0);" id="clubManagementBtn" class="center-btn">
-              <img src="/images/club.svg" alt="俱乐部管理" class="btn-icon">
+              <img src="${pageContext.request.contextPath}/images/club.svg" alt="俱乐部管理" class="btn-icon">
               <span class="btn-text">我的俱乐部</span>
             </a>
           </div>
@@ -297,32 +327,31 @@
       </div>
     </div>
   </div>
-
   <!-- 俱乐部详情弹窗 -->
-  <div id="clubDetailModal" class="club-modal">
-    <div class="club-modal-content">
+  <div id="clubDetailModal" class="club-detail-modal">
+    <div class="club-detail-modal-content">
       <!-- 关闭按钮（右上角叉号） -->
-      <span class="club-close-modal">&times;</span>
+      <span class="club-detail-close-modal">&times;</span>
 
       <!-- 弹窗主体内容 -->
-      <div class="club-modal-body">
+      <div class="club-detail-modal-body">
         <!-- 俱乐部头像 -->
-        <div class="club-avatar-container">
-          <img id="detailClubAvatar" src="" alt="" class="club-avatar">
+        <div class="club-detail-avatar-container">
+          <img id="detailClubAvatar" src="" alt="" class="club-detail-avatar">
         </div>
 
         <!-- 俱乐部名称 -->
-        <h2 id="detailClubName" class="club-name"></h2>
+        <h2 id="detailClubName" class="club-detail-name"></h2>
 
         <!-- 俱乐部简介 -->
-        <div class="club-intro-container">
+        <div class="club-detail-intro-container">
           <h3>俱乐部简介</h3>
-          <p id="detailClubIntro" class="club-intro"></p>
+          <p id="detailClubIntro" class="club-detail-intro"></p>
         </div>
 
         <!-- 申请加入表单 -->
-        <form id="clubApplyForm" class="club-apply-form">
-          <div class="from-grop-apply">
+        <form id="clubApplyForm" class="club-detail-apply-form">
+          <div class="club-detail-form-group">
             <label for="applyMessage">请填写验证信息</label>
             <textarea
                     id="applyMessage"
@@ -331,80 +360,72 @@
                     placeholder="请简单介绍自己，并说明申请加入的理由..."
                     required></textarea>
           </div>
-
           <!-- 发送按钮 -->
-          <div class="apply-actions">
-            <button type="submit" class="apply-btn">发送申请</button>
+          <div class="club-detail-apply-actions">
+            <button type="submit" class="club-detail-apply-btn">发送申请</button>
           </div>
         </form>
       </div>
     </div>
   </div>
   <!-- 创建俱乐部弹窗 -->
-  <div id="createClubModal" class="modal">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h2>创建俱乐部</h2>
-        <span class="close-modal">&times;</span>
+  <div id="createClubModal" class="club-create-modal">
+    <div class="club-create-modal-content">
+      <div class="club-create-modal-header">
+        <span class="club-create-close-modal">&times;</span>
       </div>
-      <div class="modal-body">
+      <div class="club-create-modal-body">
         <form id="createClubForm">
           <!-- 头像上传区域 -->
-          <div class="form-group avatar-upload-group">
-            <label>俱乐部头像</label>
-            <div class="avatar-upload-container">
-              <div class="avatar-preview" id="avatarPreview">
+          <div class="club-create-avatar-upload-group">
+            <div class="club-create-avatar-upload-container">
+              <div class="club-create-avatar-preview" id="avatarPreview">
                 <!-- 默认头像图标 -->
-                <div class="default-avatar">
+                <div class="club-create-default-avatar">
                   <svg width="60" height="60" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M12 12C14.21 12 16 10.21 16 8C16 5.79 14.21 4 12 4C9.79 4 8 5.79 8 8C8 10.21 9.79 12 12 12Z" stroke="#666" stroke-width="1.5"/>
                     <path d="M6 20V19C6 16.79 7.79 15 10 15H14C16.21 15 18 16.79 18 19V20" stroke="#666" stroke-width="1.5"/>
                     <circle cx="12" cy="12" r="10" stroke="#666" stroke-width="1.5"/>
                   </svg>
-                  <span>点击上传头像</span>
                 </div>
                 <!-- 选择的图片会在这里显示 -->
                 <img id="avatarDisplay" src="" alt="头像预览" style="display: none;">
               </div>
-              <div class="avatar-controls">
+              <div class="club-create-avatar-controls">
                 <input type="file" id="clubAvatar" name="clubAvatar" accept="image/jpeg,image/png,image/gif,image/webp" style="display: none;">
-                <button type="button" id="removeAvatarBtn" class="btn-remove" style="display: none;">移除</button>
+                <button type="button" id="removeAvatarBtn" class="club-create-btn-remove" style="display: none;">移除</button>
               </div>
-              <div class="avatar-hint">
-                支持 JPG、PNG、GIF、WEBP 格式，大小不超过 2MB,建议尺寸 200x200 像素
-              </div>
-              <div class="avatar-error hidden" id="avatarError"></div>
+              <div class="club-create-avatar-error hidden" id="avatarError"></div>
             </div>
           </div>
 
-          <div class="form-group-club">
-            <label for="clubName">俱乐部名称 *</label>
+          <div class="club-create-form-group">
+            <label for="clubName" class="club-create-form-group-clubname">俱乐部名称</label>
             <input type="text" id="clubName" name="clubName" placeholder="请输入俱乐部名称" required>
           </div>
-          <div class="form-group-club">
-            <label for="clubIntro">俱乐部简介 *</label>
+          <div class="club-create-form-group">
+            <label for="clubIntro" class="club-create-form-group-clubintro">俱乐部简介</label>
             <textarea id="clubIntro" name="clubIntro" rows="4" placeholder="请简单描述您的俱乐部（例如：宗旨、活动等）" required></textarea>
           </div>
-          <div class="form-actions">
-            <button type="submit" class="btn btn-primary">创建</button>
+          <div class="club-create-form-actions">
+            <button type="submit" class="club-create-btn">创建</button>
           </div>
         </form>
       </div>
     </div>
   </div>
   <!-- 发布订单弹窗 -->
-  <div id="postOrderModal" class="modal">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h2>发布订单</h2>
-        <span class="close-modal">&times;</span>
+  <div id="postOrderModal" class="order-post-modal">
+    <div class="order-post-modal-content">
+      <div class="order-post-modal-header">
+        <span class="order-post-close-modal">&times;</span>
       </div>
-      <div class="modal-body">
+      <div class="order-post-modal-body">
         <form id="postOrderForm">
           <!-- 订单类型 -->
-          <div class="form-group-club">
+          <div class="order-post-form-group">
             <label for="orderType">订单类型</label>
-            <select id="orderType" name="orderType" class="form-input" required>
+            <select id="orderType" name="orderType" class="order-post-form-input" required>
               <option value="">请选择订单类型</option>
               <option value="job">求职订单</option>
               <option value="bounty">悬赏订单</option>
@@ -412,106 +433,105 @@
           </div>
 
           <!-- 游戏名称 -->
-          <div class="form-group-club">
+          <div class="order-post-form-group">
             <label for="gameName">游戏名称</label>
             <input type="text" id="gameName" name="gameName" placeholder="请输入游戏名称" required>
           </div>
 
           <!-- 订单金额 -->
-          <div class="form-group-club">
+          <div class="order-post-form-group">
             <label for="orderAmount">订单金额</label>
             <input type="number" id="orderAmount" name="orderAmount" placeholder="请输入金额" min="0" step="0.01" required>
           </div>
 
           <!-- 订单详情 -->
-          <div class="form-group-club">
+          <div class="order-post-form-group">
             <label for="orderDetails">订单详情</label>
             <textarea id="orderDetails" name="orderDetails" rows="5" placeholder="请详细描述订单内容..." maxlength="999" required></textarea>
-            <div class="char-count">
+            <div class="order-post-char-count">
               <span id="charCount">0</span>/999
             </div>
           </div>
 
           <!-- 提交按钮 -->
-          <div class="form-actions">
-            <button type="submit" class="btn btn-primary">递交订单</button>
+          <div class="order-post-form-actions">
+            <button type="submit" class="order-post-btn order-post-btn-primary">递交订单</button>
           </div>
         </form>
       </div>
     </div>
   </div>
   <!-- 管理订单弹窗 -->
-  <div id="manageOrderModal" class="modal">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h2 id="manageOrderTitle">订单管理</h2>
-        <span class="close-modal">&times;</span>
+  <div id="manageOrderModal" class="order-manage-modal">
+    <div class="order-manage-modal-content">
+      <div class="order-manage-modal-header">
+        <h2 id="manageOrderTitle"></h2>
+        <span class="order-manage-close-modal">&times;</span>
       </div>
-      <div class="modal-body">
+      <div class="order-manage-modal-body">
 
         <!-- 订单编辑表单 -->
-        <form id="manageOrderForm" class="club-apply-form">
+        <form id="manageOrderForm" class="order-manage-club-apply-form">
           <!-- 订单类型 -->
-          <div class="from-grop-apply">
+          <div class="order-manage-from-grop-apply">
             <label for="manageOrderType">订单类型</label>
-            <select id="manageOrderType" name="manageOrderType" class="form-input" required>
+            <select id="manageOrderType" name="manageOrderType" class="order-manage-form-input" required>
               <option value="job">求职订单</option>
               <option value="bounty">悬赏订单</option>
             </select>
           </div>
 
           <!-- 游戏名称 -->
-          <div class="from-grop-apply">
+          <div class="order-manage-from-grop-apply">
             <label for="manageGameName">游戏名称</label>
-            <input type="text" id="manageGameName" name="manageGameName" class="form-input" required>
+            <input type="text" id="manageGameName" name="manageGameName" class="order-manage-form-input" required>
           </div>
 
           <!-- 订单金额 -->
-          <div class="from-grop-apply">
+          <div class="order-manage-from-grop-apply">
             <label for="manageOrderAmount">订单金额</label>
-            <input type="number" id="manageOrderAmount" name="manageOrderAmount" class="form-input" min="0" step="0.01" required>
+            <input type="number" id="manageOrderAmount" name="manageOrderAmount" class="order-manage-form-input" min="0" step="0.01" required>
           </div>
 
           <!-- 订单详情 -->
-          <div class="from-grop-apply">
+          <div class="order-manage-from-grop-apply">
             <label for="manageOrderDetails">订单详情</label>
             <textarea
                     id="manageOrderDetails"
                     name="manageOrderDetails"
                     rows="5"
-                    class="form-input"
+                    class="order-manage-form-input"
                     maxlength="999"
                     required></textarea>
-            <div class="char-count">
+            <div class="order-manage-char-count">
               <span id="manageCharCount">0</span>/999
             </div>
           </div>
 
           <!-- 操作按钮 -->
-          <div class="apply-actions">
-            <button type="submit" class="apply-btn">提交修改</button>
-            <button type="button" id="deleteOrderBtn" class="apply-btn delete-btn">删除订单</button>
+          <div class="order-manage-apply-actions">
+            <button type="submit" class="order-manage-apply-btn">提交修改</button>
+            <button type="button" id="deleteOrderBtn" class="order-manage-apply-btn order-manage-delete-btn">删除订单</button>
           </div>
         </form>
       </div>
     </div>
   </div>
   <!-- 个人中心弹窗 -->
-  <div id="personalCenterModal" class="modal">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h2>个人中心</h2>
-        <span class="close-modal">&times;</span>
+  <div id="personalCenterModal" class="personal-modal">
+    <div class="personal-modal-content">
+      <div class="personal-modal-header">
+        <span class="personal-close-modal">&times;</span>
       </div>
-      <div class="modal-body">
+      <div class="personal-modal-body">
         <form id="personalCenterForm">
           <!-- 头像上传 -->
-          <div class="form-group-club">
+          <div class="personal-form-group-club">
             <label for="personalAvatar">用户头像</label>
-            <div class="avatar-upload-container">
-              <div class="avatar-preview" id="personalAvatarPreview">
+            <div class="personal-avatar-upload-container">
+              <div class="personal-avatar-preview" id="personalAvatarPreview">
                 <!-- 默认头像图标 -->
-                <div class="default-avatar">
+                <div class="personal-default-avatar">
                   <svg width="60" height="60" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M12 12C14.21 12 16 10.21 16 8C16 5.79 14.21 4 12 4C9.79 4 8 5.79 8 8C8 10.21 9.79 12 12 12Z" stroke="#666" stroke-width="1.5"/>
                     <path d="M6 20V19C6 16.79 7.79 15 10 15H14C16.21 15 18 16.79 18 19V20" stroke="#666" stroke-width="1.5"/>
@@ -522,75 +542,74 @@
                 <!-- 选择的图片会在这里显示 -->
                 <img id="personalAvatarDisplay" src="" alt="头像预览" style="display: none;">
               </div>
-              <div class="avatar-controls">
+              <div class="personal-avatar-controls">
                 <input type="file" id="personalAvatarInput" name="personalAvatar" accept="image/jpeg,image/png,image/gif,image/webp" style="display: none;">
-                <button type="button" id="removePersonalAvatarBtn" class="btn-remove" style="display: none;">移除</button>
+                <button type="button" id="removePersonalAvatarBtn" class="personal-btn-remove" style="display: none;">移除</button>
               </div>
-              <div class="avatar-hint">
+              <div class="personal-avatar-hint">
                 支持 JPG、PNG、GIF、WEBP 格式，大小不超过 2MB,建议尺寸 200x200 像素
               </div>
-              <div class="avatar-error hidden" id="personalAvatarError"></div>
+              <div class="personal-avatar-error personal-hidden" id="personalAvatarError"></div>
             </div>
           </div>
 
           <!-- 姓名 -->
-          <div class="form-group-club">
+          <div class="personal-form-group-club">
             <label for="personalName">姓名</label>
             <input type="text" id="personalName" name="personalName" placeholder="请输入您的姓名" required>
           </div>
 
           <!-- 个人简介 -->
-          <div class="form-group-club">
+          <div class="personal-form-group-club">
             <label for="personalIntro">个人简介</label>
             <textarea id="personalIntro" name="personalIntro" rows="4" placeholder="请简单介绍一下自己..." maxlength="200" required></textarea>
-            <div class="char-count">
+            <div class="personal-char-count">
               <span id="personalCharCount">0</span>/200
             </div>
           </div>
 
           <!-- 完成修改按钮 -->
-          <div class="form-actions">
-            <button type="submit" class="btn btn-primary">完成修改</button>
+          <div class="personal-form-actions">
+            <button type="submit" class="personal-btn personal-btn-primary">完成修改</button>
           </div>
         </form>
       </div>
     </div>
   </div>
   <!-- 钱包充值弹窗 -->
-  <div id="walletModal" class="modal">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h2>我的钱包</h2>
-        <span class="close-modal">&times;</span>
+  <div id="walletModal" class="wallet-modal">
+    <div class="wallet-modal-content">
+      <div class="wallet-modal-header">
+        <span class="wallet-close-modal">&times;</span>
       </div>
-      <div class="modal-body">
+      <div class="wallet-modal-body">
         <!-- 余额显示 -->
         <div class="wallet-balance">
-          <div class="balance-label">我的余额</div>
-          <div class="balance-amount">¥ 0.00</div>
+          <div class="wallet-balance-label">我的余额</div>
+          <div class="wallet-balance-amount">¥ 0.00</div>
         </div>
 
         <form id="walletForm">
           <!-- 充值金额选择 -->
-          <div class="form-group-club">
+          <div class="wallet-form-group-club">
             <label for="rechargeAmount">充值金额</label>
-            <div class="amount-options">
-              <button type="button" class="amount-option" data-amount="6">6元</button>
-              <button type="button" class="amount-option" data-amount="30">30元</button>
-              <button type="button" class="amount-option" data-amount="98">98元</button>
-              <button type="button" class="amount-option" data-amount="198">198元</button>
-              <button type="button" class="amount-option" data-amount="328">328元</button>
-              <button type="button" class="amount-option" data-amount="648">648元</button>
+            <div class="wallet-amount-options">
+              <button type="button" class="wallet-amount-option" data-amount="6">6元</button>
+              <button type="button" class="wallet-amount-option" data-amount="30">30元</button>
+              <button type="button" class="wallet-amount-option" data-amount="98">98元</button>
+              <button type="button" class="wallet-amount-option" data-amount="198">198元</button>
+              <button type="button" class="wallet-amount-option" data-amount="328">328元</button>
+              <button type="button" class="wallet-amount-option" data-amount="648">648元</button>
             </div>
-            <div class="custom-amount">
+            <div class="wallet-custom-amount">
               <input type="number" id="customAmount" name="customAmount" placeholder="自定义金额" min="1" step="0.01">
             </div>
           </div>
 
           <!-- 支付方式选择 -->
-          <div class="form-group-club">
+          <div class="wallet-form-group-club">
             <label for="paymentMethod">支付方式</label>
-            <select id="paymentMethod" name="paymentMethod" class="form-input" required>
+            <select id="paymentMethod" name="paymentMethod" class="wallet-form-input" required>
               <option value="">请选择支付方式</option>
               <option value="wechat">微信支付</option>
               <option value="alipay">支付宝支付</option>
@@ -598,140 +617,144 @@
           </div>
 
           <!-- 确认充值按钮 -->
-          <div class="form-actions">
-            <button type="submit" class="btn btn-primary">确认充值</button>
+          <div class="wallet-form-actions">
+            <button type="submit" class="wallet-btn wallet-btn-primary">确认充值</button>
           </div>
         </form>
       </div>
     </div>
   </div>
   <!-- 修改密码弹窗 -->
-  <div id="securityCenterModal" class="modal">
-    <div class="modal-content">
-      <div class="modal-header">
+  <div id="securityCenterModal" class="security-modal">
+    <div class="security-modal-content">
+      <div class="security-modal-header">
         <h2></h2>
-        <span class="close-modal">&times;</span>
+        <span class="security-close-modal">&times;</span>
       </div>
-      <div class="modal-body modal-body-center">
+      <div class="security-modal-body security-modal-body-center">
         <div class="security-center-header">
           <h3 class="security-title">设置密码</h3>
           <p class="security-subtitle">请设置强度较高的密码</p>
         </div>
 
-        <div class="form-group-club security-form-group">
-          <input type="password" id="newPassword" placeholder="请输入密码" class="text-align-left">
+        <div class="security-form-group-club security-form-group">
+          <input type="password" id="oldPassword" placeholder="请输入旧密码" class="security-text-align-left">
         </div>
 
-        <div class="form-group-club security-form-group">
-          <input type="password" id="confirmPassword" placeholder="请再次输入密码" class="text-align-left">
+        <div class="security-form-group-club security-form-group">
+          <input type="password" id="newPassword" placeholder="请输入密码" class="security-text-align-left">
         </div>
 
-        <div class="password-requirements-container">
-          <div class="password-requirement password-requirement-item">
-            <div class="requirement-indicator" id="lengthIndicator"></div>
-            <span class="requirement-text">密码由8-15位数字、字母或符号组成</span>
+        <div class="security-form-group-club security-form-group">
+          <input type="password" id="confirmPassword" placeholder="请再次输入密码" class="security-text-align-left">
+        </div>
+
+        <div class="security-password-requirements-container">
+          <div class="security-password-requirement security-password-requirement-item">
+            <div class="security-requirement-indicator" id="lengthIndicator"></div>
+            <span class="security-requirement-text">密码由8-15位数字、字母或符号组成</span>
           </div>
-          <div class="password-requirement password-requirement-item">
-            <div class="requirement-indicator" id="matchIndicator"></div>
-            <span class="requirement-text">两次输入密码需保持一致</span>
+          <div class="security-password-requirement security-password-requirement-item">
+            <div class="security-requirement-indicator" id="matchIndicator"></div>
+            <span class="security-requirement-text">两次输入密码需保持一致</span>
           </div>
         </div>
 
-        <div class="form-actions security-form-actions">
-          <button type="button" id="confirmPasswordBtn" class="btn btn-primary btn-full-width" disabled>确认修改</button>
+        <div class="security-form-actions security-form-actions">
+          <button type="button" id="confirmPasswordBtn" class="security-btn security-btn-primary security-btn-full-width" disabled>确认修改</button>
         </div>
       </div>
     </div>
   </div>
   <!-- 用户注册弹窗 -->
-  <div id="registerModal" class="modal">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h2>用户注册</h2>
-        <span class="close-modal">&times;</span>
+  <div id="registerModal" class="register-modal">
+    <div class="register-modal-content">
+      <div class="register-modal-header">
+        <span class="register-close-modal">&times;</span>
       </div>
-      <div class="modal-body">
+      <div class="register-modal-body">
         <form id="registerForm">
           <!-- 账号 -->
-          <div class="form-group-club">
+          <div class="register-form-group-club">
             <label for="registerAccount">账号</label>
             <input type="text" id="registerAccount" name="registerAccount" placeholder="请输入账号" required>
           </div>
 
           <!-- 密码 -->
-          <div class="form-group-club">
+          <div class="register-form-group-club">
             <label for="registerPassword">密码</label>
             <input type="password" id="registerPassword" name="registerPassword" placeholder="请输入密码" required>
           </div>
 
           <!-- 姓名 -->
-          <div class="form-group-club">
+          <div class="register-form-group-club">
             <label for="registerName">姓名</label>
             <input type="text" id="registerName" name="registerName" placeholder="请输入真实姓名" required>
           </div>
 
           <!-- 身份证号 -->
-          <div class="form-group-club">
+          <div class="register-form-group-club">
             <label for="registerIdCard">身份证号</label>
             <input type="text" id="registerIdCard" name="registerIdCard" placeholder="请输入身份证号码" required maxlength="18">
           </div>
 
           <!-- 创建按钮 -->
-          <div class="form-actions">
-            <button type="submit" class="btn btn-primary">创建账户</button>
+          <div class="register-form-actions">
+            <button type="submit" class="register-btn register-btn-primary">创建账户</button>
           </div>
         </form>
       </div>
     </div>
   </div>
   <!-- 俱乐部管理弹窗 -->
-  <div id="clubManagementModal" class="modal">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h2>俱乐部管理</h2>
-        <span class="close-modal">&times;</span>
+  <div id="clubManagementModal" class="club-manage-modal">
+    <div class="club-manage-modal-content">
+      <div class="club-manage-modal-header">
+        <span class="club-manage-close-modal">&times;</span>
       </div>
-      <div class="modal-body">
-        <div class="club-management-container">
-          <div class="fighters-grid-container">
-            <h3 class="fighters-title">默认俱乐部</h3>
-            <div class="fighters-grid-wrapper">
-              <div class="fighters-grid" id="fightersGrid">
+      <div class="club-manage-modal-body">
+        <div class="club-manage-management-container">
+          <div class="club-manage-fighters-grid-container">
+            <h3 id="currentClubTitle" class="club-manage-fighters-title">默认俱乐部</h3>
+
+            <div class="club-manage-fighters-grid-wrapper">
+              <div class="club-manage-fighters-grid" id="fightersGrid">
                 <!-- 打手列表将通过JavaScript动态生成 -->
               </div>
             </div>
+
+
           </div>
-          <div class="management-actions">
-            <button type="button" id="editInfoBtn" class="btn btn-secondary">编辑信息</button>
-            <button type="button" id="manageApplicationsBtn" class="btn btn-primary">管理申请</button>
+          <div class="club-manage-management-actions">
+            <button type="button" id="editInfoBtn" class="club-manage-btn club-manage-btn-secondary">编辑信息</button>
+            <button type="button" id="manageApplicationsBtn" class="club-manage-btn club-manage-btn-primary">管理申请</button>
+            <button type="button" id="quitClubBtn" class="club-manage-btn club-manage-btn-secondary" style="display:none;">退出俱乐部</button>
           </div>
         </div>
       </div>
     </div>
   </div>
   <!-- 打手管理弹窗 -->
-  <div id="fighterManagementModal" class="modal">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h2 id="fighterManagementTitle">打手管理</h2>
-        <span class="close-modal">&times;</span>
+  <div id="fighterManagementModal" class="fighter-manage-modal">
+    <div class="fighter-manage-modal-content">
+      <div class="fighter-manage-modal-header">
+        <span class="fighter-manage-close-modal">&times;</span>
       </div>
-      <div class="modal-body">
-        <div class="fighter-management-container">
-          <div class="fighter-info-header">
+      <div class="fighter-manage-modal-body">
+        <div class="fighter-manage-management-container">
+          <div class="fighter-manage-info-header">
             <h3 id="fighterNameDisplay">打手姓名</h3>
           </div>
 
           <!-- 订单信息表格 -->
-          <div class="fighter-orders-section">
+          <div class="fighter-manage-orders-section">
             <h4>已完成订单</h4>
-            <div class="orders-table-container">
-              <table class="orders-table">
+            <div class="fighter-manage-orders-table-container">
+              <table class="fighter-manage-orders-table">
                 <thead>
                 <tr>
                   <th>订单编号</th>
                   <th>游戏名称</th>
-                  <th>订单类型</th>
                   <th>金额</th>
                   <th>完成时间</th>
                 </tr>
@@ -744,273 +767,210 @@
           </div>
 
           <!-- 移除打手按钮 -->
-          <div class="fighter-management-actions">
-            <button type="button" id="removeFighterBtn" class="btn btn-danger">移除打手</button>
+          <div class="fighter-manage-management-actions">
+            <button type="button" id="removeFighterBtn" class="fighter-manage-btn fighter-manage-btn-danger">移除打手</button>
           </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <!-- 确认移除弹窗 -->
-  <div id="confirmRemoveModal" class="modal">
-    <div class="modal-content confirm-modal">
-      <div class="modal-header">
-        <h2>确认移除</h2>
-        <span class="close-modal">&times;</span>
-      </div>
-      <div class="modal-body">
-        <div class="confirm-message">
-          <p id="confirmRemoveText">确定要移除该打手吗？此操作不可撤销。</p>
-        </div>
-        <div class="confirm-actions">
-          <button type="button" id="confirmYesBtn" class="btn btn-danger">Yes</button>
-          <button type="button" id="confirmNoBtn" class="btn btn-secondary">No</button>
         </div>
       </div>
     </div>
   </div>
   <!-- 俱乐部信息编辑弹窗 -->
-  <div id="clubEditModal" class="modal">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h2>编辑俱乐部信息</h2>
-        <span class="close-modal">&times;</span>
+  <div id="clubEditModal" class="club-edit-modal">
+    <div class="club-edit-modal-content">
+      <div class="club-edit-modal-header">
+        <span class="club-edit-close-modal">&times;</span>
       </div>
-      <div class="modal-body">
-        <form id="clubEditForm" class="club-apply-form">
+      <div class="club-edit-modal-body">
+        <form id="clubEditForm" class="club-edit-club-apply-form">
           <!-- 俱乐部头像 -->
-          <div class="avatar-upload-group">
+          <div class="club-edit-avatar-upload-group">
             <label>俱乐部头像</label>
-            <div class="avatar-upload-container">
-              <div class="avatar-preview" id="clubAvatarPreview">
-                <div class="default-avatar">
-                  <span>点击上传头像</span>
+            <div class="club-edit-avatar-upload-container">
+              <div class="club-edit-avatar-preview" id="clubAvatarPreview">
+                <div class="club-edit-default-avatar">
                 </div>
               </div>
               <input type="file" id="clubAvatarInput" accept="image/*" style="display: none;">
-              <button type="button" id="uploadAvatarBtn" class="btn btn-secondary">选择头像</button>
             </div>
           </div>
 
           <!-- 俱乐部名称 -->
-          <div class="form-group-club">
+          <div class="club-edit-form-group-club">
             <label for="editClubName">俱乐部名称</label>
             <input type="text" id="editClubName" name="clubName" placeholder="请输入俱乐部名称" required>
           </div>
 
           <!-- 俱乐部简介 -->
-          <div class="form-group-club">
+          <div class="club-edit-form-group-club">
             <label for="editClubIntro">俱乐部简介</label>
             <textarea id="editClubIntro" name="clubIntro" rows="5" placeholder="请详细描述俱乐部简介..." maxlength="999" required></textarea>
-            <div class="char-count">
+            <div class="club-edit-char-count">
               <span id="editCharCount">0</span>/999
             </div>
           </div>
 
           <!-- 提交按钮 -->
-          <div class="form-actions">
-            <button type="submit" class="btn btn-primary">完成编辑</button>
+          <div class="club-edit-form-actions">
+            <button type="submit" class="club-edit-btn club-edit-btn-primary">完成编辑</button>
           </div>
         </form>
       </div>
     </div>
   </div>
-  <!-- 编辑成功提示弹窗 -->
-  <div id="editSuccessModal" class="modal">
-    <div class="modal-content confirm-modal">
-      <div class="modal-header">
-        <h2>编辑成功</h2>
-        <span class="close-modal">&times;</span>
+  <!-- 俱乐部管理申请弹窗 -->
+  <div id="manageApplicationsModal" class="club-manageappli-modal">
+    <div class="club-manageappli-modal-content">
+      <div class="club-manageappli-modal-header">
+        <span class="club-manageappli-close-modal">&times;</span>
       </div>
-      <div class="modal-body">
-        <div class="confirm-message">
-          <p>俱乐部信息编辑成功！</p>
-        </div>
-        <div class="confirm-actions">
-          <button type="button" id="editSuccessOkBtn" class="btn btn-primary">确定</button>
-        </div>
-      </div>
-    </div>
-  </div>
-  <!-- 管理申请弹窗 -->
-  <div id="manageApplicationsModal" class="modal">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h2>管理申请</h2>
-        <span class="close-modal">&times;</span>
-      </div>
-      <div class="modal-body">
-        <div class="applications-container">
-          <h3>申请列表</h3>
-          <div class="applications-list" id="applicationsList">
+      <div class="club-manageappli-modal-body">
+        <div class="club-manageappli-applications-container">
+          <div class="club-manageappli-applications-list" id="applicationsList">
             <!-- 申请信息将通过JavaScript动态生成 -->
           </div>
-          <div class="no-applications" id="noApplications" style="display: none;">
+          <div class="club-manageappli-no-applications" id="noApplications" style="display: none;">
             <p>暂无申请信息</p>
           </div>
         </div>
       </div>
     </div>
   </div>
-  <!-- 申请处理成功提示弹窗 -->
-  <div id="applicationSuccessModal" class="modal">
-    <div class="modal-content confirm-modal">
-      <div class="modal-header">
-        <h2 id="applicationSuccessTitle">操作成功</h2>
-        <span class="close-modal">&times;</span>
-      </div>
-      <div class="modal-body">
-        <div class="confirm-message">
-          <p id="applicationSuccessText">操作成功！</p>
-        </div>
-        <div class="confirm-actions">
-          <button type="button" id="applicationSuccessOkBtn" class="btn btn-primary">确定</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-
-
 </div>
 <!-- 中部搜索栏 -->
-<div class="search-container">
-  <div class="search-box">
-    <input type="text" class="search-input" placeholder="搜索俱乐部、游戏或订单...">
-    <button class="search-btn">搜索</button>
+<div class="middle-search-container">
+  <div class="middle-search-box">
+    <input type="text" class="middle-search-input" placeholder="搜索俱乐部、游戏或订单...">
+    <button class="middle-search-btn">搜索</button>
   </div>
 </div>
 
-
+<div class="bottom-container">
+  <div class="show-order-grid">
+    <!-- 第一行：求职 悬赏 求职 悬赏 求职 -->
+    <div class="show-order-card-1" data-type="job">
+      <div class="show-order-card-content">
+        <h3>求职订单</h3>
+        <div class="show-order-info">
+          <div class="show-order-type">PUBG</div>
+          <div class="show-order-amount">订单金额：¥500</div>
+          <div class="show-order-content">
+            <p>寻找精通PUBG的陪玩，要求KD 3.0以上，能够指导新手玩家</p>
+          </div>
+          <div class="show-order-publisher-info">
+            <div class="show-order-publisher-avatar">
+              <img src="${pageContext.request.contextPath}/images/default_club.png" alt="发布人头像">
+            </div>
+            <div class="show-order-publisher-details">
+              <div class="show-order-publisher-name">游戏玩家小明</div>
+              <div class="show-order-publisher-uid">UID: 123456</div>
+            </div>
+          </div>
+        </div>
+        <button class="show-order-accept-btn">接受订单</button>
+      </div>
+    </div>
+    <div class="show-order-card-2" data-type="bounty">
+      <div class="show-order-card-content">
+        <h3>悬赏订单</h3>
+        <div class="show-order-info">
+          <div class="show-order-type">PUBG</div>
+          <div class="show-order-amount">订单金额：¥800</div>
+          <div class="show-order-content">
+            <p>悬赏PUBG单排上分，目标段位钻石以上，要求胜率60%以上</p>
+          </div>
+          <div class="show-order-publisher-info">
+            <div class="show-order-publisher-avatar">
+              <img src="${pageContext.request.contextPath}/images/default_club.png" alt="发布人头像">
+            </div>
+            <div class="show-order-publisher-details">
+              <div class="show-order-publisher-name">电竞爱好者</div>
+              <div class="show-order-publisher-uid">UID: 654321</div>
+            </div>
+          </div>
+        </div>
+        <button class="show-order-accept-btn">接受订单</button>
+      </div>
+    </div>
+    <div class="show-order-card-1" data-type="job">
+      <div class="show-order-card-content">
+        <h3>求职订单</h3>
+        <div class="show-order-info">
+          <div class="show-order-type">LOL</div>
+          <div class="show-order-amount">订单金额：¥300</div>
+          <div class="show-order-content">
+            <p>寻找LOL陪玩，要求钻石段位以上，擅长ADC位置</p>
+          </div>
+          <div class="show-order-publisher-info">
+            <div class="show-order-publisher-avatar">
+              <img src="${pageContext.request.contextPath}/images/default_club.png" alt="发布人头像">
+            </div>
+            <div class="show-order-publisher-details">
+              <div class="show-order-publisher-name">LOL玩家</div>
+              <div class="show-order-publisher-uid">UID: 789012</div>
+            </div>
+          </div>
+        </div>
+        <button class="show-order-accept-btn">接受订单</button>
+      </div>
+    </div>
+    <div class="show-order-card-2" data-type="bounty">
+      <div class="show-order-card-content">
+        <h3>悬赏订单</h3>
+        <div class="show-order-info">
+          <div class="show-order-type">CSGO</div>
+          <div class="show-order-amount">订单金额：¥1200</div>
+          <div class="show-order-content">
+            <p>悬赏CSGO排位上分，要求AK段位以上，枪法精准</p>
+          </div>
+          <div class="show-order-publisher-info">
+            <div class="show-order-publisher-avatar">
+              <img src="${pageContext.request.contextPath}/images/default_club.png" alt="发布人头像">
+            </div>
+            <div class="show-order-publisher-details">
+              <div class="show-order-publisher-name">CSGO爱好者</div>
+              <div class="show-order-publisher-uid">UID: 345678</div>
+            </div>
+          </div>
+        </div>
+        <button class="show-order-accept-btn">接受订单</button>
+      </div>
+    </div>
+    <div class="show-order-card-1" data-type="job">
+      <div class="show-order-card-content">
+        <h3>求职订单</h3>
+        <div class="show-order-info">
+          <div class="show-order-type">王者荣耀</div>
+          <div class="show-order-amount">订单金额：¥450</div>
+          <div class="show-order-content">
+            <p>寻找王者荣耀陪玩，要求星耀段位，擅长打野位置</p>
+          </div>
+          <div class="show-order-publisher-info">
+            <div class="show-order-publisher-avatar">
+              <img src="${pageContext.request.contextPath}/images/default_club.png" alt="发布人头像">
+            </div>
+            <div class="show-order-publisher-details">
+              <div class="show-order-publisher-name">王者玩家</div>
+              <div class="show-order-publisher-uid">UID: 901234</div>
+            </div>
+          </div>
+        </div>
+        <button class="show-order-accept-btn">接受订单</button>
+      </div>
+    </div>
+    <!-- 更多卡片将根据后端数据动态生成 -->
+  </div>
+</div>
 
 
 <script>
-  // 俱乐部详情弹窗功能
-  document.addEventListener('DOMContentLoaded', function() {
-    // 获取弹窗元素
-    const clubDetailModal = document.getElementById('clubDetailModal');
-    const closeClubDetailBtn = document.querySelector('.club-close-modal');
-    const clubApplyForm = document.getElementById('clubApplyForm');
 
-    // 获取显示俱乐部信息的元素
-    const detailClubName = document.getElementById('detailClubName');
-    const detailClubIntro = document.getElementById('detailClubIntro');
-    const detailClubAvatar = document.getElementById('detailClubAvatar');
-
-    // 获取所有俱乐部列表项
-    const clubItems = document.querySelectorAll('.club-item');
-
-    // 为每个俱乐部列表项添加点击事件
-    clubItems.forEach(item => {
-      item.addEventListener('click', function() {
-        console.log('俱乐部被点击了:', this.getAttribute('data-name'));
-
-        // 获取俱乐部信息
-        const clubName = this.getAttribute('data-name');
-        const clubIntro = this.getAttribute('data-intro');
-        const clubAvatar = this.getAttribute('data-avatar');
-
-        // 设置弹窗内容
-        detailClubName.textContent = clubName;
-        detailClubIntro.textContent = clubIntro;
-
-        // 设置头像（如果提供了头像URL）
-        if (clubAvatar && clubAvatar !== '') {
-          detailClubAvatar.src = clubAvatar;
-          detailClubAvatar.style.display = 'block';
-
-          // 添加图片加载失败事件处理
-          detailClubAvatar.onerror = function() {
-            // 图片加载失败时显示默认图片
-            this.src = '/images/default_club.png';
-            console.log('头像图片加载失败，已使用默认图片');
-          };
-
-          // 添加图片加载成功事件处理
-          detailClubAvatar.onload = function() {
-            console.log('头像图片加载成功');
-          };
-        } else {
-          // 使用默认头像
-          detailClubAvatar.src = '/images/default_club.png';
-          detailClubAvatar.style.display = 'block';
-          detailClubAvatar.parentElement.style.background = 'none';
-        }
-
-        // 显示弹窗
-        clubDetailModal.style.display = 'flex';
-        document.body.style.overflow = 'hidden'; // 防止背景滚动
-
-        // 重置表单
-        document.getElementById('applyMessage').value = '';
-      });
-    });
-
-    // 关闭俱乐部详情弹窗
-    closeClubDetailBtn.addEventListener('click', function() {
-      clubDetailModal.style.display = 'none';
-      document.body.style.overflow = 'auto';
-    });
-
-    // 阻止点击弹窗外部关闭
-    window.addEventListener('click', function(event) {
-      if (event.target === clubDetailModal) {
-        // 点击遮罩层不关闭，只能通过×关闭
-        // 这里不执行任何操作
-      }
-    });
-
-    // 处理申请表单提交
-    clubApplyForm.addEventListener('submit', function(event) {
-      event.preventDefault();
-
-      const applyMessage = document.getElementById('applyMessage').value.trim();
-
-      if (!applyMessage) {
-        alert('请填写验证信息！');
-        document.getElementById('applyMessage').focus();
-        return;
-      }
-
-      // 显示加载状态
-      const submitBtn = this.querySelector('.apply-btn');
-      const originalText = submitBtn.textContent;
-      submitBtn.textContent = '发送中...';
-      submitBtn.disabled = true;
-
-      // 模拟发送请求
-      setTimeout(() => {
-        // 恢复按钮状态
-        submitBtn.textContent = originalText;
-        submitBtn.disabled = false;
-
-        // 使用系统alert提示发送成功
-        alert('申请已发送！\n您的申请已成功提交，请等待俱乐部管理员审核。');
-
-        // 关闭详情弹窗
-        clubDetailModal.style.display = 'none';
-        document.body.style.overflow = 'auto';
-
-        // 重置表单
-        this.reset();
-      }, 1000);
-    });
-
-    // 按ESC键关闭弹窗
-    document.addEventListener('keydown', function(event) {
-      if (event.key === 'Escape' && clubDetailModal.style.display === 'flex') {
-        clubDetailModal.style.display = 'none';
-        document.body.style.overflow = 'auto';
-      }
-    });
-  });
 
   // 创建俱乐部弹窗功能
   document.addEventListener('DOMContentLoaded', function() {
     // 获取DOM元素
     const createClubBtn = document.getElementById('createClubBtn');
     const modal = document.getElementById('createClubModal');
-    const closeModalBtn = document.querySelector('.close-modal');
+    const closeModalBtn = document.querySelector('.club-create-close-modal');
     const cancelBtn = document.getElementById('cancelCreateBtn');
     const createClubForm = document.getElementById('createClubForm');
 
@@ -1026,14 +986,7 @@
     let selectedAvatarFile = null;
 
     // 1. 点击"创建俱乐部"按钮，打开弹窗
-    if (createClubBtn && modal) {
-      createClubBtn.addEventListener('click', function() {
-        console.log('创建俱乐部按钮被点击');
-        modal.style.display = 'flex';
-        // 重置表单状态
-        resetAvatar();
-      });
-    }
+
 
     // 2. 点击关闭按钮 (X)，关闭弹窗
     if (closeModalBtn) {
@@ -1192,7 +1145,7 @@
         }
 
         // 显示加载状态
-        const submitBtn = document.querySelector('.btn-primary');
+        const submitBtn = document.querySelector('.club-create-btn');
         const originalText = submitBtn.textContent;
         submitBtn.textContent = '创建中...';
         submitBtn.disabled = true;
@@ -1204,7 +1157,7 @@
           submitBtn.disabled = false;
 
           // 模拟成功响应
-          alert(`俱乐部"${clubName}"创建成功！`);
+          alert('俱乐部"' + clubName + '"创建成功！');
 
           // 关闭弹窗并重置表单
           closeModal();
@@ -1227,7 +1180,7 @@
     // 获取DOM元素
     const clubManagementBtn = document.getElementById('clubManagementBtn');
     const clubManagementModal = document.getElementById('clubManagementModal');
-    const closeModalBtn = clubManagementModal?.querySelector('.close-modal');
+    const closeModalBtn = clubManagementModal?.querySelector('.club-manage-close-modal');
     const fightersGrid = document.getElementById('fightersGrid');
     const editInfoBtn = document.getElementById('editInfoBtn');
     const manageApplicationsBtn = document.getElementById('manageApplicationsBtn');
@@ -1356,10 +1309,10 @@
   document.addEventListener('DOMContentLoaded', function() {
     // 获取DOM元素
     const fighterManagementModal = document.getElementById('fighterManagementModal');
-    const closeFighterModalBtn = fighterManagementModal?.querySelector('.close-modal');
+    const closeFighterModalBtn = fighterManagementModal?.querySelector('.fighter-manage-close-modal');
     const removeFighterBtn = document.getElementById('removeFighterBtn');
     const confirmRemoveModal = document.getElementById('confirmRemoveModal');
-    const closeConfirmModalBtn = confirmRemoveModal?.querySelector('.close-modal');
+    const closeConfirmModalBtn = confirmRemoveModal?.querySelector('.confirmremove-close-modal');
     const confirmYesBtn = document.getElementById('confirmYesBtn');
     const confirmNoBtn = document.getElementById('confirmNoBtn');
 
@@ -1396,136 +1349,256 @@
     let currentFighter = null;
 
     // 1. 打开打手管理弹窗（从俱乐部管理弹窗调用）
-    window.openFighterManagement = function(fighterName) {
-      currentFighter = fighterName;
+    window.currentSelectedFighter = null;
+    function formatOrderTime(v) {
+      if (!v) return '';
 
-      // 设置弹窗标题
+      try {
+        const d = new Date(v);
+        if (isNaN(d.getTime())) return v;
+
+        const y = d.getFullYear();
+        const m = String(d.getMonth() + 1).padStart(2, '0');
+        const day = String(d.getDate()).padStart(2, '0');
+        const h = String(d.getHours()).padStart(2, '0');
+        const min = String(d.getMinutes()).padStart(2, '0');
+        const s = String(d.getSeconds()).padStart(2, '0');
+
+        return y + '-' + m + '-' + day + ' ' + h + ':' + min + ':' + s;
+      } catch (e) {
+        return v;
+      }
+    }
+
+    function loadFighterOrders(playerId) {
+      const ordersTable = document.getElementById('fighterOrdersTable');
+      if (!ordersTable) return;
+
+      try {
+        ordersTable.innerHTML = '<tr><td colspan="4" style="text-align: center; color: #999; padding: 40px;">正在加载订单...</td></tr>';
+
+        const base = window.location.origin + '<%=request.getContextPath()%>';
+        const url = base + '/order/player/' + encodeURIComponent(playerId) + '/list?offset=0&limit=100';
+
+        fetch(url, {
+          method: 'GET',
+          credentials: 'same-origin'
+        })
+                .then(function(response) {
+                  return response.json();
+                })
+                .then(function(res) {
+                  console.log('订单接口返回=', res);
+                  console.log('订单列表=', res ? res.data : null);
+                  if (!res || !res.success) {
+                    ordersTable.innerHTML = '<tr><td colspan="4" style="text-align: center; color: #999; padding: 40px;">订单加载失败</td></tr>';
+                    return;
+                  }
+
+                  const list = Array.isArray(res.data) ? res.data : [];
+
+                  const finishedList = list.filter(function(order) {
+                    const ct = order ? (order.completeTime || order.complete_time) : null;
+                    return !!ct;
+                  });
+
+                  if (!finishedList.length) {
+                    ordersTable.innerHTML = '<tr><td colspan="4" style="text-align: center; color: #999; padding: 40px;">暂无完成订单</td></tr>';
+                    return;
+                  }
+
+                  ordersTable.innerHTML = '';
+
+                  finishedList.forEach(function(order) {
+                    const row = document.createElement('tr');
+
+                    const orderNo = order.orderNo || order.order_no || '';
+                    const gameName = order.gameName || order.game_name || '';
+                    const totalAmount = order.totalAmount != null ? order.totalAmount : (order.total_amount != null ? order.total_amount : '');
+                    const completeTimeRaw = order.completeTime || order.complete_time || '';
+                    const completeTime = formatOrderTime(completeTimeRaw);
+
+                    row.innerHTML = ''
+                            + '<td>' + String(orderNo) + '</td>'
+                            + '<td>' + String(gameName) + '</td>'
+                            + '<td>' + String(totalAmount) + '</td>'
+                            + '<td>' + String(completeTime) + '</td>';
+
+                    ordersTable.appendChild(row);
+                  });
+                })
+                .catch(function() {
+                  ordersTable.innerHTML = '<tr><td colspan="4" style="text-align: center; color: #999; padding: 40px;">订单加载失败</td></tr>';
+                });
+      } catch (e) {
+        ordersTable.innerHTML = '<tr><td colspan="4" style="text-align: center; color: #999; padding: 40px;">订单加载失败：' + e.message + '</td></tr>';
+      }
+    }
+
+    window.openFighterManagement = function(fighter) {
+      if (!fighter) return;
+      console.log('打开打手管理弹窗 fighter = ', fighter);
+      console.log('fighterId = ', fighter ? fighter.userId : null);
+      window.currentSelectedFighter = fighter;
+      currentFighter = fighter;
+
+      const fighterId = fighter.userId;
+      const fighterName = fighter.fighterName || fighter.nickname || fighter.username || ('用户' + (fighterId || ''));
+
       const title = document.getElementById('fighterManagementTitle');
       const nameDisplay = document.getElementById('fighterNameDisplay');
+      const ordersTable = document.getElementById('fighterOrdersTable');
 
       if (title) title.textContent = '打手管理 - ' + fighterName;
       if (nameDisplay) nameDisplay.textContent = fighterName;
 
-      // 生成订单表格
-      generateFighterOrders(fighterName);
+      if (ordersTable) {
+        ordersTable.innerHTML = '<tr><td colspan="4" style="text-align: center; color: #999; padding: 40px;">正在加载订单...</td></tr>';
+      }
 
-      // 显示弹窗
       if (fighterManagementModal) {
         fighterManagementModal.style.display = 'flex';
         document.body.style.overflow = 'hidden';
       }
+
+      if (fighterId) {
+        loadFighterOrders(fighterId);
+      } else if (ordersTable) {
+        ordersTable.innerHTML = '<tr><td colspan="4" style="text-align: center; color: #999; padding: 40px;">未找到打手ID</td></tr>';
+      }
     };
 
-    // 2. 生成打手订单表格
-    function generateFighterOrders(fighterName) {
-      const ordersTable = document.getElementById('fighterOrdersTable');
-      if (!ordersTable) return;
-
-      ordersTable.innerHTML = '';
-
-      const orders = fighterOrdersData[fighterName] || [];
-
-      if (orders.length === 0) {
-        const emptyRow = document.createElement('tr');
-        emptyRow.innerHTML = '<td colspan="5" style="text-align: center; color: #999; padding: 40px;">暂无完成订单</td>';
-        ordersTable.appendChild(emptyRow);
-        return;
-      }
-
-      orders.forEach(order => {
-        const row = document.createElement('tr');
-        row.innerHTML = `
-        <td>${order.id}</td>
-        <td>${order.game}</td>
-        <td>${order.type}</td>
-        <td>${order.amount}</td>
-        <td>${order.time}</td>
-      `;
-        ordersTable.appendChild(row);
-      });
-    }
-
-    // 3. 关闭打手管理弹窗
     function closeFighterManagementModal() {
       if (fighterManagementModal) {
         fighterManagementModal.style.display = 'none';
         document.body.style.overflow = 'auto';
         currentFighter = null;
+        window.currentSelectedFighter = null;
       }
     }
 
-    // 4. 关闭按钮事件
     if (closeFighterModalBtn) {
       closeFighterModalBtn.addEventListener('click', closeFighterManagementModal);
     }
 
-    // 5. 点击弹窗外部关闭
     fighterManagementModal?.addEventListener('click', function(event) {
       if (event.target === fighterManagementModal) {
         closeFighterManagementModal();
       }
     });
 
-    // 6. 移除打手按钮点击事件
     if (removeFighterBtn) {
-      removeFighterBtn.addEventListener('click', function() {
-        if (!currentFighter) {
+      removeFighterBtn.onclick = function() {
+        if (!window.currentSelectedFighter) {
           alert('请先选择打手');
           return;
         }
 
-        // 设置确认文本
-        const confirmText = document.getElementById('confirmRemoveText');
-        if (confirmText) {
-          confirmText.textContent = `确定要移除打手"${currentFighter}"吗？此操作不可撤销。`;
+        const fighterId = String(window.currentSelectedFighter.userId || '').trim();
+        const fighterName = window.currentSelectedFighter.fighterName
+                || window.currentSelectedFighter.nickname
+                || window.currentSelectedFighter.username
+                || ('用户' + fighterId);
+
+        if (!fighterId) {
+          alert('未找到打手ID');
+          return;
         }
 
-        // 显示确认弹窗
-        if (confirmRemoveModal) {
-          confirmRemoveModal.style.display = 'flex';
+        if (!confirm('确定要移除打手“' + fighterName + '”吗？此操作不可撤销。')) {
+          return;
         }
-      });
+
+        const body = new URLSearchParams();
+        body.append('userId', fighterId);
+
+        fetch(window.location.origin + '<%=request.getContextPath()%>' + '/club/member/remove', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
+          },
+          body: body.toString(),
+          credentials: 'same-origin'
+        })
+                .then(function(response) {
+                  return response.json();
+                })
+                .then(function(res) {
+                  if (!res || !res.success) {
+                    alert((res && (res.error || res.msg)) || '移除失败');
+                    return;
+                  }
+
+                  try {
+                    closeFighterManagementModal();
+                  } catch (e) {
+                    console.error('关闭弹窗失败：', e);
+                  }
+
+                  try {
+                    window.currentSelectedFighter = null;
+                    currentFighter = null;
+                  } catch (e) {
+                    console.error('清空当前打手失败：', e);
+                  }
+
+                  setTimeout(function() {
+                    try {
+                      var clubId = null;
+
+                      if (typeof window.getCurrentClubIdGlobal === 'function') {
+                        clubId = window.getCurrentClubIdGlobal();
+                      }
+
+                      if (clubId && typeof window.loadClubMembersGlobal === 'function') {
+                        window.loadClubMembersGlobal(clubId);
+                      } else {
+                        console.error('刷新成员列表失败：未拿到 clubId 或 loadClubMembersGlobal');
+                      }
+                    } catch (e) {
+                      console.error('刷新成员列表失败：', e);
+                    }
+
+                    try {
+                      if (typeof loadClubList === 'function') {
+                        loadClubList();
+                      }
+                    } catch (e) {
+                      console.error('刷新俱乐部列表失败：', e);
+                    }
+                  }, 100);
+
+                  alert('移除成功');
+                })
+                .catch(function(err) {
+                  console.error('移除打手请求失败：', err);
+                  alert('网络错误，请稍后重试');
+                });
+      };
     }
 
-    // 7. 确认移除弹窗功能
     function closeConfirmRemoveModal() {
       if (confirmRemoveModal) {
         confirmRemoveModal.style.display = 'none';
       }
     }
 
-    // 8. 确认弹窗关闭按钮
     if (closeConfirmModalBtn) {
       closeConfirmModalBtn.addEventListener('click', closeConfirmRemoveModal);
     }
 
-    // 9. 点击确认弹窗外部关闭
     confirmRemoveModal?.addEventListener('click', function(event) {
       if (event.target === confirmRemoveModal) {
         closeConfirmRemoveModal();
       }
     });
 
-    // 10. Yes按钮点击事件
     if (confirmYesBtn) {
       confirmYesBtn.addEventListener('click', function() {
-        if (currentFighter) {
-          // 模拟移除操作
-          setTimeout(() => {
-            alert(`打手"${currentFighter}"移除成功！`);
-
-            // 关闭所有弹窗
-            closeConfirmRemoveModal();
-            closeFighterManagementModal();
-
-            // 这里可以添加实际的移除逻辑
-            console.log('打手移除成功:', currentFighter);
-          }, 500);
-        }
+        closeConfirmRemoveModal();
       });
     }
 
-    // 11. No按钮点击事件
     if (confirmNoBtn) {
       confirmNoBtn.addEventListener('click', function() {
         closeConfirmRemoveModal();
@@ -1545,265 +1618,18 @@
     });
   });
 
-  // 俱乐部信息编辑功能
-  document.addEventListener('DOMContentLoaded', function() {
-    // 获取DOM元素
-    const clubEditModal = document.getElementById('clubEditModal');
-    const closeClubEditBtn = clubEditModal?.querySelector('.close-modal');
-    const clubEditForm = document.getElementById('clubEditForm');
-    const clubAvatarInput = document.getElementById('clubAvatarInput');
-    const clubAvatarPreview = document.getElementById('clubAvatarPreview');
-    const uploadAvatarBtn = document.getElementById('uploadAvatarBtn');
-    const editClubIntro = document.getElementById('editClubIntro');
-    const editCharCount = document.getElementById('editCharCount');
-    const editSuccessModal = document.getElementById('editSuccessModal');
-    const closeEditSuccessBtn = editSuccessModal?.querySelector('.close-modal');
-    const editSuccessOkBtn = document.getElementById('editSuccessOkBtn');
+  // 俱乐部信息编辑旧的演示脚本已移除，改由下方真实接口逻辑接管。
 
-    // 模拟当前俱乐部信息
-    let currentClubInfo = {
-      name: '默认俱乐部',
-      intro: '这是一个专业的电竞俱乐部，致力于培养优秀的电竞选手。我们提供全方位的培训和支持，帮助选手实现电竞梦想。',
-      avatar: '/images/default-club.png'
-    };
-
-    // 当前选择的头像文件
-    let selectedAvatarFile = null;
-
-    // 1. 打开俱乐部信息编辑弹窗
-    window.openClubEditModal = function() {
-      // 设置表单默认值
-      document.getElementById('editClubName').value = currentClubInfo.name;
-      document.getElementById('editClubIntro').value = currentClubInfo.intro;
-      editCharCount.textContent = currentClubInfo.intro.length;
-
-      // 设置头像预览
-      resetAvatarPreview();
-
-      // 显示弹窗
-      if (clubEditModal) {
-        clubEditModal.style.display = 'flex';
-        document.body.style.overflow = 'hidden';
-      }
-    };
-
-    // 2. 重置头像预览
-    function resetAvatarPreview() {
-      if (clubAvatarPreview) {
-        clubAvatarPreview.innerHTML = `
-        <div class="default-avatar">
-          <span>点击上传头像</span>
-        </div>
-      `;
-
-        // 添加点击事件
-        clubAvatarPreview.addEventListener('click', triggerAvatarInput);
-      }
-      selectedAvatarFile = null;
-    }
-
-    // 3. 触发头像文件选择
-    function triggerAvatarInput() {
-      if (clubAvatarInput) {
-        clubAvatarInput.click();
-      }
-    }
-
-    // 4. 头像文件选择事件
-    if (clubAvatarInput) {
-      clubAvatarInput.addEventListener('change', function(event) {
-        const file = event.target.files[0];
-        if (file) {
-          handleAvatarSelection(file);
-        }
-      });
-    }
-
-    // 5. 处理头像选择
-    function handleAvatarSelection(file) {
-      if (!file.type.startsWith('image/')) {
-        alert('请选择图片文件');
-        return;
-      }
-
-      if (file.size > 5 * 1024 * 1024) { // 5MB限制
-        alert('图片大小不能超过5MB');
-        return;
-      }
-
-      selectedAvatarFile = file;
-
-      // 显示预览
-      const reader = new FileReader();
-      reader.onload = function(e) {
-        if (clubAvatarPreview) {
-          clubAvatarPreview.innerHTML = `<img src="${e.target.result}" alt="俱乐部头像预览">`;
-          clubAvatarPreview.removeEventListener('click', triggerAvatarInput);
-        }
-      };
-      reader.readAsDataURL(file);
-    }
-
-    // 6. 上传头像按钮事件
-    if (uploadAvatarBtn) {
-      uploadAvatarBtn.addEventListener('click', triggerAvatarInput);
-    }
-
-    // 7. 字符计数功能
-    if (editClubIntro && editCharCount) {
-      editClubIntro.addEventListener('input', function() {
-        const currentLength = this.value.length;
-        editCharCount.textContent = currentLength;
-
-        // 如果超过限制，截断文本
-        if (currentLength > 999) {
-          this.value = this.value.substring(0, 999);
-          editCharCount.textContent = 999;
-        }
-      });
-    }
-
-    // 8. 关闭俱乐部编辑弹窗
-    function closeClubEditModal() {
-      if (clubEditModal) {
-        clubEditModal.style.display = 'none';
-        document.body.style.overflow = 'auto';
-
-        // 重置表单
-        clubEditForm.reset();
-        resetAvatarPreview();
-      }
-    }
-
-    // 9. 关闭按钮事件
-    if (closeClubEditBtn) {
-      closeClubEditBtn.addEventListener('click', closeClubEditModal);
-    }
-
-    // 10. 点击弹窗外部关闭
-    clubEditModal?.addEventListener('click', function(event) {
-      if (event.target === clubEditModal) {
-        closeClubEditModal();
-      }
-    });
-
-    // 11. 表单提交事件
-    if (clubEditForm) {
-      clubEditForm.addEventListener('submit', function(event) {
-        event.preventDefault();
-
-        // 获取表单数据
-        const clubName = document.getElementById('editClubName').value.trim();
-        const clubIntro = document.getElementById('editClubIntro').value.trim();
-
-        // 表单验证
-        let isValid = true;
-
-        // 验证俱乐部名称
-        if (!clubName) {
-          isValid = false;
-          alert('请输入俱乐部名称');
-          document.getElementById('editClubName').focus();
-          return;
-        }
-
-        // 验证俱乐部简介
-        if (!clubIntro) {
-          isValid = false;
-          alert('请输入俱乐部简介');
-          document.getElementById('editClubIntro').focus();
-          return;
-        }
-
-        if (!isValid) return;
-
-        // 显示加载状态
-        const submitBtn = clubEditForm.querySelector('.btn-primary');
-        const originalText = submitBtn.textContent;
-        submitBtn.textContent = '保存中...';
-        submitBtn.disabled = true;
-
-        // 模拟网络请求延迟
-        setTimeout(() => {
-          // 更新俱乐部信息
-          currentClubInfo.name = clubName;
-          currentClubInfo.intro = clubIntro;
-
-          // 如果有新头像，更新头像信息
-          if (selectedAvatarFile) {
-            currentClubInfo.avatar = URL.createObjectURL(selectedAvatarFile);
-          }
-
-          // 恢复按钮状态
-          submitBtn.textContent = originalText;
-          submitBtn.disabled = false;
-
-          // 关闭编辑弹窗
-          closeClubEditModal();
-
-          // 显示成功提示
-          showEditSuccessModal();
-
-          console.log('俱乐部信息更新成功:', currentClubInfo);
-        }, 1000);
-      });
-    }
-
-    // 12. 显示编辑成功提示
-    function showEditSuccessModal() {
-      if (editSuccessModal) {
-        editSuccessModal.style.display = 'flex';
-        document.body.style.overflow = 'hidden';
-      }
-    }
-
-    // 13. 关闭成功提示弹窗
-    function closeEditSuccessModal() {
-      if (editSuccessModal) {
-        editSuccessModal.style.display = 'none';
-        document.body.style.overflow = 'auto';
-      }
-    }
-
-    // 14. 成功提示弹窗关闭按钮
-    if (closeEditSuccessBtn) {
-      closeEditSuccessBtn.addEventListener('click', closeEditSuccessModal);
-    }
-
-    // 15. 成功提示弹窗确定按钮
-    if (editSuccessOkBtn) {
-      editSuccessOkBtn.addEventListener('click', closeEditSuccessModal);
-    }
-
-    // 16. 点击成功提示弹窗外部关闭
-    editSuccessModal?.addEventListener('click', function(event) {
-      if (event.target === editSuccessModal) {
-        closeEditSuccessModal();
-      }
-    });
-
-    // 17. 按ESC键关闭弹窗
-    document.addEventListener('keydown', function(event) {
-      if (event.key === 'Escape') {
-        if (clubEditModal && clubEditModal.style.display === 'flex') {
-          closeClubEditModal();
-        }
-        if (editSuccessModal && editSuccessModal.style.display === 'flex') {
-          closeEditSuccessModal();
-        }
-      }
-    });
-  });
 
   // 管理申请功能
   document.addEventListener('DOMContentLoaded', function() {
     // 获取DOM元素
     const manageApplicationsModal = document.getElementById('manageApplicationsModal');
-    const closeApplicationsBtn = manageApplicationsModal?.querySelector('.close-modal');
+    const closeApplicationsBtn = manageApplicationsModal?.querySelector('.club-manageappli-close-modal');
     const applicationsList = document.getElementById('applicationsList');
     const noApplications = document.getElementById('noApplications');
     const applicationSuccessModal = document.getElementById('applicationSuccessModal');
-    const closeApplicationSuccessBtn = applicationSuccessModal?.querySelector('.close-modal');
+    const closeApplicationSuccessBtn = applicationSuccessModal?.querySelector('.club-applisuccess-close-modal');
     const applicationSuccessOkBtn = document.getElementById('applicationSuccessOkBtn');
     const applicationSuccessTitle = document.getElementById('applicationSuccessTitle');
     const applicationSuccessText = document.getElementById('applicationSuccessText');
@@ -1877,20 +1703,19 @@
                 application.details.substring(0, 15) + '...' :
                 application.details;
 
-        applicationItem.innerHTML = `
-        <div class="application-info">
-          <div class="application-id">申请人ID: ${application.id}</div>
-          <div class="application-nickname">昵称: ${application.nickname}</div>
-          <div class="application-details">
-            <span class="details-truncated" title="${application.details}">申请详细: ${truncatedDetails}</span>
-            <div class="details-full">${application.details}</div>
-          </div>
-        </div>
-        <div class="application-actions">
-          <button type="button" class="btn-approve" data-id="${application.id}">同意</button>
-          <button type="button" class="btn-reject" data-id="${application.id}">拒绝</button>
-        </div>
-      `;
+        applicationItem.innerHTML = ''
+                + '<div class="application-info">'
+                +   '<div class="application-id">申请人ID: ' + application.id + '</div>'
+                +   '<div class="application-nickname">昵称: ' + application.nickname + '</div>'
+                +   '<div class="application-details">'
+                +     '<span class="details-truncated" title="' + application.details + '">申请详细: ' + truncatedDetails + '</span>'
+                +     '<div class="details-full">' + application.details + '</div>'
+                +   '</div>'
+                + '</div>'
+                + '<div class="application-actions">'
+                +   '<button type="button" class="btn-approve" data-id="' + application.id + '">同意</button>'
+                +   '<button type="button" class="btn-reject" data-id="' + application.id + '">拒绝</button>'
+                + '</div>';
 
         applicationsList.appendChild(applicationItem);
       });
@@ -1935,32 +1760,18 @@
           applicationsData.splice(index, 1);
         }
 
-        // 显示成功提示
-        showApplicationSuccessModal(action, application.nickname);
+        // 显示系统默认成功提示
+        if (action === 'approve') {
+          alert('同意申请成功！\n已同意"' + application.nickname + '"的加入申请！');
+        } else {
+          alert('拒绝申请成功！\n已拒绝"' + application.nickname + '"的加入申请。');
+        }
 
         // 重新生成申请列表
         generateApplicationsList();
 
         console.log((action === 'approve' ? '同意' : '拒绝') + '申请成功:', application);
       }, 500);
-    }
-
-    // 5. 显示申请处理成功提示
-    function showApplicationSuccessModal(action, nickname) {
-      if (applicationSuccessTitle && applicationSuccessText) {
-        if (action === 'approve') {
-          applicationSuccessTitle.textContent = '同意申请成功';
-          applicationSuccessText.textContent = `已同意"${nickname}"的加入申请！`;
-        } else {
-          applicationSuccessTitle.textContent = '拒绝申请成功';
-          applicationSuccessText.textContent = `已拒绝"${nickname}"的加入申请。`;
-        }
-      }
-
-      if (applicationSuccessModal) {
-        applicationSuccessModal.style.display = 'flex';
-        document.body.style.overflow = 'hidden';
-      }
     }
 
     // 6. 关闭管理申请弹窗
@@ -2026,7 +1837,7 @@
     // 获取DOM元素
     const postOrderBtn = document.getElementById('postOrderBtn');
     const postOrderModal = document.getElementById('postOrderModal');
-    const closeOrderModalBtn = document.querySelector('#postOrderModal .close-modal');
+    const closeOrderModalBtn = document.querySelector('#postOrderModal .order-post-close-modal');
     const cancelOrderBtn = document.getElementById('cancelOrderBtn');
     const postOrderForm = document.getElementById('postOrderForm');
     const orderDetails = document.getElementById('orderDetails');
@@ -2130,7 +1941,7 @@
   document.addEventListener('DOMContentLoaded', function() {
     // 获取DOM元素
     const manageOrderModal = document.getElementById('manageOrderModal');
-    const closeManageOrderBtn = document.querySelector('#manageOrderModal .close-modal');
+    const closeManageOrderBtn = document.querySelector('#manageOrderModal .order-manage-close-modal');
     const manageOrderForm = document.getElementById('manageOrderForm');
     const deleteOrderBtn = document.getElementById('deleteOrderBtn');
     const manageOrderDetails = document.getElementById('manageOrderDetails');
@@ -2162,7 +1973,7 @@
         currentOrderId = orderId;
 
         // 设置弹窗内容
-        manageOrderTitle.textContent = '管理订单 - ' + this.textContent.trim();
+        manageOrderTitle.textContent = this.textContent.trim();
         manageOrderType.value = orderType;
         manageGameName.value = gameName;
         manageOrderAmount.value = orderAmount;
@@ -2239,7 +2050,7 @@
         }
 
         // 更新订单数据
-        const currentOrder = document.querySelector(`.order-item[data-id="${currentOrderId}"]`);
+        const currentOrder = document.querySelector('.order-item[data-id="' + currentOrderId + '"]');
         if (currentOrder) {
           currentOrder.setAttribute('data-type', orderType);
           currentOrder.setAttribute('data-game', gameName);
@@ -2271,7 +2082,7 @@
         // 确认删除
         if (confirm('确定要删除这个订单吗？此操作不可撤销。')) {
           // 删除订单项
-          const currentOrder = document.querySelector(`.order-item[data-id="${currentOrderId}"]`);
+          const currentOrder = document.querySelector('.order-item[data-id="' + currentOrderId + '"]');
           if (currentOrder) {
             currentOrder.remove();
           }
@@ -2295,7 +2106,7 @@
     // 获取DOM元素
     const personalCenterBtn = document.getElementById('personalCenterBtn');
     const personalCenterModal = document.getElementById('personalCenterModal');
-    const closePersonalModalBtn = document.querySelector('#personalCenterModal .close-modal');
+    const closePersonalModalBtn = document.querySelector('#personalCenterModal .personal-close-modal');
     const personalCenterForm = document.getElementById('personalCenterForm');
     const personalIntro = document.getElementById('personalIntro');
     const personalCharCount = document.getElementById('personalCharCount');
@@ -2480,11 +2291,11 @@
     // 获取DOM元素
     const walletBtn = document.getElementById('walletBtn');
     const walletModal = document.getElementById('walletModal');
-    const closeWalletModalBtn = document.querySelector('#walletModal .close-modal');
+    const closeWalletModalBtn = document.querySelector('#walletModal .wallet-close-modal');
     const walletForm = document.getElementById('walletForm');
-    const amountOptions = document.querySelectorAll('.amount-option');
+    const amountOptions = document.querySelectorAll('.wallet-amount-option');
     const customAmountInput = document.getElementById('customAmount');
-    const balanceAmount = document.querySelector('.balance-amount');
+    const balanceAmount = document.querySelector('.wallet-balance-amount');
 
     // 当前选择的金额
     let selectedAmount = 0;
@@ -2594,7 +2405,7 @@
         }
 
         // 显示加载状态
-        const submitBtn = this.querySelector('.btn-primary');
+        const submitBtn = this.querySelector('.wallet-btn-primary');
         const originalText = submitBtn.textContent;
         submitBtn.textContent = '充值中...';
         submitBtn.disabled = true;
@@ -2627,12 +2438,98 @@
     }
   });
 
+  // 登录功能
+  document.addEventListener('DOMContentLoaded', function() {
+    // 获取DOM元素
+    const loginBtn = document.querySelector('.login-btn');
+    const loginLeft = document.querySelector('.login-left');
+    const loginLeftIntro = document.querySelector('.login-left-intro');
+    const accountInput = document.getElementById('account');
+    const passwordInput = document.getElementById('password');
+
+    // 登录按钮点击事件
+    if (loginBtn) {
+      loginBtn.addEventListener('click', function() {
+        const account = accountInput.value.trim();
+        const password = passwordInput.value.trim();
+
+        // 简单的表单验证
+        if (!account) {
+          alert('请输入账号');
+          accountInput.focus();
+          return;
+        }
+
+        if (!password) {
+          alert('请输入密码');
+          passwordInput.focus();
+          return;
+        }
+
+        // 显示加载状态
+        const originalText = loginBtn.textContent;
+        loginBtn.textContent = '登录中...';
+        loginBtn.disabled = true;
+
+        // 模拟登录请求
+        setTimeout(() => {
+          // 恢复按钮状态
+          loginBtn.textContent = originalText;
+          loginBtn.disabled = false;
+
+          // 模拟登录成功
+          if (account && password) {
+            // 隐藏登录表单，显示用户信息
+            loginLeft.style.display = 'none';
+            loginLeftIntro.style.display = 'flex';
+
+            // 更新用户信息（这里可以替换为从服务器获取的实际数据）
+            updateUserInfo({
+              name: account,
+              uid: generateUID(),
+              avatar: '/images/default_club.png',
+              postedOrders: 15,
+              completedOrders: 12,
+              intro: '热爱游戏的玩家，擅长各种竞技类游戏，有丰富的游戏经验。希望在这里找到志同道合的游戏伙伴！'
+            });
+
+            console.log('登录成功，用户信息已更新');
+          } else {
+            alert('登录失败，请检查账号和密码');
+          }
+        }, 1000);
+      });
+    }
+
+    // 更新用户信息函数
+    function updateUserInfo(userData) {
+      const userAvatar = document.querySelector('.user-avatar');
+      const userName = document.querySelector('.user-name');
+      const userUid = document.querySelector('.user-uid');
+      const postedOrders = document.querySelector('.stat-item:nth-child(1) .stat-value');
+      const completedOrders = document.querySelector('.stat-item:nth-child(2) .stat-value');
+      const introContent = document.querySelector('.intro-content');
+
+      if (userAvatar) userAvatar.src = userData.avatar;
+      if (userName) userName.textContent = userData.name;
+      if (userUid) userUid.textContent = 'UID: ' + userData.uid;
+      if (postedOrders) postedOrders.textContent = userData.postedOrders;
+      if (completedOrders) completedOrders.textContent = userData.completedOrders;
+      if (introContent) introContent.textContent = userData.intro;
+    }
+
+    // 生成随机UID
+    function generateUID() {
+      return '8889' + Math.floor(Math.random() * 10000).toString().padStart(4, '0');
+    }
+  });
+
   // 用户注册弹窗功能
   document.addEventListener('DOMContentLoaded', function() {
     // 获取DOM元素
     const registerBtn = document.getElementById('registerBtn');
     const registerModal = document.getElementById('registerModal');
-    const closeRegisterModalBtn = document.querySelector('#registerModal .close-modal');
+    const closeRegisterModalBtn = document.querySelector('#registerModal .register-close-modal');
     const registerForm = document.getElementById('registerForm');
 
     // 打开注册弹窗
@@ -2739,7 +2636,7 @@
     // 获取DOM元素
     const securityCenterBtn = document.getElementById('securityCenterBtn');
     const securityCenterModal = document.getElementById('securityCenterModal');
-    const closeSecurityModalBtn = document.querySelector('#securityCenterModal .close-modal');
+    const closeSecurityModalBtn = document.querySelector('#securityCenterModal .security-close-modal');
     const newPasswordInput = document.getElementById('newPassword');
     const confirmPasswordInput = document.getElementById('confirmPassword');
     const lengthIndicator = document.getElementById('lengthIndicator');
@@ -2788,8 +2685,8 @@
     // 更新指示器状态
     function updateIndicator(indicator, isValid) {
       if (isValid) {
-        indicator.style.backgroundColor = '#007bff';
-        indicator.style.borderColor = '#007bff';
+        indicator.style.backgroundColor = '#FEDE00';
+        indicator.style.borderColor = '#FEDE00';
       } else {
         indicator.style.backgroundColor = 'transparent';
         indicator.style.borderColor = '#ccc';
@@ -2865,36 +2762,38 @@
 </script>
 
 
-
-
-
 </body>
 <style>
+  /* 全局重置样式：清除所有元素的内外边距 */
   * {
     margin: 0;
     padding: 0;
   }
+  /* 页面主体样式：设置字体、背景图片和文字颜色 */
   body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-image: url('/images/background.png'); /* 替换为您的背景图片路径 */
+    background-image: url('${pageContext.request.contextPath}/images/background.png'); /* 替换为您的背景图片路径 */
     background-size: cover; /* 背景图片覆盖整个页面 */
     background-position: center; /* 背景图片居中 */
     background-repeat: no-repeat; /* 不重复背景图片 */
     background-attachment: fixed; /* 背景图片固定不滚动 */
     color: #ffffff;
   }
+  /* 主容器样式：设置居中布局和内边距 */
   .container {
     margin: 0 auto;
     padding: 20px;
   }
+  /* 主要内容区域样式：使用网格布局，设置三列布局和间距 */
   .main-content {
     display: grid;
     grid-template-columns: 1fr 2fr 1fr;
     position: relative;
-    gap: 20px;
+    gap: 80px;
     margin: 10px 80px;
     padding: 10px 10px;
   }
+  /* 俱乐部卡片样式：设置卡片外观、尺寸和布局 */
   .club-card {
     background: #222222;
     border-radius: 0 16px 16px 16px;
@@ -2908,10 +2807,12 @@
     flex-direction: column;
     margin-left: auto;
   }
+  /* 俱乐部卡片悬停效果：添加3D位移和阴影增强效果 */
   .club-card:hover {
     transform: translate3d(5px, 5px, 0);
     box-shadow: 0 15px 40px rgba(0,0,0,0.3);
   }
+  /* 俱乐部卡片标题样式：设置标题文字样式和布局 */
   .club-card h1 {
     color: #ffffff;
     margin-bottom: 15px; /* 适当下边距 */
@@ -2923,6 +2824,7 @@
     margin-bottom: 4%;
     flex-shrink: 0;
   }
+  /* 俱乐部特性列表样式：设置网格布局和滚动效果 */
   .club-features {
     list-style: none;
     display: grid;
@@ -2931,20 +2833,24 @@
     flex-grow: 1;
     overflow-y: auto;
   }
-  /* Webkit browsers (Chrome, Safari) */
+  /* Webkit浏览器滚动条隐藏：在Chrome和Safari中隐藏滚动条 */
   .club-features::-webkit-scrollbar {
     display: none;
   }
+  /* 俱乐部名称样式：设置俱乐部名称的文字样式 */
   .club-card-name {
     font-size: 1.2rem; /* 适中字体大小 */
     font-weight: bold;
     margin-top: 2%;
   }
+  /* 俱乐部介绍文字样式：设置俱乐部介绍的文字样式和颜色 */
   .club-card-intro {
     font-size: 0.8rem; /* 适中字体大小 */
     margin-top: 2%;
     color: #007bff;
   }
+
+  /* 俱乐部特性列表项样式：设置列表项的外观、尺寸和交互效果 */
   .club-features li {
     width: 80%;
     height: 100%;
@@ -2961,11 +2867,11 @@
     line-height: 1.2; /* 适中行高 */
     transition: all 0.3s ease;
     font-size: 0.9rem; /* 稍微减小字体大小 */
-    border-radius: 25px;
     border-radius: 0 16px 16px 16px;
     border: 5px solid #000000; /* 使用简写属性 */
     background-color: #000000;
   }
+  /* 俱乐部特性列表项悬停效果：添加悬停时的颜色变化和放大效果 */
   .club-features li:hover {
     font-weight: bold;
     transform: scale(1.05);
@@ -2976,7 +2882,7 @@
     border: 5px solid #000000; /* 使用简写属性 */
     cursor: pointer;
   }
-  /* 搜索框容器 */
+  /* 俱乐部搜索框容器样式：设置搜索框容器的布局和外观 */
   .club-search-con {
     background-color: #000000;
     justify-content: center;
@@ -2989,7 +2895,7 @@
     width: 85%;
     display: flex;
   }
-  /* 搜索输入框 */
+  /* 俱乐部搜索输入框样式：设置搜索输入框的外观和文字样式 */
   .club-search-input {
     font-size: 0.8rem;
     flex: 1;
@@ -3001,11 +2907,12 @@
     margin-top: 1%;
   }
 
+  /* 俱乐部搜索输入框占位符样式：设置占位符文字的颜色和大小 */
   .club-search-input::placeholder {
     color: #888888;
     font-size: 0.8rem;
   }
-  /* 搜索按钮 */
+  /* 俱乐部搜索按钮样式：设置搜索按钮的外观和布局 */
   .club-search-btn {
     padding: 12px 30px;
     display: flex;
@@ -3024,17 +2931,18 @@
     border: 5px solid #000000; /* 使用简写属性 */
   }
 
+  /* 俱乐部搜索按钮悬停效果：悬停时的颜色变化和放大效果 */
   .club-search-btn:hover {
     font-weight: bold;
     background-color: #FEDE00;
     color: #000000;
-    border-color: #000;
     border-radius: 0px 16px 16px 16px;
-    border: 5px solid #FEDE00; /* 使用简写属性 */
+    border: 5px solid #000000; /* 使用简写属性 */
     cursor: pointer;
-
+    transform: scale(1.05);
   }
 
+  /* 俱乐部按钮容器样式：设置按钮容器的布局和间距 */
   .club-btn-con {
     display: flex;
     justify-content: center;
@@ -3043,6 +2951,7 @@
     margin-top: 0%;
     margin-bottom: 0%;
   }
+  /* 俱乐部按钮样式：设置俱乐部按钮的外观、尺寸和交互效果 */
   .club-btn {
     display: inline-block;
     padding: 12px 20px;
@@ -3060,6 +2969,7 @@
     max-width: 150px;
     white-space: nowrap;
   }
+  /* 俱乐部按钮悬停效果：悬停时的颜色变化和放大效果 */
   .club-btn:hover {
     font-weight: bold;
     transform: scale(1.05);
@@ -3071,6 +2981,7 @@
     cursor: pointer;
   }
 
+  /* 订单卡片样式：设置订单卡片的外观、尺寸和布局 */
   .order-card {
     background: #222222;
     border-radius: 0 16px 16px 16px;
@@ -3084,10 +2995,12 @@
     flex-direction: column;
     margin-right: auto;
   }
+  /* 订单卡片悬停效果：添加3D位移和阴影增强效果 */
   .order-card:hover {
-    transform: translateY(-5px);
+    transform: translate3d(5px, 5px, 0);
     box-shadow: 0 15px 40px rgba(0,0,0,0.3);
   }
+  /* 订单卡片标题样式：设置订单卡片标题的文字样式和布局 */
   .order-card h1 {
     color: #ffffff;
     margin-bottom: 15px;
@@ -3099,6 +3012,7 @@
     margin-bottom: 4%;
     flex-shrink: 0;
   }
+  /* 订单特性列表样式：设置订单列表的网格布局和滚动效果 */
   .order-features {
     list-style: none;
     display: grid;
@@ -3107,19 +3021,23 @@
     flex-grow: 1;
     overflow-y: auto;
   }
+  /* Webkit浏览器订单列表滚动条隐藏：在Chrome和Safari中隐藏滚动条 */
   .order-features::-webkit-scrollbar {
     display: none;
   }
+  /* 订单名称样式：设置订单名称的文字样式 */
   .order-card-name {
     font-size: 1.2rem;
     font-weight: bold;
     margin-top: 2%;
   }
+  /* 订单介绍文字样式：设置订单介绍的文字样式和颜色 */
   .order-card-intro {
     font-size: 0.8rem;
     margin-top: 2%;
     color: #007bff;
   }
+  /* 订单特性列表项样式：设置订单列表项的外观、尺寸和交互效果 */
   .order-features li {
     width: 80%;
     height: 100%;
@@ -3136,11 +3054,11 @@
     line-height: 1.2;
     transition: all 0.3s ease;
     font-size: 0.9rem;
-    border-radius: 25px;
     border-radius: 0 16px 16px 16px;
     border: 5px solid #000000;
     background-color: #000000;
   }
+  /* 订单特性列表项悬停效果：悬停时的颜色变化和放大效果 */
   .order-features li:hover {
     font-weight: bold;
     transform: scale(1.05);
@@ -3151,7 +3069,7 @@
     border: 5px solid #000000;
     cursor: pointer;
   }
-  /* 订单搜索框容器 */
+  /* 订单搜索框容器样式：设置订单搜索框容器的布局和外观 */
   .order-search-con {
     background-color: #000000;
     justify-content: center;
@@ -3164,7 +3082,7 @@
     width: 85%;
     display: flex;
   }
-  /* 订单搜索输入框 */
+  /* 订单搜索输入框样式：设置订单搜索输入框的外观和文字样式 */
   .order-search-input {
     font-size: 0.8rem;
     flex: 1;
@@ -3176,11 +3094,12 @@
     margin-top: 2%;
   }
 
+  /* 订单搜索输入框占位符样式：设置占位符文字的颜色和大小 */
   .order-search-input::placeholder {
     color: #888888;
     font-size: 0.8rem;
   }
-  /* 订单搜索按钮 */
+  /* 订单搜索按钮样式：设置订单搜索按钮的外观和布局 */
   .order-search-btn {
     padding: 12px 30px;
     display: flex;
@@ -3199,6 +3118,7 @@
     border: 5px solid #000000; /* 使用简写属性 */
   }
 
+  /* 订单搜索按钮悬停效果：悬停时的颜色变化和放大效果 */
   .order-search-btn:hover {
     font-weight: bold;
     background-color: #FEDE00;
@@ -3207,8 +3127,10 @@
     border-radius: 0 16px 16px 16px;
     border: 5px solid #FEDE00;
     cursor: pointer;
+    transform: scale(1.05);
   }
 
+  /* 订单按钮容器样式：设置订单按钮容器的布局和间距 */
   .order-btn-con {
     display: flex;
     justify-content: center;
@@ -3217,6 +3139,7 @@
     margin-top: 0%;
     margin-bottom: 0%;
   }
+  /* 订单按钮样式：设置订单按钮的外观、尺寸和交互效果 */
   .order-btn {
     display: inline-block;
     padding: 12px 20px;
@@ -3235,6 +3158,7 @@
     max-width: 150px;
     white-space: nowrap;
   }
+  /* 订单按钮悬停效果：悬停时的颜色变化和放大效果 */
   .order-btn:hover {
     font-weight: bold;
     transform: scale(1.05);
@@ -3246,6 +3170,7 @@
     cursor: pointer;
   }
 
+  /* 管理员卡片样式：设置管理员卡片的外观、尺寸和交互效果 */
   .admin-card {
     background: #222222;
     border-radius: 0 16px 16px 16px;
@@ -3254,12 +3179,15 @@
     box-shadow: 0 10px 30px rgba(0,0,0,0.2);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     height: 480px;
-    min-width: 600px;
+    width: 105%;
+    margin-left: -4.75%;
   }
+  /* 管理员卡片悬停效果：添加3D位移和阴影增强效果 */
   .admin-card:hover {
     transform: translate3d(5px, 5px, 0);
     box-shadow: 0 15px 40px rgba(0,0,0,0.3);
   }
+  /* 管理员卡片标题样式：设置管理员卡片标题的文字样式和布局 */
   .admin-card h1 {
     color: #ffffff;
     margin-bottom: 3%;
@@ -3268,6 +3196,7 @@
     font-weight: bold;
     text-align: left;
   }
+  /* 管理员卡片内部容器样式：设置内部容器的布局和尺寸 */
   .admin-card-2{
     display: flex;
     justify-content: flex-start;
@@ -3275,22 +3204,27 @@
     height: 280px;
     padding: 10px 10px;
   }
+  /* 登录左侧区域样式：设置登录表单区域的布局和边框 */
   .login-left{
     flex: 1.5;
     border-right: 2px solid rgba(0, 0, 0, 0.4);
     padding-right: 2%;
     padding-left: 2%;
+    height: 125%; /* 设置分隔线高度为80% */
   }
 
+  /* 表单组样式：设置表单元素之间的间距 */
   .form-group{
     margin-bottom: 2%;
   }
+  /* 表单标签样式：设置表单标签的文字样式和颜色 */
   .form-label-1{
     color: #007bff;
     font-size: 1rem;
     font-weight: bold;
     text-align: left;
   }
+  /* 表单输入框样式：设置输入框的外观、尺寸和文字样式 */
   .form-input{
     height: 15%;
     width: 100%;
@@ -3302,9 +3236,11 @@
     background-color: #000000;
     color: #ffffff;
   }
+  /* 表单输入框焦点状态：移除默认的焦点轮廓 */
   .form-input:focus{
     outline: none;
   }
+  /* 记住我复选框容器样式：设置复选框容器的布局和间距 */
   .remember-me{
     margin-bottom: 10px;
     margin-top: 5px;
@@ -3312,6 +3248,7 @@
     align-items: center;
 
   }
+  /* 记住我复选框样式：设置复选框的尺寸和外观 */
   .remember-me input[type="checkbox"] {
     width: 20px;
     height: 20px;
@@ -3319,21 +3256,25 @@
     cursor: pointer;
     accent-color: #000000;
   }
+  /* 记住我复选框选中状态：设置选中时的背景和文字颜色 */
   .remember-me input[type="checkbox"]:checked {
     background-color: #000000;
     color: #ffffff;
   }
 
+  /* 记住我标签样式：设置标签文字的大小和间距 */
   .remember-label{
     font-size: 1rem;
     margin-left: 5px;
   }
+  /* 登录按钮容器样式：设置登录按钮容器的布局和位置 */
   .login-btn-con{
     display: flex;
     justify-content: center;
     align-items: center;
     margin-top: 12%;
   }
+  /* 登录按钮样式：设置登录按钮的外观、尺寸和交互效果 */
   .login-btn {
     display: flex;
     justify-content: center;
@@ -3347,7 +3288,427 @@
     font-size: 1.2rem;
     width: 50%;
   }
+  /* 登录按钮悬停效果：悬停时的颜色变化和放大效果 */
   .login-btn:hover {
+    font-weight: bold;
+    transform: scale(1.05);
+    background-color: #FEDE00;
+    color: #000000;
+    border-radius: 0 16px 16px 16px;
+    border: 5px solid #000000; /* 使用简写属性 */
+    cursor: pointer;
+  }
+  /* 注册链接容器样式：设置注册链接容器的布局和位置 */
+  .register{
+    flex: 1;
+    display: flex;
+    height: 8%;
+    margin-top: 4.5%;
+    margin-left: -5%;
+  }
+  /* 注册链接样式：设置注册链接的文字样式和颜色 */
+  .register-link{
+    font-size: 0.9rem;
+    color: #007bff;
+    text-decoration: none;
+  }
+  /* 注册链接悬停效果：悬停时添加下划线 */
+  .register-link:hover {
+    text-decoration: underline;
+  }
+  /* 登录右侧区域样式：设置右侧区域的背景颜色和布局 */
+  .login-right {
+    flex: 1;
+    background-color: #222222;
+  }
+
+  /* 登录后的用户信息展示区域样式 */
+  .login-left-intro {
+    flex: 1.5;
+    border-right: 2px solid rgba(0, 0, 0, 0.4);
+    padding-right: 2%;
+    height: 125%; /* 设置分隔线高度为80% */
+    padding-left: 2%;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  /* 用户基本信息容器样式 */
+  .login-left-intro-user-basic-info {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 10px 0;
+  }
+
+  /* 用户头像容器样式 */
+  .login-left-intro-user-avatar-container {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 3px solid #000000;
+    background-color: #000000;
+  }
+
+  /* 用户头像样式 */
+  .login-left-intro-user-avatar {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  /* 用户文本信息样式 */
+  .login-left-intro-user-text-info {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  /* 用户名样式 */
+  .login-left-intro-user-name {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #ffffff;
+  }
+
+  /* 用户UID样式 */
+  .login-left-intro-user-uid {
+    font-size: 0.9rem;
+    color: #007bff;
+  }
+
+  /* 用户统计信息样式 */
+  .login-left-intro-user-stats {
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+    padding: 15px 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.5);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+  }
+
+  /* 统计项样式 */
+  .login-left-intro-stat-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1;
+  }
+
+  /* 统计标签样式 */
+  .login-left-intro-stat-label {
+    font-size: 0.8rem;
+    color: #ffffff;
+    margin-bottom: 5px;
+  }
+
+  /* 统计值样式 */
+  .login-left-intro-stat-value {
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: #FEDE00;
+  }
+
+  /* 用户个人简介样式 */
+  .login-left-intro-user-intro {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+  }
+
+  /* 简介标签样式 */
+  .login-left-intro-intro-label {
+    font-size: 1rem;
+    font-weight: bold;
+    color: #007bff;
+  }
+
+  /* 简介内容样式 */
+  .login-left-intro-intro-content {
+    font-size: 0.9rem;
+    line-height: 1.4;
+    color: #ffffff;
+    background-color: #000000;
+    border-radius: 0 16px 16px 16px;
+    border: 5px solid #000000;
+    padding: 15px;
+    flex: 1;
+    overflow-y: auto;
+  }
+
+  /* 简介内容滚动条隐藏 */
+  .intro-content::-webkit-scrollbar {
+    display: none;
+  }
+  /* 中心按钮容器样式：设置按钮网格布局和间距 */
+  .center-btn-con {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    width: 20%;
+    margin-left: -1%;
+    column-gap: 60%;  /* 水平间隙 */
+    row-gap: 30px;     /* 垂直间隙 */
+
+  }
+  /* 中心按钮样式：设置中心按钮的外观、尺寸和交互效果 */
+  .center-btn {
+    width: 150%;
+    height: 90%;
+    padding-top: 10%;
+    padding-bottom: 10%;
+    padding-left: 0;
+    padding-right: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: #000000;
+    border-radius: 0 16px 16px 16px;
+    border: 5px solid #000000; /* 使用简写属性 */
+    text-decoration: none;
+    color: white;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  }
+  /* 中心按钮悬停效果：悬停时的颜色变化和文字颜色改变 */
+  .center-btn:hover {
+    background-color: #FEDE00;
+    border-radius: 0 16px 16px 16px;
+    border: 5px solid #000000;
+    color: #000; /* 改变文字颜色为黑色 */
+  }
+  /* 按钮图标样式：设置按钮图标的尺寸和颜色效果 */
+  .btn-icon {
+    width: 50px;
+    height: 50px;
+    margin-bottom: 12px;
+    filter: brightness(0) invert(1); /* 将图标变为白色 */
+  }
+  /* 按钮文字样式：设置按钮文字的大小和样式 */
+  .btn-text {
+    font-size: 0.9rem;
+    font-weight: bold;
+    text-align: center;
+  }
+  /* 按钮悬停时图标效果：悬停时将图标变为黑色 */
+  .center-btn:hover .btn-icon  {
+    filter: brightness(0) invert(0); /* 黑色图标 */
+  }
+  /* 按钮悬停时文字效果：悬停时将文字变为黑色 */
+  .center-btn:hover .btn-text  {
+    color: #000000;
+  }
+  /* 弹窗打开动画：定义弹窗打开时的渐入动画效果 */
+  @keyframes modalopen {
+    from { opacity: 0; transform: translateY(-20px);}
+    to { opacity: 1; transform: translateY(0);}
+  }
+
+  .club-create-modal {
+    display: none;
+    position: fixed;
+    z-index: 1001; /* 在创建俱乐部弹窗之上 */
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+  }
+  .club-create-modal-content {
+    background-color: #222222;
+    border-radius: 0 16px 16px 16px;
+    border: 5px solid #000000; /* 使用简写属性 */
+    width: 500px;
+    height: 615px;
+    position: relative;
+    animation: modalopen 0.3s;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  }
+  /* 创建俱乐部弹窗头部样式 */
+  .club-create-modal-header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+  }
+  .club-create-modal-body {
+    padding-left: 20%;
+    padding-right: 20%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  /* 创建俱乐部弹窗关闭按钮样式 */
+  .club-create-close-modal {
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    font-size: 28px;
+    font-weight: bold;
+    color: #999;
+    cursor: pointer;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: all 0.2s ease;
+    z-index: 1;
+  }
+  /* 创建俱乐部弹窗关闭按钮悬停效果 */
+  .club-create-close-modal:hover,
+  .club-create-close-modal:focus {
+    color: #FEDE00;
+    text-decoration: none;
+  }
+  .club-create-avatar-upload-group-container{
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 4px solid #000000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+  }
+
+  .club-create-avatar-preview {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 4px solid #000000;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    position: relative;
+  }
+
+  .club-create-avatar-preview img,
+  #avatarDisplay {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .club-create-default-avatar {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    object-fit: cover;
+    cursor: pointer;
+    border-radius: 50%;
+    overflow: hidden;
+  }
+  .club-create-avatar-upload-group{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 30%;
+    margin-bottom: 30%;
+  }
+  /* 申请表单组样式：设置表单组的布局和间距 */
+  .club-create-form-group {
+    width: 100%;
+    margin-bottom: 10%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .club-create-form-group-clubname{
+    margin-bottom: 5%;
+    font-size: 18px;
+    color: #007bff;
+    font-weight: 500;
+    margin-left: -170%;
+  }
+  .club-create-form-group-clubintro{
+    margin-bottom: 5%;
+    font-size: 18px;
+    color: #ffffff;
+    font-weight: 500;
+    margin-left: -170%;
+  }
+  .club-create-form-actions{
+    width: 100%;
+    margin-bottom: 20%;
+    padding-top: 10%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .club-create-form-group input[type="text"]{
+    font-size: 16px;
+    line-height: 1.6;
+    color: #ffffff;
+    background-color: #000000;
+    border-radius: 0 16px 16px 16px;
+    border: 5px solid #000000; /* 使用简写属性 */
+    text-align: left;
+    height: 150%;
+    padding: 15px 0;
+    padding-left: 15px;
+    width: 200%;
+    overflow-y: hidden;
+  }
+  .club-create-form-group input[type="text"]:focus {
+    outline: none;
+    box-shadow: none;
+    border-color: #000000; /* 确保边框颜色保持黑色 */
+    background-color: #000000;
+  }
+  .club-create-form-group textarea {
+    font-size: 16px;
+    line-height: 1.6;
+    color: #ffffff;
+    background-color: #000000;
+    border-radius: 0 16px 16px 16px;
+    border: 5px solid #000000; /* 使用简写属性 */
+    text-align: left;
+    height: 150%;
+    padding: 15px 0;
+    padding-left: 15px;
+    width: 200%;
+    overflow-y: hidden;
+    resize: none;
+  }
+  .club-create-form-group textarea:focus {
+    outline: none;
+    box-shadow: none;
+    border-color: #000000; /* 确保边框颜色保持黑色 */
+    background-color: #000000;
+  }
+  /* 创建俱乐部弹窗通用按钮样式 */
+  .club-create-btn {
+    padding: 12px 40px;
+    background-color: #000000;
+    color: white;
+    border-radius: 0px 16px 16px 16px;
+    border: 5px solid #000000; /* 使用简写属性 */
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  /* 创建俱乐部弹窗主要按钮悬停效果 */
+  .club-create-btn:hover {
     font-weight: bold;
     transform: scale(1.05);
     background-color: #FEDE00;
@@ -3357,308 +3718,2336 @@
     border: 5px solid #000000; /* 使用简写属性 */
     cursor: pointer;
   }
-  .register{
-    flex: 1;
-    display: flex;
-    height: 8%;
-    margin-top: 4.5%;
-    margin-left: -5%;
-  }
-  .register-link{
-    font-size: 0.9rem;
-    color: #007bff;
-    text-decoration: none;
-  }
-  .register-link:hover {
-    text-decoration: underline;
-  }
-  .search-container {
-    display: flex;
-    justify-content: center;
-    margin-top: 30px;
-  }
-  .search-box {
-    display: flex;
-    width: 60%;
-    max-width: 600px;
-  }
-  .search-input {
-    flex: 1;
-    padding: 12px 20px;
-    border: none;
-    border-radius: 25px 0 0 25px;
-    font-size: 1rem;
-    outline: none;
-  }
-  .search-btn {
-    padding: 12px 30px;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
-    border: none;
-    border-radius: 0 25px 25px 0;
-    font-size: 1rem;
-    font-weight: bold;
-    cursor: pointer;
-    transition: all 0.3s ease;
-  }
-  .search-btn:hover {
-    background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
-  }
-
-
-  /* 主容器样式 */
-  .login-right {
-    flex: 1;
-    background-color: #222222;
-  }
-  /* 按钮容器 */
-  .center-btn-con {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    width: 20%;
-    margin-left: 5%;
-    column-gap: 50%;  /* 水平间隙 */
-    row-gap: 30px;     /* 垂直间隙 */
-  }
-  /* 按钮样式 */
-  .center-btn {
-    width: 100%;
-    height: 90%;
-    padding-top: 10%;
-    padding-bottom: 10%;
-    padding-left: 20%;
-    padding-right: 20%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    background-color: #000000;
-    border-radius: 12px;
-    text-decoration: none;
-    color: white;
-    transition: all 0.3s ease;
-    border: none;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-  }
-  /* 按钮悬停效果 */
-  .center-btn:hover {
-    transform: translateY(-5px);
-  }
-  /* 图标样式 */
-  .btn-icon {
-    width: 60px;
-    height: 60px;
-    margin-bottom: 12px;
-    filter: brightness(0) invert(1); /* 将图标变为白色 */
-  }
-  /* 文字样式 */
-  .btn-text {
-    font-size: 0.9rem;
-    font-weight: 600;
-    text-align: center;
-    font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif;
-  }
-
-
-
-
-
-  /* 弹窗遮罩层样式 */
-  .modal {
-    display: none; /* 默认隐藏 */
+  /* 俱乐部详情弹窗样式 */
+  .club-detail-modal {
+    display: none;
     position: fixed;
-    z-index: 1000;
+    z-index: 1001; /* 在创建俱乐部弹窗之上 */
     left: 0;
     top: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.5); /* 半透明黑色背景 */
+    background-color: rgba(0, 0, 0, 0.5);
     justify-content: center;
     align-items: center;
   }
 
-  /* 弹窗内容框样式 */
-  .modal-content {
-    background-color: #fefefe;
-    margin: auto;
-    padding: 0;
-    border-radius: 8px;
-    width: 90%;
-    max-width: 500px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  .club-detail-modal-content {
+    background-color: #222222;
+    border-radius: 0 16px 16px 16px;
+    border: 5px solid #000000; /* 使用简写属性 */
+    width: 500px;
+    height: 650px;
+    overflow-y: hidden;
+    position: relative;
     animation: modalopen 0.3s;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
   }
-
-  @keyframes modalopen {
-    from { opacity: 0; transform: translateY(-20px);}
-    to { opacity: 1; transform: translateY(0);}
-  }
-
-  /* 弹窗头部 */
-  .modal-header {
+  .club-detail-modal-body {
+    padding: 30px;
     display: flex;
-    justify-content: space-between;
+    flex-direction: column;
     align-items: center;
-    padding: 20px 24px;
-    border-bottom: 1px solid #eee;
+    text-align: center;
   }
-  .modal-header h2 {
-    margin: 0;
-    font-size: 1.5rem;
-    color: #333;
-  }
-  .close-modal {
-    color: #aaa;
+  .club-detail-close-modal {
+    position: absolute;
+    right: 20px;
+    top: 20px;
     font-size: 28px;
     font-weight: bold;
+    color: #999;
     cursor: pointer;
-    line-height: 1;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: all 0.2s ease;
+    z-index: 1;
   }
-  .close-modal:hover,
-  .close-modal:focus {
-    color: #000;
+  .club-detail-close-modal:hover,
+  .club-detail-close-modal:focus {
+    color: #FEDE00;
     text-decoration: none;
   }
-
-  /* 弹窗主体 */
-  .modal-body {
-    padding: 24px;
-  }
-
-  /* 表单样式 */
-  .form-group-club {
+  /* 俱乐部头像样式 */
+  .club-detail-avatar-container {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 4px solid #000000;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     margin-bottom: 20px;
-  }
-  .form-group-club label {
-    display: block;
-    margin-bottom: 8px;
-    margin-left: 0;
-    font-weight: 600;
-    color: #555;
-    text-align: left; /* 将标签文字改为左对齐 */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* 移除固定背景色，让图片正常显示 */
+    background: transparent;
   }
 
-  /* 钱包对话框中的标签特殊样式 */
-  #walletModal .form-group-club label {
-    margin-left: 0;
-    padding-left: 0;
-  }
-  .form-group-club input[type="text"],
-  .form-group-club textarea {
+  .club-detail-avatar {
     width: 100%;
-    padding: 10px 12px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    font-size: 1rem;
-    box-sizing: border-box; /* 确保宽度包含padding */
+    height: 100%;
+    object-fit: cover;
+  }
+
+  /* 俱乐部名称样式：设置俱乐部名称的文字样式和布局 */
+  .club-detail-name {
+    font-size: 24px;
+    font-weight: 600;
+    color: #ffffff;
+    margin-bottom: 20px;
+    text-align: center;
+    width: 100%;
+  }
+
+  /* 俱乐部简介容器样式：设置简介容器的布局和间距 */
+  .club-detail-intro-container {
+    width: 100%;
+    margin-bottom: 30px;
+    text-align: center;
+  }
+
+  /* 俱乐部简介标题样式：设置简介标题的文字样式 */
+  .club-detail-intro-container h3 {
+    font-size: 18px;
+    font-weight: 500;
+    color: #007bff;
+    margin-bottom: 10px;
+    text-align: left;
+  }
+
+  /* 俱乐部简介内容样式：设置简介内容的文字样式和滚动效果 */
+  .club-detail-intro {
+    font-size: 16px;
+    line-height: 1.6;
+    color: #ffffff;
+    padding: 15px;
+    background-color: #000000;
+    border-radius: 0 16px 16px 16px;
+    border: 5px solid #000000; /* 使用简写属性 */
+    text-align: left;
+    height: 100%;
+    overflow-y: hidden;
+  }
+
+  /* 俱乐部申请表单样式：设置申请表单的布局和对齐 */
+  .club-detail-apply-form {
+    width: 90%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  /* 申请表单组样式：设置表单组的布局和间距 */
+  .club-detail-form-group {
+    width: 100%;
+    margin-bottom: 25px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+  }
+
+  /* 申请表单标签样式：设置表单标签的文字样式和布局 */
+  .club-detail-form-group label {
+    display: block;
+    font-size: 16px;
+    font-weight: 500;
+    color: #ffffff;
+    margin-bottom: 10px;
+    text-align: left;
+    width: 100%;
+    margin-left: -10%;
+
+  }
+
+  /* 申请表单文本域样式：设置文本域的外观、尺寸和交互效果 */
+  .club-detail-form-group textarea {
+    width: 100%;
+    padding: 12px 15px;
+    border-radius: 0 16px 16px 16px;
+    border: 5px solid #000000; /* 使用简写属性 */
+    background-color: #000000;
+    color: #ffffff;
     resize: none;
   }
-  .form-group-club input[type="text"],
-  .form-group-club input[type="password"],
-  .form-group-club textarea {
-    width: 100%; /* 保持100%宽度，但容器已居中 */
-    max-width: 400px; /* 可以设置最大宽度，使其不会太宽 */
-    padding: 10px 12px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    font-size: 1rem;
-    box-sizing: border-box;
-    margin: 0 auto; /* 使输入框在容器内水平居中 */
-    display: block; /* 使 margin:auto 生效 */
+  /* 申请表单文本域焦点状态：焦点状态下的边框和阴影效果 */
+  .club-detail-form-group textarea:focus {
     outline: none;
   }
 
-  /* 表单按钮区 */
-  .form-actions {
+  /* 申请操作按钮区域样式：设置按钮容器的布局 */
+  .club-detail-apply-actions {
+    width: 100%;
     display: flex;
     justify-content: center;
+    margin-top: 10%;
   }
 
-  /* 选择框样式 */
-  .form-group-club select {
-    width: 100%;
-    max-width: 400px;
-    padding: 10px 12px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    font-size: 1rem;
-    box-sizing: border-box;
-    margin: 0 auto;
-    display: block;
-    outline: none;
-    background-color: white;
-    cursor: pointer;
-  }
-
-  .form-group-club select:focus {
-    border-color: #667eea;
-    box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.2);
-  }
-
-  /* 字符计数器样式 */
-  .char-count {
-    text-align: right;
-    font-size: 0.875rem;
-    color: #666;
-    margin-top: 5px;
-  }
-
-  .char-count.warning {
-    color: #ff6b6b;
-  }
-
-  /* 数字输入框样式 */
-  .form-group-club input[type="number"] {
-    width: 100%;
-    max-width: 400px;
-    padding: 10px 12px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    font-size: 1rem;
-    box-sizing: border-box;
-    margin: 0 auto;
-    display: block;
-    outline: none;
-  }
-
-  .form-group-club input[type="number"]:focus {
-    border-color: #667eea;
-    box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.2);
-    gap: 12px;
-    margin-top: 30px;
-  }
-  .btn {
-    padding: 10px 24px;
-    border: none;
-    border-radius: 4px;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: background-color 0.2s;
-  }
-  .btn-primary {
+  /* 申请按钮样式：设置申请按钮的渐变背景和阴影效果 */
+  .club-detail-apply-btn {
     padding: 12px 40px;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background-color: #000000;
     color: white;
-    border: none;
-    border-radius: 25px;
+    border-radius: 0px 16px 16px 16px;
+    border: 5px solid #000000; /* 使用简写属性 */
     font-size: 16px;
     font-weight: 500;
     cursor: pointer;
     transition: all 0.3s ease;
-    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
-  }
-  .btn-primary:hover {
-    transform: scale(1.05);
-    box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
-  }
-  .btn-secondary {
-    background-color: #f0f0f0;
-    color: #333;
-  }
-  .btn-secondary:hover {
-    background-color: #e0e0e0;
   }
 
+  /* 申请按钮悬停效果：悬停时的放大和阴影增强效果 */
+  .club-detail-apply-btn:hover {
+    font-weight: bold;
+    transform: scale(1.05);
+    background-color: #FEDE00;
+    color: #000000;
+    border-color: #000;
+    border-radius: 0 16px 16px 16px;
+    border: 5px solid #000000; /* 使用简写属性 */
+    cursor: pointer;
+  }
+
+  /* 俱乐部管理申请弹窗样式（与俱乐部详情弹窗相同） */
+  .club-manageappli-modal {
+    display: none;
+    position: fixed;
+    z-index: 1001; /* 在创建俱乐部弹窗之上 */
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+  }
+
+  .club-manageappli-modal-content {
+    background-color: #222222;
+    border-radius: 0 16px 16px 16px;
+    border: 5px solid #000000; /* 使用简写属性 */
+    width: 90%;
+    max-width: 500px;
+    max-height: 90vh;
+    overflow-y: hidden;
+    position: relative;
+    animation: modalopen 0.3s;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  }
+
+  .club-manageappli-close-modal {
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    font-size: 28px;
+    font-weight: bold;
+    color: #999;
+    cursor: pointer;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: all 0.2s ease;
+    z-index: 1;
+  }
+  .club-manageappli-close-modal:hover,
+  .club-manageappli-close-modal:focus {
+    color: #FEDE00;
+    text-decoration: none;
+  }
+
+  .club-manageappli-modal-body {
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    margin-top: 10%;
+    margin-bottom: 10%;
+  }
+
+  .club-manageappli-applications-container {
+    width: 100%;
+    height: 50vh;
+    margin-bottom: 30px;
+    text-align: center;
+  }
+
+  .club-manageappli-applications-container h3 {
+    font-size: 18px;
+    font-weight: 500;
+    color: #007bff;
+    margin-bottom: 10px;
+    text-align: center;
+  }
+
+  .club-manageappli-applications-list {
+    font-size: 16px;
+    line-height: 1.6;
+    color: #ffffff;
+    padding-left: 15px;
+    padding-right: 15px;
+    background-color: #222222;
+    border-radius: 0 16px 16px 16px;
+    border: 5px solid #222222; /* 使用简写属性 */
+    text-align: left;
+    height: 50vh;
+    overflow-y: auto;
+    scrollbar-width: none; /* 隐藏滚动条 */
+    scrollbar-color: transparent transparent; /* 隐藏滚动条颜色 */
+  }
+  /* 自定义滚动条样式 - 隐藏滚动条 */
+  .club-manageappli-applications-list::-webkit-scrollbar {
+    width: 0px;
+    display: none;
+  }
+  .club-manageappli-applications-list::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  .club-manageappli-applications-list::-webkit-scrollbar-thumb {
+    background: transparent;
+  }
+  .club-manageappli-no-applications {
+    font-size: 16px;
+    line-height: 1.6;
+    color: #ffffff;
+  }
+
+  /* 申请项样式 */
+  .application-item {
+    background-color: #000000;
+    border-radius: 0 16px 16px 16px;
+    border: 5px solid #000000;
+    padding: 15px;
+    transition: all 0.3s ease;
+    margin-bottom: 5%;
+    height: 25%;
+  }
+
+  .application-item:hover {
+    border-color: #FEDE00;
+    box-shadow: 0 4px 12px rgba(254, 222, 0, 0.2);
+    transform: translateY(-2px);
+
+  }
+
+  /* 申请信息区域样式 */
+  .application-info {
+    margin-bottom: 15px;
+  }
+
+  .application-id {
+    font-size: 14px;
+    color: #FEDE00;
+    font-weight: bold;
+    margin-bottom: 5px;
+  }
+
+  .application-nickname {
+    font-size: 16px;
+    color: #ffffff;
+    font-weight: 500;
+    margin-bottom: 10px;
+  }
+
+  .application-details {
+    background-color: #2a2a2a;
+    border-radius: 0 16px 16px 16px;
+    border: 5px solid #000000;
+    padding: 10px;
+    margin-bottom: -3%;
+  }
+
+  .details-truncated {
+    font-size: 14px;
+    color: #cccccc;
+    cursor: pointer;
+    display: block;
+    transition: color 0.2s ease;
+  }
+
+  .details-truncated:hover {
+    color: #FEDE00;
+  }
+
+  .details-full {
+    font-size: 14px;
+    color: #ffffff;
+    line-height: 1.5;
+    margin-top: 8px;
+    display: none;
+    background-color: #333;
+    padding: 8px;
+    border-radius: 4px;
+  }
+
+  /* 申请操作按钮区域样式 */
+  .application-actions {
+    display: flex;
+    gap: 10px;
+    justify-content: left;
+  }
+
+  /* 同意按钮样式 */
+  .btn-approve {
+    background-color: #FEDE00;
+    color: rgb(0, 0, 0);
+    border-radius: 0 16px 16px 16px;
+    border: 5px solid #000000;
+    padding: 8px 16px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    min-width: 60px;
+    margin-top: 4%;
+  }
+
+  .btn-approve:hover {
+    background-color: #007bff;
+    transform: scale(1.05);
+    color: #ffffff;
+  }
+  /* 拒绝按钮样式 */
+  .btn-reject {
+    background-color: #FEDE00;
+    color: rgb(0, 0, 0);
+    border-radius: 0 16px 16px 16px;
+    border: 5px solid #000000;
+    padding: 8px 16px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    min-width: 60px;
+    margin-top: 4%;
+  }
+
+  .btn-reject:hover {
+    background-color: #007bff;
+    transform: scale(1.05);
+    color: #ffffff;
+  }
+  /* 个人中心弹窗样式 */
+  .personal-modal {
+    display: none;
+    position: fixed;
+    z-index: 1001; /* 在创建俱乐部弹窗之上 */
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+  }
+
+  .personal-modal-content {
+    background-color: #222222;
+    border-radius: 0 16px 16px 16px;
+    border: 5px solid #000000; /* 使用简写属性 */
+    width: 90%;
+    max-width: 500px;
+    max-height: 90vh;
+    overflow-y: hidden;
+    position: relative;
+    animation: modalopen 0.3s;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  }
+
+  .personal-close-modal {
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    font-size: 28px;
+    font-weight: bold;
+    color: #999;
+    cursor: pointer;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: all 0.2s ease;
+    z-index: 1;
+  }
+  .personal-close-modal:hover,
+  .personal-close-modal:focus {
+    color: #FEDE00;
+    text-decoration: none;
+  }
+
+  .personal-modal-body {
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  /* 个人中心表单样式 */
+  .personal-center-form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  /* 个人中心表单组样式 */
+  .personal-form-group-club {
+    width: 100%;
+    margin-bottom: 25px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  /* 个人中心表单标签样式 */
+  .personal-form-group-club label {
+    display: block;
+    font-size: 16px;
+    font-weight: 500;
+    color: #ffffff;
+    margin-bottom: 10px;
+    text-align: left;
+    width: 100%;
+  }
+
+  /* 个人中心表单输入框样式 */
+  .personal-form-group-club input,
+  .personal-form-group-club textarea {
+    width: 100%;
+    padding: 12px 15px;
+    border-radius: 0 16px 16px 16px;
+    border: 5px solid #000000;
+    font-size: 16px;
+    font-family: inherit;
+    transition: all 0.3s ease;
+    box-sizing: border-box;
+    color: #ffffff;
+    background-color: #000000;
+    resize: none;
+  }
+
+  .personal-form-group-club input:focus,
+  .personal-form-group-club textarea:focus {
+    outline: none;
+  }
+
+  /* 个人中心头像上传容器样式 */
+  .personal-avatar-upload-container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  /* 个人中心头像预览样式 */
+  .personal-avatar-preview {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 4px solid #000000;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+  }
+
+  /* 个人中心默认头像样式 */
+  .personal-default-avatar {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: #666;
+  }
+
+  .personal-default-avatar svg {
+    margin-bottom: 8px;
+  }
+
+  .personal-default-avatar span {
+    font-size: 14px;
+  }
+
+  /* 个人中心头像控制样式 */
+  .personal-avatar-controls {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 8px;
+    justify-content: center;
+  }
+
+  /* 个人中心按钮移除样式 */
+  .personal-btn-remove {
+    display: inline-block;
+    padding: 8px 16px;
+    background-color: #f0f0f0;
+    color: #666;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: background-color 0.2s;
+  }
+
+  .personal-btn-remove:hover {
+    background-color: #e0e0e0;
+    color: #333;
+  }
+
+  /* 个人中心头像提示样式 */
+  .personal-avatar-hint {
+    font-size: 0.8rem;
+    color: #ffffff;
+    line-height: 1.4;
+    margin-bottom: 4px;
+    text-align: center;
+  }
+
+  /* 个人中心头像错误样式 */
+  .personal-avatar-error {
+    font-size: 0.85rem;
+    color: #e74c3c;
+    margin-top: 4px;
+    padding: 6px 10px;
+    background-color: #fdf0f0;
+    border-radius: 4px;
+    border-left: 3px solid #e74c3c;
+  }
+
+  .personal-hidden {
+    display: none;
+  }
+
+  /* 个人中心字符计数样式 */
+  .personal-char-count {
+    font-size: 14px;
+    color: #ffffff;
+    text-align: right;
+    margin-top: 5px;
+    width: 100%;
+  }
+
+  /* 个人中心操作按钮区域样式 */
+  .personal-form-actions {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+  }
+
+  /* 个人中心按钮样式 */
+  .personal-btn {
+    padding: 12px 40px;
+    background-color: #000000;
+    color: white;
+    border-radius: 0px 16px 16px 16px;
+    border: 5px solid #000000;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .personal-btn-primary {
+    background-color: #000000;
+    border-color: #000000;
+  }
+
+  /* 个人中心按钮悬停效果 */
+  .personal-btn:hover {
+    font-weight: bold;
+    transform: scale(1.05);
+    background-color: #FEDE00;
+    color: #000000;
+    border-color: #000;
+    border-radius: 0 16px 16px 16px;
+    border: 5px solid #000000;
+    cursor: pointer;
+  }
+
+  /* 钱包充值弹窗样式 */
+  .wallet-modal {
+    display: none;
+    position: fixed;
+    z-index: 1001; /* 在创建俱乐部弹窗之上 */
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+  }
+
+  .wallet-modal-content {
+    background-color: #222222;
+    border-radius: 0 16px 16px 16px;
+    border: 5px solid #000000; /* 使用简写属性 */
+    width: 90%;
+    max-width: 500px;
+    max-height: 90vh;
+    overflow-y: hidden;
+    position: relative;
+    animation: modalopen 0.3s;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  }
+
+  .wallet-close-modal {
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    font-size: 28px;
+    font-weight: bold;
+    color: #999;
+    cursor: pointer;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: all 0.2s ease;
+    z-index: 1;
+  }
+  .wallet-close-modal:hover,
+  .wallet-close-modal:focus {
+    color: #FEDE00;
+    text-decoration: none;
+  }
+
+  .wallet-modal-body {
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    margin-top: 5%;
+  }
+
+  /* 钱包余额显示样式 */
+  .wallet-balance {
+    width: 80%;
+    margin-bottom: 25px;
+    padding: 20px;
+    background-color: #000000;
+    border-radius: 0 16px 16px 16px;
+    border: 5px solid #000000;
+    text-align: center;
+  }
+
+  .wallet-balance-label {
+    font-size: 16px;
+    color: #ffffff;
+    width: 100%;
+  }
+
+  .wallet-balance-amount {
+    font-size: 28px;
+    font-weight: bold;
+    color: #FEDE00;
+  }
+
+  /* 钱包表单样式 */
+  .wallet-form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  /* 钱包表单组样式 */
+  .wallet-form-group-club {
+    width: 100%;
+    margin-bottom: 25px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  /* 钱包表单标签样式 */
+  .wallet-form-group-club label {
+    display: block;
+    font-size: 16px;
+    font-weight: 500;
+    color: #ffffff;
+    margin-bottom: 10px;
+    text-align: center;
+    width: 100%;
+  }
+
+  /* 钱包表单输入框样式 */
+  .wallet-form-input {
+    width: 180%;
+    padding: 12px 15px;
+    border-radius: 0 16px 16px 16px;
+    border: 5px solid #000000;
+    font-size: 16px;
+    font-family: inherit;
+    transition: all 0.3s ease;
+    box-sizing: border-box;
+    color: #ffffff;
+    background-color: #000000;
+  }
+
+  .wallet-form-input:focus {
+    outline: none;
+  }
+
+  /* 钱包金额选项样式 */
+  .wallet-amount-options {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin-bottom: 15px;
+    width: 180%;
+  }
+
+  .wallet-amount-option {
+    padding: 12px 8px;
+    background-color: #000000;
+    color: #ffffff;
+    border: 2px solid #000000;
+    border-radius: 8px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .wallet-amount-option:hover,
+  .wallet-amount-option.active {
+    background-color: #FEDE00;
+    color: #000000;
+    border-color: #000000;
+  }
+
+  /* 钱包自定义金额样式 */
+  .wallet-custom-amount {
+    width: 180%;
+  }
+
+  .wallet-custom-amount input {
+    width: 100%;
+    padding: 12px 15px;
+    border-radius: 0 16px 16px 16px;
+    border: 5px solid #000000;
+    font-size: 16px;
+    font-family: inherit;
+    transition: all 0.3s ease;
+    box-sizing: border-box;
+    color: #ffffff;
+    background-color: #000000;
+  }
+
+  .wallet-custom-amount input:focus {
+    outline: none;
+  }
+
+  /* 钱包操作按钮区域样式 */
+  .wallet-form-actions {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+  }
+
+  /* 钱包按钮样式 */
+  .wallet-btn {
+    padding: 12px 40px;
+    background-color: #000000;
+    color: white;
+    border-radius: 0px 16px 16px 16px;
+    border: 5px solid #000000;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 10%;
+  }
+
+  .wallet-btn-primary {
+    background-color: #000000;
+    border-color: #000000;
+  }
+
+  /* 钱包按钮悬停效果 */
+  .wallet-btn:hover {
+    font-weight: bold;
+    transform: scale(1.05);
+    background-color: #FEDE00;
+    color: #000000;
+    border-color: #000;
+    border-radius: 0 16px 16px 16px;
+    border: 5px solid #000000;
+    cursor: pointer;
+  }
+
+  /* 针对Webkit浏览器（Chrome, Safari, Edge等） */
+  #customAmount::-webkit-outer-spin-button,
+  #customAmount::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  /* 针对Firefox */
+  #customAmount[type=number] {
+    -moz-appearance: textfield;
+    appearance: textfield;
+  }
+
+  /* 确保在所有浏览器中都隐藏 */
+  #customAmount {
+    appearance: textfield;
+    -webkit-appearance: none;
+    -moz-appearance: textfield;
+  }
+  /* 修改密码弹窗样式 */
+  .security-modal {
+    display: none;
+    position: fixed;
+    z-index: 1001; /* 在创建俱乐部弹窗之上 */
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+  }
+
+  .security-modal-content {
+    background-color: #222222;
+    border-radius: 0 16px 16px 16px;
+    border: 5px solid #000000; /* 使用简写属性 */
+    width: 90%;
+    max-width: 500px;
+    max-height: 90vh;
+    overflow-y: hidden;
+    position: relative;
+    animation: modalopen 0.3s;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  }
+
+  .security-close-modal {
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    font-size: 28px;
+    font-weight: bold;
+    color: #ffffff;
+    cursor: pointer;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: all 0.2s ease;
+    z-index: 1;
+  }
+  .security-close-modal:hover,
+  .security-close-modal:focus {
+    color: #FEDE00;
+    text-decoration: none;
+  }
+
+  .security-modal-body {
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  /* 安全中心头部样式 */
+  .security-center-header {
+    text-align: center;
+    margin-top: 10%;
+    margin-bottom: 10%;
+  }
+
+  .security-title {
+    font-size: 1.5rem;
+    color: #ffffff;
+    margin-bottom: 8px;
+  }
+
+  .security-subtitle {
+    font-size: 0.9rem;
+    color: #ffffff;
+  }
+
+  /* 安全中心表单组样式 */
+  .security-form-group-club {
+    width: 100%;
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .security-form-group {
+    width: 100%;
+    max-width: 400px;
+  }
+
+  .security-form-group-club input {
+    width: 100%;
+    padding: 12px 15px;
+    border-radius: 0 16px 16px 16px;
+    border: 5px solid #000000;
+    font-size: 16px;
+    font-family: inherit;
+    transition: all 0.3s ease;
+    box-sizing: border-box;
+    color: #ffffff;
+    background-color: #000000;
+  }
+
+  .security-form-group-club input:focus {
+    outline: none;
+  }
+
+  .security-text-align-left {
+    text-align: left;
+  }
+
+  /* 密码要求容器样式 */
+  .security-password-requirements-container {
+    width: 100%;
+    max-width: 400px;
+    margin-bottom: 20px;
+  }
+
+  /* 密码要求项样式 */
+  .security-password-requirement {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+
+  .security-password-requirement-item {
+    display: flex;
+    align-items: center;
+  }
+
+  .security-requirement-indicator {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    border: 2px solid #ccc; /* 默认灰色边框 */
+    margin-right: 10px;
+    transition: all 0.3s ease;
+  }
+
+  .security-requirement-text {
+    font-size: 14px;
+    color: #ffffff;
+  }
+  /* 安全中心操作按钮区域样式 */
+  .security-form-actions {
+    width: 100%;
+    max-width: 400px;
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+  }
+
+  /* 安全中心按钮样式 */
+  .security-btn {
+    padding: 12px 40px;
+    background-color: #000000;
+    color: white;
+    border-radius: 0px 16px 16px 16px;
+    border: 5px solid #000000;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    width: 100%;
+  }
+
+  .security-btn-primary {
+    background-color: #000000;
+    border-color: #000000;
+  }
+
+  .security-btn-full-width {
+    width: 100%;
+  }
+
+  .security-btn:disabled {
+    background-color: #000000;
+    border-color: #000000;
+    cursor: not-allowed;
+  }
+
+  .security-btn:disabled:hover {
+    background-color: #666;
+    border-color: #666;
+    transform: none;
+  }
+
+  /* 安全中心按钮悬停效果 */
+  .security-btn:hover:not(:disabled) {
+    font-weight: bold;
+    transform: scale(1.05);
+    background-color: #FEDE00;
+    color: #000000;
+    border-color: #000;
+    border-radius: 0 16px 16px 16px;
+    border: 5px solid #000000;
+    cursor: pointer;
+  }
+
+  /* 用户注册弹窗样式 */
+  .register-modal {
+    display: none;
+    position: fixed;
+    z-index: 1001; /* 在创建俱乐部弹窗之上 */
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+  }
+
+  .register-modal-content {
+    background-color: #222222;
+    border-radius: 0 16px 16px 16px;
+    border: 5px solid #000000; /* 使用简写属性 */
+    width: 90%;
+    max-width: 500px;
+    max-height: 90vh;
+    overflow-y: hidden;
+    position: relative;
+    animation: modalopen 0.3s;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  }
+
+  .register-close-modal {
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    font-size: 28px;
+    font-weight: bold;
+    color: #999;
+    cursor: pointer;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: all 0.2s ease;
+    z-index: 1;
+  }
+  .register-close-modal:hover,
+  .register-close-modal:focus {
+    color: #FEDE00;
+    text-decoration: none;
+  }
+
+  .register-modal-body {
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  /* 用户注册表单样式 */
+  .register-form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  /* 用户注册表单组样式 */
+  .register-form-group-club {
+    width: 100%;
+    margin-top: 20%;
+    margin-bottom: 25px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  /* 用户注册表单标签样式 */
+  .register-form-group-club label {
+    display: block;
+    font-size: 16px;
+    font-weight: 500;
+    color: #ffffff;
+    margin-bottom: 10px;
+    text-align: left;
+    margin-left: -100%;
+    width: 100%;
+  }
+
+  /* 用户注册表单输入框样式 */
+  .register-form-group-club input {
+    width: 200%;
+    padding: 12px 15px;
+    border-radius: 0 16px 16px 16px;
+    border: 5px solid #000000;
+    font-size: 16px;
+    font-family: inherit;
+    transition: all 0.3s ease;
+    box-sizing: border-box;
+    color: #ffffff;
+    background-color: #000000;
+  }
+
+  .register-form-group-club input:focus {
+    outline: none;
+  }
+
+  /* 用户注册操作按钮区域样式 */
+  .register-form-actions {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-top: 20%;
+  }
+
+  /* 用户注册按钮样式 */
+  .register-btn {
+    padding: 12px 40px;
+    background-color: #000000;
+    color: white;
+    border-radius: 0px 16px 16px 16px;
+    border: 5px solid #000000;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .register-btn-primary {
+    background-color: #000000;
+    border-color: #000000;
+  }
+
+  /* 用户注册按钮悬停效果 */
+  .register-btn:hover {
+    font-weight: bold;
+    transform: scale(1.05);
+    background-color: #FEDE00;
+    color: #000000;
+    border-color: #000;
+    border-radius: 0 16px 16px 16px;
+    border: 5px solid #000000;
+    cursor: pointer;
+  }
+
+  /* 俱乐部管理弹窗样式 */
+  .club-manage-modal {
+    display: none;
+    position: fixed;
+    z-index: 1001; /* 在创建俱乐部弹窗之上 */
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+  }
+
+  .club-manage-modal-content {
+    background-color: #222222;
+    border-radius: 0 16px 16px 16px;
+    border: 5px solid #000000; /* 使用简写属性 */
+    width: 90%;
+    max-width: 500px;
+    max-height: 90vh;
+    overflow-y: hidden;
+    position: relative;
+    animation: modalopen 0.3s;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  }
+
+  .club-manage-close-modal {
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    font-size: 28px;
+    font-weight: bold;
+    color: #999;
+    cursor: pointer;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: all 0.2s ease;
+    z-index: 1;
+  }
+  .club-manage-close-modal:hover,
+  .club-manage-close-modal:focus {
+    color: #FEDE00;
+    text-decoration: none;
+  }
+
+  .club-manage-modal-body {
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  /* 俱乐部管理容器样式 */
+  .club-manage-management-container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  /* 打手网格容器样式 */
+  .club-manage-fighters-grid-container {
+    width: 100%;
+    margin-bottom: 25px;
+  }
+
+  .club-manage-fighters-title {
+    font-size: 1.5rem;
+    color: #ffffff;
+    margin-bottom: 15px;
+    text-align: center;
+  }
+
+  .club-manage-fighters-grid-wrapper {
+    width: 100%;
+  }
+
+  .club-manage-fighters-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+    width: 100%;
+  }
+
+  /* 战士项样式：设置单个战士项的外观、尺寸和交互效果 */
+  .fighter-item {
+    padding: 12px 15px;
+    background-color: #000000;
+    border-radius: 0px 16px 16px 16px;
+    border: 5px solid #000000;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: center;
+    font-size: 0.9rem;
+    color: #ffffff;
+    font-weight: 500;
+  }
+
+  /* 战士项悬停效果：悬停时的渐变背景和位移效果 */
+  .fighter-item:hover {
+    background-color: #FEDE00;
+    color: white;
+    border-radius: 0px 16px 16px 16px;
+    border: 5px solid #000000;
+    color: #000000;
+  }
+  /* 俱乐部管理操作按钮区域样式 */
+  .club-manage-management-actions {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 20px;
+  }
+
+  /* 俱乐部管理按钮样式 */
+  .club-manage-btn {
+    padding: 12px 30px;
+    background-color: #000000;
+    color: white;
+    border-radius: 0px 16px 16px 16px;
+    border: 5px solid #000000;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .club-manage-btn-primary {
+    background-color: #000000;
+    border-color: #000000;
+  }
+
+  .club-manage-btn-secondary {
+    background-color: #000000;
+    border-color: #000000;
+  }
+
+  /* 俱乐部管理按钮悬停效果 */
+  .club-manage-btn:hover {
+    font-weight: bold;
+    transform: scale(1.05);
+    background-color: #FEDE00;
+    color: #000000;
+    border-color: #000;
+    border-radius: 0 16px 16px 16px;
+    border: 5px solid #000000;
+    cursor: pointer;
+  }
+  .club-manage-fighter-grid-item{
+    background-color: #FEDE00;
+    color: #000000;
+    border-color: #000;
+    border-radius: 0 16px 16px 16px;
+    border: 5px solid #000000;
+    cursor: pointer;
+  }
+
+  /* 打手管理弹窗样式 */
+  .fighter-manage-modal {
+    display: none;
+    position: fixed;
+    z-index: 1001; /* 在创建俱乐部弹窗之上 */
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+  }
+
+  .fighter-manage-modal-content {
+    background-color: #222222;
+    border-radius: 0 16px 16px 16px;
+    border: 5px solid #000000; /* 使用简写属性 */
+    width: 90%;
+    max-width: 600px;
+    max-height: 90vh;
+    overflow-y: hidden;
+    position: relative;
+    animation: modalopen 0.3s;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  }
+
+  .fighter-manage-close-modal {
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    font-size: 28px;
+    font-weight: bold;
+    color: #999;
+    cursor: pointer;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: all 0.2s ease;
+    z-index: 1;
+  }
+  .fighter-manage-close-modal:hover,
+  .fighter-manage-close-modal:focus {
+    color: #FEDE00;
+    text-decoration: none;
+  }
+
+  .fighter-manage-modal-body {
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  /* 打手管理容器样式 */
+  .fighter-manage-management-container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  /* 打手信息头部样式 */
+  .fighter-manage-info-header {
+    width: 100%;
+    margin-bottom: 25px;
+    text-align: center;
+  }
+
+  .fighter-manage-info-header h3 {
+    font-size: 1.5rem;
+    color: #ffffff;
+    margin: 0;
+  }
+
+  /* 打手订单区域样式 */
+  .fighter-manage-orders-section {
+    width: 100%;
+    margin-bottom: 25px;
+  }
+
+  .fighter-manage-orders-section h4 {
+    font-size: 1.2rem;
+    color: #ffffff;
+    margin-bottom: 15px;
+    text-align: center;
+  }
+
+  /* 订单表格容器样式 */
+  .fighter-manage-orders-table-container {
+    width: 100%;
+    overflow-x: auto;
+  }
+
+  /* 订单表格样式 */
+  .fighter-manage-orders-table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #000000;
+    border-radius: 0 16px 16px 16px;
+    border: 5px solid #000000;
+    overflow: hidden;
+  }
+
+  .fighter-manage-orders-table thead {
+    background-color: #333;
+  }
+
+  .fighter-manage-orders-table th {
+    padding: 12px 15px;
+    text-align: left;
+    font-weight: 600;
+    color: #ffffff;
+    border-bottom: 2px solid #444;
+  }
+
+  .fighter-manage-orders-table td {
+    padding: 10px 15px;
+    text-align: left;
+    color: #ffffff;
+    border-bottom: 1px solid #333;
+  }
+
+  .fighter-manage-orders-table tbody tr:hover {
+    background-color: #222;
+  }
+
+  /* 打手管理操作按钮区域样式 */
+  .fighter-manage-management-actions {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+  }
+
+  /* 打手管理按钮样式 */
+  .fighter-manage-btn {
+    padding: 12px 30px;
+    background-color: #000000;
+    color: white;
+    border-radius: 0px 16px 16px 16px;
+    border: 5px solid #000000;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+
+  /* 打手管理按钮悬停效果 */
+  .fighter-manage-btn:hover {
+    font-weight: bold;
+    transform: scale(1.05);
+    background-color: #FEDE00;
+    color: #000000;
+    border-color: #000;
+    border-radius: 0 16px 16px 16px;
+    border: 5px solid #000000;
+    cursor: pointer;
+  }
+
+  /* 俱乐部信息编辑弹窗样式 */
+  .club-edit-modal {
+    display: none;
+    position: fixed;
+    z-index: 1001; /* 在创建俱乐部弹窗之上 */
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+  }
+
+  .club-edit-modal-content {
+    background-color: #222222;
+    border-radius: 0 16px 16px 16px;
+    border: 5px solid #000000; /* 使用简写属性 */
+    width: 90%;
+    max-width: 500px;
+    height: 55vh;
+    overflow-y: hidden;
+    position: relative;
+    animation: modalopen 0.3s;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  }
+
+  .club-edit-close-modal {
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    font-size: 28px;
+    font-weight: bold;
+    color: #999;
+    cursor: pointer;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: all 0.2s ease;
+    z-index: 1;
+  }
+  .club-edit-close-modal:hover,
+  .club-edit-close-modal:focus {
+    color: #FEDE00;
+    text-decoration: none;
+  }
+
+  .club-edit-modal-body {
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  /* 俱乐部信息编辑表单样式 */
+  .club-edit-club-apply-form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  /* 头像上传组样式 */
+  .club-edit-avatar-upload-group {
+    width: 100%;
+    margin-bottom: 25px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .club-edit-avatar-upload-group label {
+    display: block;
+    font-size: 16px;
+    font-weight: 500;
+    color: #ffffff;
+    margin-bottom: 10px;
+    text-align: center;
+    width: 100%;
+  }
+
+  /* 头像上传容器样式 */
+  .club-edit-avatar-upload-container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  /* 头像预览样式 */
+  .club-edit-avatar-preview {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 4px solid #000000;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+  }
+
+  .club-edit-default-avatar {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #333;
+    color: #999;
+    font-size: 14px;
+    text-align: center;
+  }
+
+  /* 俱乐部信息编辑表单组样式 */
+  .club-edit-form-group-club {
+    width: 100%;
+    margin-bottom: 25px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .club-edit-form-group-club label {
+    display: block;
+    font-size: 16px;
+    font-weight: 500;
+    color: #ffffff;
+    margin-bottom: 10px;
+    text-align: left;
+    width: 100%;
+  }
+
+  /* 俱乐部信息编辑表单输入框样式 */
+  .club-edit-form-group-club input{
+    width: 100%;
+    padding: 12px 15px;
+    border-radius: 0 16px 16px 16px;
+    border: 5px solid #000000;
+    font-size: 16px;
+    font-family: inherit;
+    transition: all 0.3s ease;
+    box-sizing: border-box;
+    color: #ffffff;
+    background-color: #000000;
+  }
+  .club-edit-form-group-club textarea{
+    width: 100%;
+    padding: 12px 15px;
+    border-radius: 0 16px 16px 16px;
+    border: 5px solid #000000;
+    font-size: 16px;
+    font-family: inherit;
+    transition: all 0.3s ease;
+    box-sizing: border-box;
+    color: #ffffff;
+    background-color: #000000;
+    resize: none;
+    min-height: 200px;
+  }
+
+  .club-edit-form-group-club input:focus{
+    outline: none;
+  }
+  .club-edit-form-group-club textarea:focus {
+    outline: none;
+  }
+
+  /* 字符计数样式 */
+  .club-edit-char-count {
+    display: none;
+  }
+
+  /* 俱乐部信息编辑操作按钮区域样式 */
+  .club-edit-form-actions {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+  }
+
+  /* 俱乐部信息编辑按钮样式 */
+  .club-edit-btn {
+    padding: 12px 30px;
+    background-color: #000000;
+    color: white;
+    border-radius: 0px 16px 16px 16px;
+    border: 5px solid #000000;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .club-edit-btn-primary {
+    background-color: #000000;
+    border-color: #000000;
+  }
+
+  .club-edit-btn-secondary {
+    background-color: #666;
+    border-color: #666;
+  }
+
+  /* 俱乐部信息编辑按钮悬停效果 */
+  .club-edit-btn:hover {
+    font-weight: bold;
+    transform: scale(1.05);
+    background-color: #FEDE00;
+    color: #000000;
+    border-color: #000;
+    border-radius: 0 16px 16px 16px;
+    border: 5px solid #000000;
+    cursor: pointer;
+  }
+
+  /* 俱乐部编辑成功弹窗样式 */
+  .club-editsuccess-modal {
+    display: none;
+    position: fixed;
+    z-index: 1001; /* 在创建俱乐部弹窗之上 */
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+  }
+
+  .club-editsuccess-modal-content {
+    background-color: #222222;
+    border-radius: 0 16px 16px 16px;
+    border: 5px solid #000000; /* 使用简写属性 */
+    width: 90%;
+    max-width: 500px;
+    max-height: 90vh;
+    overflow-y: hidden;
+    position: relative;
+    animation: modalopen 0.3s;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  }
+
+  .club-editsuccess-close-modal {
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    font-size: 28px;
+    font-weight: bold;
+    color: #999;
+    cursor: pointer;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: all 0.2s ease;
+    z-index: 1;
+  }
+  .club-editsuccess-close-modal:hover,
+  .club-editsuccess-close-modal:focus {
+    color: #FEDE00;
+    text-decoration: none;
+  }
+
+  .club-editsuccess-modal-body {
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  /* 编辑成功消息样式 */
+  .club-editsuccess-message {
+    width: 100%;
+    margin-bottom: 25px;
+    text-align: center;
+  }
+
+  .club-editsuccess-message p {
+    font-size: 1.2rem;
+    color: #ffffff;
+    margin: 0;
+    line-height: 1.5;
+  }
+
+  /* 编辑成功操作按钮区域样式 */
+  .club-editsuccess-actions {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+  }
+
+  /* 编辑成功按钮样式 */
+  .club-editsuccess-btn {
+    padding: 12px 40px;
+    background-color: #000000;
+    color: white;
+    border-radius: 0px 16px 16px 16px;
+    border: 5px solid #000000;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .club-editsuccess-btn-primary {
+    background-color: #000000;
+    border-color: #000000;
+  }
+
+  /* 编辑成功按钮悬停效果 */
+  .club-editsuccess-btn:hover {
+    font-weight: bold;
+    transform: scale(1.05);
+    background-color: #FEDE00;
+    color: #000000;
+    border-color: #000;
+    border-radius: 0 16px 16px 16px;
+    border: 5px solid #000000;
+    cursor: pointer;
+  }
+
+  /* 管理订单弹窗样式 */
+  .order-manage-modal {
+    display: none;
+    position: fixed;
+    z-index: 1001; /* 在创建俱乐部弹窗之上 */
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+  }
+
+  .order-manage-modal-content {
+    background-color: #222222;
+    border-radius: 0 16px 16px 16px;
+    border: 5px solid #000000; /* 使用简写属性 */
+    width: 90%;
+    max-width: 500px;
+    max-height: 90vh;
+    overflow-y: hidden;
+    position: relative;
+    animation: modalopen 0.3s;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  }
+  .order-manage-modal-header{
+    display: flex;
+    margin-top: 15%;
+    justify-self: center;
+  }
+  .order-manage-close-modal {
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    font-size: 28px;
+    font-weight: bold;
+    color: #999;
+    cursor: pointer;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: all 0.2s ease;
+    z-index: 1;
+  }
+  .order-manage-close-modal:hover,
+  .order-manage-close-modal:focus {
+    color: #FEDE00;
+    text-decoration: none;
+  }
+
+  .order-manage-modal-body {
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  /* 管理订单表单样式 */
+  .order-manage-club-apply-form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  /* 管理订单表单组样式 */
+  .order-manage-from-grop-apply {
+    width: 100%;
+    margin-bottom: 25px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  /* 管理订单表单标签样式 */
+  .order-manage-from-grop-apply label {
+    display: block;
+    font-size: 16px;
+    font-weight: 500;
+    color: #ffffff;
+    margin-bottom: 10px;
+    text-align: center;
+    width: 100%;
+  }
+
+  /* 管理订单表单输入框样式 */
+  .order-manage-form-input {
+    width: 100%;
+    min-height: 50px;
+    padding-left: 2%;
+    padding-right: 2%;
+    border-radius: 0 16px 16px 16px;
+    border: 5px solid #000000;
+    font-size: 16px;
+    font-family: inherit;
+    resize: vertical;
+    transition: all 0.3s ease;
+    box-sizing: border-box;
+    resize: none;
+    color: #ffffff;
+    background-color: #000000;
+  }
+  .order-manage-form-input:focus {
+    outline: none;
+  }
+  /* 管理订单操作按钮区域样式 */
+  .order-manage-apply-actions {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+    gap: 15px;
+  }
+
+  /* 管理订单按钮样式 */
+  .order-manage-apply-btn {
+    padding: 12px 40px;
+    background-color: #000000;
+    color: white;
+    border-radius: 0px 16px 16px 16px;
+    border: 5px solid #000000;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  /* 管理订单按钮悬停效果 */
+  .order-manage-apply-btn:hover {
+    font-weight: bold;
+    transform: scale(1.05);
+    background-color: #FEDE00;
+    color: #000000;
+    border-color: #000;
+    border-radius: 0 16px 16px 16px;
+    border: 5px solid #000000;
+    cursor: pointer;
+  }
+
+  /* 管理订单删除按钮样式 */
+  .order-manage-delete-btn {
+    background-color: #dc3545;
+    border-color: #dc3545;
+  }
+
+  .order-manage-delete-btn:hover {
+    background-color: #007bff;
+    border-color: #000000;
+  }
+
+  /* 管理订单字符计数样式 */
+  .order-manage-char-count {
+    display: none;
+  }
+  #orderAmount, #manageOrderAmount {
+    -moz-appearance: textfield;
+    appearance: textfield;
+  }
+  /* 弹窗打开动画：定义弹窗打开时的缩放和位移动画效果 */
+  @keyframes modalopen {
+    from {
+      opacity: 0;
+      transform: scale(0.9) translateY(-20px);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1) translateY(0);
+    }
+  }
+  /* 搜索容器样式：设置搜索区域的居中布局和位置 */
+  .middle-search-container {
+    display: flex;
+    justify-content: center;
+    margin-top: -0.5%;
+  }
+  /* 搜索框样式：设置搜索框的外观、尺寸和过渡效果 */
+  .middle-search-box {
+    display: flex;
+    width: 30%;
+    background-color: #222222;
+    border-radius: 0 16px 16px 16px;
+    border: 5px solid #000000;
+    transition: all 0.3s ease;
+  }
+  /* 搜索框悬停效果：悬停时的3D位移和阴影增强效果 */
+  .middle-search-box:hover {
+    transform: translate3d(5px, 5px, 0);
+    box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+  }
+  /* 搜索输入框样式：设置搜索输入框的外观、文字和布局 */
+  .middle-search-input {
+    background-color: #222222;
+    flex: 1;
+    padding-top: 1%;
+    padding-bottom: 1%;
+    padding-left: 2%;
+    border: none;
+    font-size: 1rem;
+    outline: none;
+    border-radius: 0 16px 16px 16px;
+    color: #ffffff;
+  }
+  /* 搜索按钮样式：设置搜索按钮的外观、文字和交互效果 */
+  .middle-search-btn {
+    padding-top: 0.5%;
+    padding-bottom: 0.5%;
+    padding-left: 5%;
+    padding-right: 5%;
+    background-color: #222222;
+    color: white;
+    border-radius:  0 16px 16px 16px;
+    border: 5px solid #222222;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+
+  }
+  /* 搜索按钮悬停效果：悬停时的颜色变化和放大效果 */
+  .middle-search-btn:hover {
+    background-color: #FEDE00 ;
+    border-radius: 0 16px 16px 16px;
+    border: 5px solid #FEDE00;
+    color: #000000;
+    cursor: pointer;
+    transform: scale(1.05);
+  }
+
+  /* 发布订单弹窗样式 */
+  .order-post-modal {
+    display: none;
+    position: fixed;
+    z-index: 1001; /* 在创建俱乐部弹窗之上 */
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+  }
+
+  .order-post-modal-content {
+    background-color: #222222;
+    border-radius: 0 16px 16px 16px;
+    border: 5px solid #000000; /* 使用简写属性 */
+    width: 90%;
+    max-width: 500px;
+    max-height: 90vh;
+    overflow-y: hidden;
+    position: relative;
+    animation: modalopen 0.3s;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  }
+
+  .order-post-close-modal {
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    font-size: 28px;
+    font-weight: bold;
+    color: #999;
+    cursor: pointer;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: all 0.2s ease;
+    z-index: 1;
+  }
+
+  .order-post-close-modal:hover,
+  .order-post-close-modal:focus {
+    color: #FEDE00;
+    text-decoration: none;
+  }
+
+  .order-post-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 24px;
+  }
+
+  .order-post-modal-header h2 {
+    margin: 0;
+    font-size: 1.5rem;
+    color: #ffffff;
+  }
+
+  .order-post-modal-body {
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  /* 发布订单表单样式 */
+  .order-post-form-group {
+    width: 100%;
+    margin-bottom: 25px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  /* 发布订单表单标签样式 */
+  .order-post-form-group label {
+    display: block;
+    font-size: 16px;
+    font-weight: 500;
+    color: #ffffff;
+    margin-bottom: 10px;
+    text-align: left;
+    width: 100%;
+    margin-left: -100%;
+  }
+
+  /* 发布订单表单输入框样式 */
+  .order-post-form-input,
+  .order-post-form-group input[type="text"],
+  .order-post-form-group input[type="number"],
+  .order-post-form-group select {
+    width: 200%;
+    padding: 12px 15px;
+    border-radius: 0 16px 16px 16px;
+    border: 5px solid #000000; /* 使用简写属性 */
+    font-size: 16px;
+    font-family: inherit;
+    transition: all 0.3s ease;
+    box-sizing: border-box;
+    color: #ffffff;
+    background-color: #000000;
+  }
+
+  .order-post-form-input:focus,
+  .order-post-form-group input[type="text"]:focus,
+  .order-post-form-group input[type="number"]:focus,
+  .order-post-form-group select:focus {
+    outline: none;
+  }
+
+  /* 发布订单表单文本域样式 */
+  .order-post-form-group textarea {
+    width: 200%;
+    padding: 12px 15px;
+    border-radius: 0 16px 16px 16px;
+    border: 5px solid #000000; /* 使用简写属性 */
+    font-size: 16px;
+    font-family: inherit;
+    resize: vertical;
+    min-height: 100px;
+    transition: all 0.3s ease;
+    box-sizing: border-box;
+    resize: none;
+    color: #ffffff;
+    background-color: #000000;
+  }
+
+  .order-post-form-group textarea:focus {
+    outline: none;
+  }
+
+  /* 字符计数样式 */
+  .order-post-char-count {
+    display: none;
+  }
+
+  /* 发布订单操作按钮区域样式 */
+  .order-post-form-actions {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+  }
+
+  /* 发布订单按钮样式 */
+  .order-post-btn {
+    padding: 12px 40px;
+    background-color: #000000;
+    color: white;
+    border-radius: 0px 16px 16px 16px;
+    border: 5px solid #000000; /* 使用简写属性 */
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .order-post-btn-primary {
+    background-color: #000000;
+    color: white;
+  }
+
+  /* 发布订单按钮悬停效果 */
+  .order-post-btn:hover {
+    font-weight: bold;
+    transform: scale(1.05);
+    background-color: #FEDE00;
+    color: #000000;
+    border-color: #000;
+    border-radius: 0 16px 16px 16px;
+    border: 5px solid #000000; /* 使用简写属性 */
+    cursor: pointer;
+  }
+  /* 针对Chrome, Safari, Edge, Opera等基于WebKit的浏览器 */
+  #orderAmount::-webkit-outer-spin-button,
+  #orderAmount::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  /* 针对Firefox */
+  #orderAmount[type=number] {
+    -moz-appearance: textfield;
+  }
+
+  /* 确保在所有浏览器中都隐藏 */
+  #orderAmount {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: textfield;
+  }
   @media (max-width: 768px) {
     .main-content {
       grid-template-columns: 1fr;
@@ -3684,962 +6073,1153 @@
       width: 100%;
     }
   }
-
-  .avatar-upload-group {
-    text-align: center; /* 使标签文字居中 */
-  }
-
-  .avatar-upload-container {
-    margin-top: 8px;
-    display: flex;
-    flex-direction: column;
-    align-items: center; /* 使子元素水平居中 */
-  }
-  .avatar-preview {
-    width: 120px;
-    height: 120px;
-    border: 2px dashed #ccc;
-    border-radius: 8px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center; /* 确保内部元素居中 */
-    cursor: pointer;
-    overflow: hidden;
-    margin: 0 auto 12px; /* 上下居中，左右自动（水平居中） */
-    background-color: #f9f9f9;
-    transition: border-color 0.3s;
-  }
-
-  .avatar-preview:hover {
-    border-color: #4A90E2;
-    background-color: #f0f7ff;
-  }
-
-  .avatar-preview .default-avatar {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 8px;
-    color: #666;
-  }
-
-  .avatar-preview .default-avatar span {
-    font-size: 0.85rem;
-    text-align: center;
-    max-width: 100px;
-  }
-
-  .avatar-preview img {
-    width: 100%
-  }
-
-  /* 打手管理弹窗样式 */
-  .fighter-management-container {
-    max-width: 800px;
-    margin: 0 auto;
-  }
-
-  .fighter-info-header {
-    text-align: center;
-    margin-bottom: 20px;
-    padding-bottom: 15px;
-    border-bottom: 1px solid #eee;
-  }
-
-  .fighter-info-header h3 {
-    font-size: 1.5rem;
-    color: #333;
-    margin: 0;
-  }
-
-  .fighter-orders-section {
-    margin-bottom: 30px;
-  }
-
-  .fighter-orders-section h4 {
-    font-size: 1.2rem;
-    color: #555;
-    margin-bottom: 15px;
-    text-align: center;
-  }
-
-  .orders-table-container {
-    max-height: 300px;
-    overflow-y: auto;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    background: #f9f9f9;
-  }
-
-  .orders-table {
-    width: 100%;
-    border-collapse: collapse;
-    background: white;
-  }
-
-  .orders-table th,
-  .orders-table td {
-    padding: 12px 15px;
-    text-align: center;
-    border-bottom: 1px solid #eee;
-  }
-
-  .orders-table th {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
-    font-weight: 600;
-    position: sticky;
-    top: 0;
-    z-index: 1;
-  }
-
-  .orders-table tr:hover {
-    background-color: #f5f5f5;
-  }
-
-  .orders-table tr:last-child td {
-    border-bottom: none;
-  }
-
-  .fighter-management-actions {
-    text-align: center;
-    padding-top: 20px;
-    border-top: 1px solid #eee;
-  }
-
-  .btn-danger {
-    background: linear-gradient(135deg, #ff6b6b 0%, #ee5a52 100%);
-    color: white;
-    border: none;
-    border-radius: 25px;
-    padding: 12px 30px;
-    font-size: 16px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
-  }
-
-  .btn-danger:hover {
-    transform: scale(1.05);
-    box-shadow: 0 5px 15px rgba(255, 107, 107, 0.4);
-  }
-
-  /* 确认弹窗样式 */
-  .confirm-modal {
-    max-width: 400px;
-  }
-
-  .confirm-message {
-    text-align: center;
-    margin-bottom: 25px;
-  }
-
-  .confirm-message p {
-    font-size: 1.1rem;
-    color: #555;
-    line-height: 1.5;
-  }
-
-  .confirm-actions {
-    display: flex;
-    justify-content: center;
-    gap: 20px;
-  }
-
-  .confirm-actions .btn {
-    min-width: 80px;
-  }
-
-  /* 管理申请弹窗样式 */
-  .applications-container {
-    max-width: 600px;
-    margin: 0 auto;
-  }
-
-  .applications-container h3 {
-    text-align: center;
-    font-size: 1.3rem;
-    color: #333;
-    margin-bottom: 20px;
-    padding-bottom: 10px;
-    border-bottom: 1px solid #eee;
-  }
-
-  .applications-list {
-    max-height: 400px;
-    overflow-y: auto;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    background: #f9f9f9;
-  }
-
-  .application-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 15px 20px;
-    border-bottom: 1px solid #eee;
-    background: white;
-    transition: background-color 0.3s ease;
-  }
-
-  .application-item:last-child {
-    border-bottom: none;
-  }
-
-  .application-item:hover {
-    background-color: #f5f5f5;
-  }
-
-  .application-info {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-  }
-
-  .application-id {
-    font-weight: 600;
-    color: #333;
-    font-size: 1rem;
-  }
-
-  .application-nickname {
-    color: #666;
-    font-size: 0.95rem;
-  }
-
-  .application-details {
-    color: #888;
-    font-size: 0.9rem;
-    line-height: 1.4;
-    position: relative;
-  }
-
-  .details-truncated {
-    display: inline-block;
-    max-width: 200px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    cursor: help;
-  }
-
-  .details-full {
-    display: none;
-    position: absolute;
-    top: 100%;
-    left: 0;
-    background: #333;
-    color: white;
-    padding: 8px 12px;
-    border-radius: 4px;
-    font-size: 0.85rem;
-    white-space: normal;
-    width: 250px;
-    z-index: 1000;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
-  }
-
-  .details-truncated:hover + .details-full {
-    display: block;
-  }
-
-  .application-actions {
-    display: flex;
-    gap: 10px;
-    margin-left: 20px;
-  }
-
-  .btn-approve {
-    background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
-    color: white;
-    border: none;
-    border-radius: 20px;
-    padding: 8px 16px;
-    font-size: 0.9rem;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    box-shadow: 0 2px 8px rgba(40, 167, 69, 0.3);
-  }
-
-  .btn-approve:hover {
-    transform: scale(1.05);
-    box-shadow: 0 3px 12px rgba(40, 167, 69, 0.4);
-  }
-
-  .btn-reject {
-    background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
-    color: white;
-    border: none;
-    border-radius: 20px;
-    padding: 8px 16px;
-    font-size: 0.9rem;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    box-shadow: 0 2px 8px rgba(220, 53, 69, 0.3);
-  }
-
-  .btn-reject:hover {
-    transform: scale(1.05);
-    box-shadow: 0 3px 12px rgba(220, 53, 69, 0.4);
-  }
-
-  .no-applications {
-    text-align: center;
-    padding: 40px 20px;
-    color: #999;
-    font-size: 1.1rem;
-  }
-
-  .no-applications p {
-    margin: 0;
-  }
-
-  /* 打手网格样式增强 */
-  .fighter-item {
-    cursor: pointer;
-    transition: all 0.3s ease;
-  }
-
-  .fighter-item:hover {
-    transform: scale(1.05);
-    background-color: #f0f7ff;
-  }
-
-  .fighter-item.selected {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
-    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
-
-    height: 100%;
-    object-fit: cover;
-    border-radius: 6px;
-  }
-
-  .avatar-controls {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 8px;
-    justify-content: center; /* 使按钮居中 */
-  }
-
-  .btn-upload {
-    display: inline-block;
-    padding: 8px 16px;
-    background-color: #4A90E2;
-    color: white;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 0.9rem;
-    transition: background-color 0.2s;
-  }
-
-  .btn-upload:hover {
-    background-color: #3a7bc8;
-  }
-
-  .btn-remove {
-    display: inline-block;
-    padding: 8px 16px;
-    background-color: #f0f0f0;
-    color: #666;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 0.9rem;
-    transition: background-color 0.2s;
-  }
-
-  .btn-remove:hover {
-    background-color: #e0e0e0;
-    color: #333;
-  }
-
-  .avatar-hint {
-    font-size: 0.8rem;
-    color: #888;
-    line-height: 1.4;
-    margin-bottom: 4px;
-    text-align: center; /* 使提示文字居中 */
-  }
-
-  .avatar-error {
-    font-size: 0.85rem;
-    color: #e74c3c;
-    margin-top: 4px;
-    padding: 6px 10px;
-    background-color: #fdf0f0;
-    border-radius: 4px;
-    border-left: 3px solid #e74c3c;
-  }
-  .club-features li.club-item:hover::before {
-    opacity: 1;
-  }
-
-  /* 俱乐部详情弹窗样式 */
-  .club-modal {
-    display: none;
-    position: fixed;
-    z-index: 1001; /* 在创建俱乐部弹窗之上 */
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    justify-content: center;
-    align-items: center;
-  }
-
-  .club-modal-content {
-    background-color: #fff;
-    border-radius: 12px;
-    width: 90%;
-    max-width: 500px;
-    max-height: 90vh;
-    overflow-y: auto;
-    position: relative;
-    animation: modalopen 0.3s;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-  }
-
-  .club-close-modal {
-    position: absolute;
-    right: 20px;
-    top: 20px;
-    font-size: 28px;
-    font-weight: bold;
-    color: #999;
-    cursor: pointer;
-    width: 30px;
-    height: 30px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 50%;
-    transition: all 0.2s ease;
-    z-index: 1;
-  }
-  .club-close-modal:hover,
-  .club-close-modal:focus {
-    color: #000;
-    text-decoration: none;
-  }
-
-
-
-  .club-modal-body {
-    padding: 30px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-  }
-
-  /* 俱乐部头像样式 */
-  .club-avatar-container {
-    width: 120px;
-    height: 120px;
-    border-radius: 50%;
-    overflow: hidden;
-    border: 4px solid #fff;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    margin-bottom: 20px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    /* 移除固定背景色，让图片正常显示 */
-    background: transparent;
-  }
-
-  .club-avatar {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-
-  /* 俱乐部名称样式 */
-  .club-name {
-    font-size: 24px;
-    font-weight: 600;
-    color: #333;
-    margin-bottom: 20px;
-    text-align: center;
-    width: 100%;
-  }
-
-  /* 俱乐部简介样式 */
-  .club-intro-container {
-    width: 100%;
-    margin-bottom: 30px;
-    text-align: center;
-  }
-
-  .club-intro-container h3 {
-    font-size: 18px;
-    font-weight: 500;
-    color: #666;
-    margin-bottom: 10px;
-    text-align: center;
-  }
-
-  .club-intro {
-    font-size: 16px;
-    line-height: 1.6;
-    color: #555;
-    padding: 15px;
-    background-color: #f9f9f9;
-    border-radius: 8px;
-    text-align: left;
-    max-height: 200px;
-    overflow-y: auto;
-  }
-
-  /* 申请表单样式 */
-  .club-apply-form {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .from-grop-apply {
-    width: 100%;
-    margin-bottom: 25px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .from-grop-apply label {
-    display: block;
-    font-size: 16px;
-    font-weight: 500;
-    color: #333;
-    margin-bottom: 10px;
-    text-align: center;
-    width: 100%;
-  }
-
-  .from-grop-apply textarea {
-    width: 100%;
-    max-width: 400px;
-    padding: 12px 15px;
-    border: 2px solid #e0e0e0;
-    border-radius: 8px;
-    font-size: 16px;
-    font-family: inherit;
-    resize: vertical;
-    min-height: 100px;
-    transition: all 0.3s ease;
-    box-sizing: border-box;
-  }
-
-  .from-grop-apply textarea:focus {
-    outline: none;
-    border-color: #4A90E2;
-    box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.1);
-  }
-
-  /* 发送按钮样式 */
-  .apply-actions {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    margin-top: 10px;
-  }
-
-  .apply-btn {
-    padding: 12px 40px;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
-    border: none;
-    border-radius: 25px;
-    font-size: 16px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
-  }
-
-  .apply-btn:hover {
-    transform: scale(1.05);
-    box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
-  }
-
-  /* 管理订单表单样式 */
-  .from-grop-apply input[type="text"],
-  .from-grop-apply input[type="number"],
-  .from-grop-apply select {
-    width: 100%;
-    max-width: 400px;
-    padding: 12px 15px;
-    border: 2px solid #e0e0e0;
-    border-radius: 8px;
-    font-size: 16px;
-    box-sizing: border-box;
-    transition: all 0.3s ease;
-    outline: none;
-  }
-
-  .from-grop-apply input[type="text"]:focus,
-  .from-grop-apply input[type="number"]:focus,
-  .from-grop-apply select:focus {
-    border-color: #4A90E2;
-    box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.1);
-  }
-
-  .from-grop-apply select {
-    background-color: white;
-    cursor: pointer;
-  }
-
-  /* 管理订单按钮区域 */
-  .apply-actions {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    gap: 20px;
-    margin-top: 10px;
-  }
-
-  /* 删除按钮样式 */
-  .delete-btn {
-    background: linear-gradient(135deg, #ff6b6b 0%, #ee5a52 100%) !important;
-    box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3) !important;
-  }
-
-  .delete-btn:hover {
-    transform: scale(1.05) !important;
-    box-shadow: 0 6px 20px rgba(255, 107, 107, 0.4) !important;
-  }
-
-  /* 订单项点击样式 */
-  .order-item {
-    cursor: pointer;
-    transition: all 0.3s ease;
-  }
-
-  .order-item:hover {
-    background-color: #f5f5f5;
-    transform: translateY(-1px);
-  }
-
-  /* 钱包余额样式 */
-  .wallet-balance {
-    text-align: center;
-    margin-bottom: 30px;
-    padding: 20px;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    border-radius: 12px;
-    color: white;
-    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
-  }
-
-  .balance-label {
-    font-size: 1rem;
-    opacity: 0.9;
-    margin-bottom: 8px;
-  }
-
-  .balance-amount {
-    font-size: 2.5rem;
-    font-weight: bold;
-    line-height: 1;
-  }
-
-  /* 充值金额选项样式 */
-  .amount-options {
+  /* 订单网格容器样式：设置五列n行的网格布局并水平居中 */
+  .show-order-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 12px;
-    margin-bottom: 15px;
-  }
-
-  .amount-option {
-    padding: 12px 8px;
-    border: 2px solid #e0e0e0;
-    border-radius: 8px;
-    background: white;
-    cursor: pointer;
-    font-size: 0.95rem;
-    font-weight: 500;
-    transition: all 0.3s ease;
-    text-align: center;
-  }
-
-  .amount-option:hover {
-    border-color: #667eea;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
-  }
-
-  .amount-option.active {
-    border-color: #667eea;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
-    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
-  }
-
-  /* 自定义金额样式 */
-  .custom-amount {
-    margin-top: 10px;
-  }
-
-  .custom-amount input {
-    width: 100%;
-    min-width: 450px;
-    padding: 12px 15px;
-    border: 2px solid #e0e0e0;
-    border-radius: 8px;
-    font-size: 1rem;
-    box-sizing: border-box;
-    transition: all 0.3s ease;
-    outline: none;
-  }
-
-  .custom-amount input:focus {
-    border-color: #667eea;
-    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-  }
-
-  /* 支付方式选择框样式 */
-  #paymentMethod {
-    width: 100%;
-    max-width: 500px;
-    padding: 12px 15px;
-    border: 2px solid #e0e0e0;
-    border-radius: 8px;
-    font-size: 1rem;
-    box-sizing: border-box;
-    transition: all 0.3s ease;
-    outline: none;
-    background-color: white;
-    cursor: pointer;
-  }
-
-  #paymentMethod:focus {
-    border-color: #667eea;
-    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-  }
-
-  /* 响应式设计 */
-  @media (max-width: 768px) {
-    .amount-options {
-      grid-template-columns: repeat(2, 1fr);
-    }
-
-    .balance-amount {
-      font-size: 2rem;
-    }
-
-    .wallet-balance {
-      padding: 15px;
-      margin-bottom: 20px;
-    }
-  }
-
-
-  .apply-btn:active {
-    transform: translateY(0);
-  }
-
-  /* 滚动条样式 */
-  .club-modal-content::-webkit-scrollbar,
-  .club-intro::-webkit-scrollbar {
-    width: 6px;
-  }
-
-  .club-modal-content::-webkit-scrollbar-track,
-  .club-intro::-webkit-scrollbar-track {
-    background: #f1f1f1;
-    border-radius: 3px;
-  }
-
-  .club-modal-content::-webkit-scrollbar-thumb,
-  .club-intro::-webkit-scrollbar-thumb {
-    background: #c1c1c1;
-    border-radius: 3px;
-  }
-
-  .club-modal-content::-webkit-scrollbar-thumb:hover,
-  .club-intro::-webkit-scrollbar-thumb:hover {
-    background: #a1a1a1;
-  }
-
-  /* 动画 */
-  @keyframes modalopen {
-    from {
-      opacity: 0;
-      transform: scale(0.9) translateY(-20px);
-    }
-    to {
-      opacity: 1;
-      transform: scale(1) translateY(0);
-    }
-  }
-
-
-
-  .btn-remove:hover {
-    background-color: #dc3545;
-  }
-
-  /* 修改密码样式 */
-  .modal-body-center {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .security-center-header {
-    text-align: center;
-    margin-bottom: 20px;
-  }
-
-  .security-title {
-    font-size: 1.2rem;
-    color: #333;
-    margin-bottom: 8px;
-  }
-
-  .security-subtitle {
-    font-size: 0.9rem;
-    color: #666;
-  }
-
-  .security-form-group {
-    width: 100%;
-    max-width: 400px;
-  }
-
-  .text-align-left {
-    text-align: left;
-  }
-
-  .password-requirements-container {
-    width: 100%;
-    max-width: 400px;
-    margin-bottom: 20px;
-  }
-
-  .password-requirement-item {
-    display: flex;
-    align-items: center;
-    margin-bottom: 10px;
-  }
-
-  .requirement-indicator {
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    border: 2px solid #ccc;
-    margin-right: 10px;
-    transition: all 0.3s ease;
-  }
-
-  .requirement-text {
-    font-size: 0.9rem;
-    color: #666;
-    line-height: 50%;
-  }
-
-  .security-form-actions {
-    width: 100%;
-    max-width: 400px;
-  }
-
-  .btn-full-width {
-    width: 100%;
-  }
-
-  .hidden {
-    display: none;
-  }
-
-  /* 俱乐部管理弹窗样式 */
-  .club-management-container {
-    width: 100%;
-    max-width: 600px;
-    margin: 0 auto;
-  }
-
-  .fighters-grid-container {
-    margin-bottom: 30px;
-  }
-
-  .fighters-title {
-    font-size: 1.2rem;
-    color: #333;
-    margin-bottom: 15px;
-    text-align: center;
-  }
-
-  .fighters-grid-wrapper {
-    max-height: 300px;
-    overflow-y: auto;
-    border: 1px solid #e0e0e0;
-    border-radius: 8px;
-    padding: 15px;
-    background-color: #f9f9f9;
-  }
-
-  .fighters-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 10px;
-  }
-
-  .fighter-item {
-    padding: 12px 15px;
-    background: white;
-    border: 1px solid #ddd;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    text-align: center;
-    font-size: 0.9rem;
-    color: #333;
-  }
-
-  .fighter-item:hover {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(102, 126, 234, 0.3);
-  }
-
-  .fighter-item.selected {
-    background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
-    color: white;
-    border-color: #4CAF50;
-  }
-
-  .management-actions {
-    display: flex;
-    justify-content: center;
+    grid-template-columns: repeat(5, 1fr);
     gap: 15px;
-    margin-top: 20px;
+    padding: 20px;
+    margin: 0 auto;
+    max-width: 1800px;
+    justify-content: center;
+  }
+  /* 订单卡片基础样式：仿照俱乐部卡片样式 */
+  .show-order-card-1{
+    background: #222222;
+    border-radius: 0 16px 16px 16px;
+    border: 5px solid #000000;
+    padding: 15px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    width: 350px; /* 与club-card相同宽度 */
+    height: 520px; /* 与club-card相同高度 */
+  }
+  .show-order-card-1:hover{
+    transform: translate3d(5px, 5px, 0);
+  }
+  .show-order-card-2{
+    background: #222222;
+    border-radius: 0 16px 16px 16px;
+    border: 5px solid #000000;
+    padding: 15px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    width: 350px; /* 与club-card相同宽度 */
+    height: 520px; /* 与club-card相同高度 */
+  }
+  .show-order-card-2:hover{
+    transform: translate3d(5px, 5px, 0);
+  }
+  /* 订单卡片内容样式 */
+  .show-order-card-content h3 {
+    color: #ffffff;
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+    text-align: center;
   }
 
-  .btn-secondary {
-    padding: 12px 40px;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  /* 订单信息样式 */
+  .show-order-info {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+    background-color: #222222;
+    border-radius: 0 16px 16px 16px;
+    margin-left: -1.5%;
+  }
+
+  .show-order-type {
+    border-radius: 0 16px 16px 16px;
+    border: 5px solid #000000;
+    background-color: #000000;
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #007bff;
+    margin-bottom: 3%;
+    margin-top: 3%;
+    height: 2vh;
+    display: flex;
+    align-items: center;
+    padding-left: 2%;
+    width: 98%;
+  }
+
+  .show-order-amount {
+    width: 98%;
+    border-radius: 0 16px 16px 16px;
+    border: 5px solid #000000;
+    background-color: #000000;
+    font-size: 14px;
+    font-weight: 500;
+    color: #FEDE00;
+    margin-bottom: 5%;
+    height: 2vh;
+    display: flex;
+    align-items: center;
+    padding-left: 2%;
+  }
+
+  .show-order-content {
+    border-radius: 0 16px 16px 16px;
+    border: 5px solid #000000;
+    background-color: #000000;
+    width: 98%;
+    height: 15vh;
+    margin-bottom: 5%;
+    display: flex;
+    padding-left: 2%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .show-order-content p {
+    font-size: 13px;
+    color: #cccccc;
+    line-height: 1.4;
+  }
+
+  /* 发布人信息样式 */
+  .show-order-publisher-info {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    border-radius: 0 16px 16px 16px;
+    border: 5px solid #000000;
+    background-color: #000000;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .show-order-publisher-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 2px solid #222222;
+    margin-right: 10px;
+    flex-shrink: 0;
+  }
+
+  .show-order-publisher-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .show-order-publisher-details {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .show-order-publisher-name {
+    font-size: 14px;
+    font-weight: 500;
+    color: #ffffff;
+    margin-bottom: 2px;
+  }
+
+  .show-order-publisher-uid {
+    font-size: 12px;
+    color: #999999;
+  }
+
+  /* 接受订单按钮样式 */
+  .show-order-accept-btn {
+    margin-top: 3.5%;
+    height: 12%;
+    width: 55%;
+    background-color: #000000;
     color: white;
-    border: none;
-    border-radius: 25px;
-    font-size: 16px;
+    border-radius: 0 16px 16px 16px;
+    border: 5px solid #000000;
+    padding: 8px 16px;
+    font-size: 1rem;
     font-weight: 500;
     cursor: pointer;
     transition: all 0.3s ease;
-    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+    display: flex;
+    justify-self: center;
+    justify-content: center;
+    align-items: center;
   }
 
-  .btn-secondary:hover {
+  .show-order-accept-btn:hover {
+    font-weight: bold;
+    background-color: #FEDE00;
+    color: #000000;
+    border-color: #000;
+    border-radius: 0px 16px 16px 16px;
+    border: 5px solid #000000; /* 使用简写属性 */
+    cursor: pointer;
     transform: scale(1.05);
-    box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
   }
+
 </style>
+<script>
+  (function(){
+    const c = '<%=request.getContextPath()%>';
+    let currentUser = null;
+    let currentClubId = null;
+    let currentClubApplyPending = false;
+    let clubDataCache = [];
+    let createAvatarFile = null;
+    let editAvatarFile = null;
+    let currentClubIsAdmin = false;
+
+    function $(s,p){return (p||document).querySelector(s);}
+    function $$(s,p){return Array.from((p||document).querySelectorAll(s));}
+    function byId(id){return document.getElementById(id);}
+    function cloneReplace(el){ if(!el) return null; const n = el.cloneNode(true); el.parentNode.replaceChild(n, el); return n; }
+    function show(el, d){ if(el) el.style.display = d || 'flex'; }
+    function hide(el){ if(el) el.style.display = 'none'; }
+    function text(el, v){ if(el) el.textContent = v == null ? '' : String(v); }
+    function alertMsg(msg){ window.alert(msg); }
+    function jsonFetch(url, opt){ return fetch(url, opt).then(r => r.json()); }
+    function fileUrl(v){ if(!v) return '/images/default_club.png'; if(/^https?:|^\//.test(v)) return v; return c + '/' + String(v).replace(/^\/+/, ''); }
+    function escapeHtml(s){
+      return String(s == null ? '' : s)
+              .replace(/&/g, '&amp;')
+              .replace(/</g, '&lt;')
+              .replace(/>/g, '&gt;')
+              .replace(/"/g, '&quot;')
+              .replace(/'/g, '&#39;');
+    }
+
+    function syncUserCard(user){
+      const loginLeft = byId('loginLeftOriginal');
+      const userInfo = byId('userInfoDiv');
+      if(!user){
+        if(loginLeft) loginLeft.style.display = 'block';
+        if(userInfo) userInfo.style.display = 'none';
+        return;
+      }
+      if(loginLeft) loginLeft.style.display = 'none';
+      if(userInfo) userInfo.style.display = 'block';
+      const avatar = byId('displayAvatar');
+      if(avatar) avatar.src = fileUrl(user.avatar);
+      text(byId('displayNickname'), user.nickname || user.username || '用户');
+      text(byId('displayUserId'), 'UID: ' + (user.id || user.userId || ''));
+      text(byId('displayDescription'), user.description || '这个人很神秘，还没有填写个人简介。');
+      const stats = $$('.login-left-intro-stat-value');
+      if(stats[0]) stats[0].textContent = user.orderCount != null ? user.orderCount : '0';
+      if(stats[1]) stats[1].textContent = user.finishOrderCount != null ? user.finishOrderCount : '0';
+    }
+
+    function loadCurrentUser(){
+      return jsonFetch(c + '/user/current').then(res => {
+        currentUser = res && res.success ? (res.data || null) : null;
+        syncUserCard(currentUser);
+        return currentUser;
+      }).catch(() => {
+        currentUser = null;
+        syncUserCard(null);
+        return null;
+      });
+    }
+
+    function bindLogin(){
+      const btn = cloneReplace($('.login-btn'));
+      if(!btn) return;
+      btn.addEventListener('click', function(){
+        const username = (byId('account')||{}).value?.trim();
+        const password = (byId('password')||{}).value?.trim();
+        if(!username || !password){ alertMsg('请输入账号和密码'); return; }
+        const body = new URLSearchParams();
+        body.append('username', username);
+        body.append('password', password);
+        btn.disabled = true;
+        const old = btn.textContent;
+        btn.textContent = '登录中...';
+        jsonFetch(c + '/user/login', { method:'POST', headers:{'Content-Type':'application/x-www-form-urlencoded'}, body })
+                .then(res => {
+                  btn.disabled = false; btn.textContent = old;
+                  if(res.success){
+                    currentUser = res.data || null;
+                    syncUserCard(currentUser);
+                    alertMsg('登录成功');
+                  } else {
+                    alertMsg(res.error || res.msg || '登录失败');
+                  }
+                }).catch(() => { btn.disabled = false; btn.textContent = old; alertMsg('网络错误，请稍后重试'); });
+      });
+      window.logout = function(){
+        jsonFetch(c + '/user/logout').then(res => {
+          if(res.success){
+            currentUser = null;
+            syncUserCard(null);
+            if(byId('account')) byId('account').value = '';
+            if(byId('password')) byId('password').value = '';
+            alertMsg('已退出登录');
+          } else { alertMsg('退出失败'); }
+        }).catch(() => alertMsg('退出失败'));
+      };
+
+      const userInfo = byId('userInfoDiv');
+      if(userInfo && !byId('logoutBtnInjected')){
+        const wrap = document.createElement('div');
+        wrap.style.marginTop = '14px';
+        wrap.innerHTML = '<button id="logoutBtnInjected" type="button" class="login-btn" style="width:100%;">退出登录</button>';
+        userInfo.appendChild(wrap);
+        byId('logoutBtnInjected').addEventListener('click', window.logout);
+      }
+    }
+
+    function bindRegister(){
+      const form = cloneReplace(byId('registerForm'));
+      if(!form) return;
+      form.addEventListener('submit', function(e){
+        e.preventDefault();
+        const username = (byId('registerAccount')||{}).value?.trim();
+        const password = (byId('registerPassword')||{}).value?.trim();
+        const nickname = (byId('registerName')||{}).value?.trim();
+        if(!username || !password || !nickname){ alertMsg('请完整填写注册信息'); return; }
+        const submitBtn = form.querySelector('button[type="submit"]');
+        const old = submitBtn ? submitBtn.textContent : '';
+        if(submitBtn){ submitBtn.disabled = true; submitBtn.textContent = '注册中...'; }
+        const body = new URLSearchParams();
+        body.append('username', username);
+        body.append('password', password);
+        body.append('nickname', nickname);
+        jsonFetch(c + '/user/register', { method:'POST', headers:{'Content-Type':'application/x-www-form-urlencoded'}, body })
+                .then(res => {
+                  if(submitBtn){ submitBtn.disabled = false; submitBtn.textContent = old; }
+                  if(res.success){
+                    alertMsg('注册成功，请登录');
+                    form.reset();
+                    hide(byId('registerModal'));
+                    document.body.style.overflow = 'auto';
+                  } else { alertMsg(res.error || res.msg || '注册失败'); }
+                }).catch(() => { if(submitBtn){ submitBtn.disabled = false; submitBtn.textContent = old; } alertMsg('网络错误，请稍后重试'); });
+      });
+    }
+
+    function bindPersonalCenter(){
+      const btn = cloneReplace(byId('personalCenterBtn'));
+      if(btn){
+        btn.addEventListener('click', function(){
+          loadCurrentUser().then(user => {
+            if(!user){ alertMsg('请先登录'); return; }
+            if(byId('personalName')) byId('personalName').value = user.nickname || user.username || '';
+            if(byId('personalIntro')) byId('personalIntro').value = user.description || '';
+            const img = byId('personalAvatarDisplay');
+            const def = $('.personal-default-avatar');
+            if(img){ img.src = fileUrl(user.avatar); img.style.display = user.avatar ? 'block' : 'none'; }
+            if(def) def.style.display = user.avatar ? 'none' : 'flex';
+            const removeBtn = byId('removePersonalAvatarBtn');
+            if(removeBtn) removeBtn.style.display = user.avatar ? 'inline-block' : 'none';
+            show(byId('personalCenterModal'));
+            document.body.style.overflow = 'hidden';
+          });
+        });
+      }
+      const form = cloneReplace(byId('personalCenterForm'));
+      if(!form) return;
+      form.addEventListener('submit', function(e){
+        e.preventDefault();
+        if(!currentUser){ alertMsg('请先登录'); return; }
+        const nickname = (byId('personalName')||{}).value?.trim();
+        const description = (byId('personalIntro')||{}).value?.trim();
+        if(!nickname || !description){ alertMsg('请完整填写个人信息'); return; }
+        const submitBtn = form.querySelector('button[type="submit"]');
+        const old = submitBtn ? submitBtn.textContent : '';
+        if(submitBtn){ submitBtn.disabled = true; submitBtn.textContent = '保存中...'; }
+        const body = new URLSearchParams();
+        body.append('nickname', nickname);
+        body.append('description', description);
+        jsonFetch(c + '/user/updateProfile', { method:'POST', headers:{'Content-Type':'application/x-www-form-urlencoded'}, body })
+                .then(res => {
+                  if(submitBtn){ submitBtn.disabled = false; submitBtn.textContent = old; }
+                  if(res.success){
+                    alertMsg('修改成功');
+                    hide(byId('personalCenterModal'));
+                    document.body.style.overflow = 'auto';
+                    loadCurrentUser();
+                  } else { alertMsg(res.error || res.msg || '修改失败'); }
+                }).catch(() => { if(submitBtn){ submitBtn.disabled = false; submitBtn.textContent = old; } alertMsg('网络错误，请稍后重试'); });
+      });
+    }
+
+    function bindSecurity(){
+      const btn = cloneReplace(byId('securityCenterBtn'));
+      if(btn){
+        btn.addEventListener('click', function(){
+          loadCurrentUser().then(user => {
+            if(!user){ alertMsg('请先登录'); return; }
+            show(byId('securityCenterModal'));
+            document.body.style.overflow = 'hidden';
+          });
+        });
+      }
+      const confirmBtn = cloneReplace(byId('confirmPasswordBtn'));
+      const oldInput = byId('oldPassword');
+      const newInput = byId('newPassword');
+      const confirmInput = byId('confirmPassword');
+      const lenIndicator = byId('lengthIndicator');
+      const matchIndicator = byId('matchIndicator');
+      function setIndicator(el, ok){ if(el){ el.style.backgroundColor = ok ? '#FEDE00' : 'transparent'; el.style.borderColor = ok ? '#FEDE00' : '#ccc'; } }
+      function validate(){
+        const nv = newInput ? newInput.value : '';
+        const cv = confirmInput ? confirmInput.value : '';
+        const okLen = nv.length >= 8 && nv.length <= 15;
+        const okMatch = !!nv && nv === cv;
+        setIndicator(lenIndicator, okLen);
+        setIndicator(matchIndicator, okMatch);
+        if(confirmBtn) confirmBtn.disabled = !(okLen && okMatch && oldInput && oldInput.value.trim());
+      }
+      [oldInput,newInput,confirmInput].forEach(el => el && el.addEventListener('input', validate));
+      if(confirmBtn){
+        confirmBtn.addEventListener('click', function(){
+          if(!currentUser){ alertMsg('请先登录'); return; }
+          const oldPassword = oldInput ? oldInput.value.trim() : '';
+          const newPassword = newInput ? newInput.value.trim() : '';
+          if(!oldPassword){ alertMsg('请输入旧密码'); return; }
+          if(newPassword.length < 8 || newPassword.length > 15){ alertMsg('新密码长度需为8到15位'); return; }
+          const old = confirmBtn.textContent;
+          confirmBtn.disabled = true; confirmBtn.textContent = '修改中...';
+          const body = new URLSearchParams();
+          body.append('oldPassword', oldPassword);
+          body.append('newPassword', newPassword);
+          jsonFetch(c + '/user/changePassword', { method:'POST', headers:{'Content-Type':'application/x-www-form-urlencoded'}, body })
+                  .then(res => {
+                    confirmBtn.textContent = old;
+                    if(res.success){
+                      alertMsg('密码修改成功');
+                      if(oldInput) oldInput.value=''; if(newInput) newInput.value=''; if(confirmInput) confirmInput.value='';
+                      validate();
+                      hide(byId('securityCenterModal'));
+                      document.body.style.overflow = 'auto';
+                    } else { confirmBtn.disabled = false; alertMsg(res.error || res.msg || '修改失败'); }
+                  }).catch(() => { confirmBtn.disabled = false; confirmBtn.textContent = old; alertMsg('网络错误，请稍后重试'); });
+        });
+      }
+      validate();
+    }
+
+    function bindWallet(){
+      let selectedAmount = '';
+      $$('.wallet-amount-option').forEach(btn => {
+        btn.addEventListener('click', function(){
+          $$('.wallet-amount-option').forEach(x => x.classList.remove('active'));
+          btn.classList.add('active');
+          selectedAmount = btn.getAttribute('data-amount') || '';
+          const custom = byId('customAmount'); if(custom) custom.value = '';
+        });
+      });
+      const custom = byId('customAmount');
+      if(custom){ custom.addEventListener('input', function(){ $$('.wallet-amount-option').forEach(x => x.classList.remove('active')); selectedAmount = custom.value.trim(); }); }
+      const walletBtn = cloneReplace(byId('walletBtn'));
+      if(walletBtn){
+        walletBtn.addEventListener('click', function(){
+          loadCurrentUser().then(user => {
+            if(!user){ alertMsg('请先登录'); return; }
+            jsonFetch(c + '/account/balance').then(res => {
+              if(res.success){
+                const amountEl = $('.wallet-balance-amount');
+                if(amountEl) amountEl.textContent = '¥ ' + Number(res.data || 0).toFixed(2);
+              }
+              show(byId('walletModal')); document.body.style.overflow = 'hidden';
+            }).catch(() => { show(byId('walletModal')); document.body.style.overflow = 'hidden'; });
+          });
+        });
+      }
+      const form = cloneReplace(byId('walletForm'));
+      if(!form) return;
+      form.addEventListener('submit', function(e){
+        e.preventDefault();
+        if(!currentUser){ alertMsg('请先登录'); return; }
+        const amount = selectedAmount || ((byId('customAmount')||{}).value || '').trim();
+        const payment = (byId('paymentMethod')||{}).value || '';
+        if(!amount || Number(amount) <= 0){ alertMsg('请选择或输入有效金额'); return; }
+        if(!payment){ alertMsg('请选择支付方式'); return; }
+        const submitBtn = form.querySelector('button[type="submit"]');
+        const old = submitBtn ? submitBtn.textContent : '';
+        if(submitBtn){ submitBtn.disabled = true; submitBtn.textContent = '充值中...'; }
+        const body = new URLSearchParams(); body.append('amount', amount);
+        jsonFetch(c + '/account/recharge', { method:'POST', headers:{'Content-Type':'application/x-www-form-urlencoded'}, body })
+                .then(res => {
+                  if(submitBtn){ submitBtn.disabled = false; submitBtn.textContent = old; }
+                  if(res.success){
+                    alertMsg('充值成功');
+                    form.reset();
+                    selectedAmount = '';
+                    $$('.wallet-amount-option').forEach(x => x.classList.remove('active'));
+                    hide(byId('walletModal')); document.body.style.overflow = 'auto';
+                  } else { alertMsg(res.error || res.msg || '充值失败'); }
+                }).catch(() => { if(submitBtn){ submitBtn.disabled = false; submitBtn.textContent = old; } alertMsg('网络错误，请稍后重试'); });
+      });
+    }
+
+    function renderClubList(list){
+      const ul = byId('clubList') || $('.club-features');
+      if(!ul) return;
+      ul.innerHTML = '';
+      if(!list || !list.length){ ul.innerHTML = '<li style="color:#999;padding:20px;text-align:center;list-style:none;">暂无俱乐部数据</li>'; return; }
+      list.forEach(club => {
+        const li = document.createElement('li');
+        li.className = 'club-item';
+        li.setAttribute('data-id', club.clubId || club.id || '');
+        li.setAttribute('data-name', club.clubName || '未命名俱乐部');
+        li.setAttribute('data-intro', club.description || club.clubIntro || '暂无简介');
+        li.setAttribute('data-avatar', fileUrl(club.avatar));
+        li.innerHTML = '<div class="club-card-name"></div><div class="club-card-intro"></div>';
+        li.querySelector('.club-card-name').textContent = club.clubName || '未命名俱乐部';
+        li.querySelector('.club-card-intro').textContent = club.description || club.clubIntro || '暂无简介';
+        ul.appendChild(li);
+      });
+    }
+
+    function loadClubList(){
+      jsonFetch(c + '/club/all').then(res => {
+        if(res.success){ clubDataCache = res.data || []; renderClubList(clubDataCache); }
+      }).catch(() => {});
+    }
+
+    function bindClubList(){
+      const ulOld = byId('clubList') || $('.club-features');
+      if(!ulOld) return;
+      const ul = cloneReplace(ulOld);
+      if(!ul.id) ul.id = 'clubList';
+      ul.addEventListener('click', function(e){
+        const item = e.target.closest('.club-item');
+        if(!item) return;
+
+        currentClubId = item.getAttribute('data-id');
+        currentClubApplyPending = false;
+
+        const avatar = item.getAttribute('data-avatar');
+        const name = item.getAttribute('data-name');
+        const intro = item.getAttribute('data-intro');
+
+        if(byId('detailClubAvatar')) {
+          var d = byId('detailClubAvatar');
+          d.onerror = function(){
+            this.onerror = null;
+            this.src = c + '/images/default_club.png';
+          };
+          d.src = avatar || (c + '/images/default_club.png');
+        }
+
+        text(byId('detailClubName'), name);
+        text(byId('detailClubIntro'), intro);
+
+        const formNow = byId('clubApplyForm');
+        const btnNow = formNow ? formNow.querySelector('button[type="submit"]') : null;
+        if(btnNow){
+          btnNow.textContent = '发送申请';
+          btnNow.disabled = false;
+          btnNow.classList.remove('disabled');
+        }
+
+        show(byId('clubDetailModal'));
+        document.body.style.overflow = 'hidden';
+
+        jsonFetch(c + '/club/apply/status?clubId=' + encodeURIComponent(currentClubId)).then(function(res){
+          if(!res.success) return;
+
+          currentClubApplyPending = !!res.data;
+
+          const formNow2 = byId('clubApplyForm');
+          const btnNow2 = formNow2 ? formNow2.querySelector('button[type="submit"]') : null;
+          if(!btnNow2) return;
+
+          if(currentClubApplyPending){
+            btnNow2.textContent = '已申请，等待审核';
+            btnNow2.disabled = true;
+            btnNow2.classList.add('disabled');
+          }else{
+            btnNow2.textContent = '发送申请';
+            btnNow2.disabled = false;
+            btnNow2.classList.remove('disabled');
+          }
+        }).catch(function(){});
+      });
+      function doClubSearch(){
+        const kw = ((byId('clubSearchInput') || {}).value || '').trim().toLowerCase();
+
+        if(!kw){
+          renderClubList(clubDataCache);
+          return;
+        }
+
+        renderClubList((clubDataCache || []).filter(function(x){
+          return String(x.clubName || '').toLowerCase().includes(kw);
+        }));
+      }
+
+      const searchInput = cloneReplace(byId('clubSearchInput'));
+      const searchBtn = cloneReplace(byId('clubSearchBtn'));
+
+      if(searchInput){
+        searchInput.addEventListener('input', function(){
+          doClubSearch();
+        });
+
+        searchInput.addEventListener('keyup', function(e){
+          if(e.key === 'Enter'){
+            doClubSearch();
+          }
+        });
+      }
+
+      if(searchBtn){
+        searchBtn.addEventListener('click', function(){
+          doClubSearch();
+        });
+      }
+      const clubDetailCloseBtn = document.querySelector('.club-detail-close-modal');
+      if(clubDetailCloseBtn){
+        clubDetailCloseBtn.onclick = function(){
+          hide(byId('clubDetailModal'));
+          document.body.style.overflow = 'auto';
+        };
+      }
+      const applyForm = cloneReplace(byId('clubApplyForm'));
+      if(applyForm){
+        applyForm.addEventListener('submit', function(e){
+          e.preventDefault();
+          if(!currentUser){ alertMsg('请先登录'); return; }
+          if(!currentClubId){ alertMsg('未选择俱乐部'); return; }
+          if(currentClubApplyPending){
+            alertMsg('你已经提交过申请，请等待审核');
+            return;
+          }
+          const clubDetailCloseBtn = document.querySelector('.club-detail-close-modal');
+          if(clubDetailCloseBtn){
+            clubDetailCloseBtn.onclick = function(){
+              hide(byId('clubDetailModal'));
+              document.body.style.overflow = 'auto';
+            };
+          }
+
+          const submitBtn = applyForm.querySelector('button[type="submit"]');
+          const old = submitBtn ? submitBtn.textContent : '';
+          if(submitBtn){ submitBtn.disabled = true; submitBtn.textContent = '发送中...'; }
+          const msgInput = byId('applyMessage');
+          const msg = msgInput ? (msgInput.value || '').trim() : '';
+
+          if(!msg){
+            alertMsg('请填写申请理由');
+            if(msgInput) msgInput.focus();
+            if(submitBtn){ submitBtn.disabled = false; submitBtn.textContent = old; }
+            return;
+          }
+
+          const body = new URLSearchParams();
+          body.append('clubId', currentClubId);
+          body.append('applyMessage', msg);
+
+          jsonFetch(c + '/club/join', {
+            method:'POST',
+            headers:{'Content-Type':'application/x-www-form-urlencoded;charset=UTF-8'},
+            body
+          })
+                  .then(res => {
+                    if(submitBtn){ submitBtn.disabled = false; submitBtn.textContent = old; }
+                    if(res.success){
+                      currentClubApplyPending = true;
+
+                      const submitBtn2 = applyForm.querySelector('button[type="submit"]');
+                      if(submitBtn2){
+                        submitBtn2.textContent = '已申请，等待审核';
+                        submitBtn2.disabled = true;
+                        submitBtn2.classList.add('disabled');
+                      }
+
+                      alertMsg('申请已提交');
+                      applyForm.reset();
+                      hide(byId('clubDetailModal'));
+                      document.body.style.overflow = 'auto';
+                    }
+                    else { alertMsg(res.error || res.msg || '申请失败'); }
+                  }).catch(() => { if(submitBtn){ submitBtn.disabled = false; submitBtn.textContent = old; } alertMsg('网络错误，请稍后重试'); });
+        });
+      }
+    }
+
+    function bindCreateClub(){
+      const openCreateBtn = byId('createClubBtn');
+      if(openCreateBtn){
+        openCreateBtn.onclick = function(){
+          if(!currentUser){
+            alertMsg('请先登录');
+            return;
+          }
+
+          if(currentUser.clubId != null || currentUser.playerType != 0){
+            alertMsg('只有普通用户才能创建俱乐部');
+            return;
+          }
+
+          show(byId('createClubModal'));
+          document.body.style.overflow = 'hidden';
+        };
+      }
+
+      const form = cloneReplace(byId('createClubForm'));
+      if(!form) return;
+
+      const avatarInput = form.querySelector('#clubAvatar');
+      const avatarPreview = form.querySelector('#avatarPreview');
+      const avatarDisplay = form.querySelector('#avatarDisplay');
+      const removeAvatarBtn = form.querySelector('#removeAvatarBtn');
+      const defaultAvatar = form.querySelector('.club-create-default-avatar');
+      const avatarError = form.querySelector('#avatarError');
+
+      function hideCreateAvatarError(){
+        if(avatarError){
+          avatarError.textContent = '';
+          avatarError.classList.add('hidden');
+        }
+      }
+
+      function showCreateAvatarError(msg){
+        if(avatarError){
+          avatarError.textContent = msg || '';
+          avatarError.classList.remove('hidden');
+        } else {
+          alertMsg(msg || '头像选择失败');
+        }
+      }
+
+      function resetCreateAvatar(){
+        createAvatarFile = null;
+        if(avatarInput) avatarInput.value = '';
+        if(avatarDisplay){
+          avatarDisplay.src = '';
+          avatarDisplay.style.display = 'none';
+        }
+        if(defaultAvatar) defaultAvatar.style.display = 'flex';
+        if(removeAvatarBtn) removeAvatarBtn.style.display = 'none';
+        hideCreateAvatarError();
+      }
+
+      function previewCreateAvatar(file){
+        if(!file) return;
+        const validTypes = ['image/jpeg','image/png','image/gif','image/webp'];
+        if(validTypes.indexOf(file.type) === -1){
+          showCreateAvatarError('不支持的文件格式，请选择 JPG、PNG、GIF 或 WEBP 图片');
+          if(avatarInput) avatarInput.value = '';
+          createAvatarFile = null;
+          return;
+        }
+        const maxSize = 2 * 1024 * 1024;
+        if(file.size > maxSize){
+          showCreateAvatarError('图片大小不能超过 2MB');
+          if(avatarInput) avatarInput.value = '';
+          createAvatarFile = null;
+          return;
+        }
+        hideCreateAvatarError();
+        createAvatarFile = file;
+        const reader = new FileReader();
+        reader.onload = function(ev){
+          if(avatarDisplay){
+            avatarDisplay.src = ev.target.result;
+            avatarDisplay.style.display = 'block';
+          }
+          if(defaultAvatar) defaultAvatar.style.display = 'none';
+          if(removeAvatarBtn) removeAvatarBtn.style.display = 'inline-flex';
+        };
+        reader.readAsDataURL(file);
+      }
+
+      if(avatarPreview && avatarInput){
+        avatarPreview.addEventListener('click', function(){ avatarInput.click(); });
+      }
+      if(avatarInput){
+        avatarInput.addEventListener('change', function(){ previewCreateAvatar(this.files && this.files[0] ? this.files[0] : null); });
+      }
+      if(removeAvatarBtn){
+        removeAvatarBtn.addEventListener('click', function(e){ e.preventDefault(); e.stopPropagation(); resetCreateAvatar(); });
+      }
+      const closeBtn = document.querySelector('.club-create-close-modal');
+      if(closeBtn){ closeBtn.onclick = function(){ hide(byId('createClubModal')); document.body.style.overflow = 'auto'; form.reset(); resetCreateAvatar(); }; }
+
+      form.addEventListener('submit', function(e){
+        e.preventDefault();
+        if(!currentUser){ alertMsg('请先登录'); return; }
+
+        if(currentUser.clubId != null || currentUser.playerType != 0){
+          alertMsg('只有普通用户才能创建俱乐部');
+          return;
+        }
+
+        const clubName = (form.querySelector('#clubName')||{}).value?.trim();
+        const clubIntro = (form.querySelector('#clubIntro')||{}).value?.trim();
+        if(!clubName || !clubIntro){ alertMsg('请完整填写俱乐部信息'); return; }
+        const submitBtn = form.querySelector('button[type="submit"]');
+        const old = submitBtn ? submitBtn.textContent : '';
+        if(submitBtn){ submitBtn.disabled = true; submitBtn.textContent = '创建中...'; }
+        const fd = new FormData();
+        fd.append('clubName', clubName); fd.append('clubIntro', clubIntro); if(createAvatarFile) fd.append('clubAvatar', createAvatarFile);
+        fetch(c + '/club/create', { method:'POST', body: fd }).then(r => r.json()).then(res => {
+          if(submitBtn){ submitBtn.disabled = false; submitBtn.textContent = old; }
+          if(res.success){ alertMsg('创建成功'); form.reset(); resetCreateAvatar(); hide(byId('createClubModal')); document.body.style.overflow = 'auto'; loadCurrentUser().then(loadClubList); }
+          else { alertMsg(res.error || res.msg || '创建失败'); }
+        }).catch(() => { if(submitBtn){ submitBtn.disabled = false; submitBtn.textContent = old; } alertMsg('网络错误，请稍后重试'); });
+      });
+    }
+
+    function loadClubMembers(clubId){
+      const grid = byId('fightersGrid');
+      if(!grid) return;
+
+      grid.innerHTML = '<div style="text-align:center;color:#666;padding:20px;">加载中...</div>';
+
+      jsonFetch(c + '/club/members?clubId=' + encodeURIComponent(clubId)).then(res => {
+        if(!res.success){
+          grid.innerHTML = '<div style="text-align:center;color:#666;padding:20px;">成员加载失败</div>';
+          return;
+        }
+
+        const list = res.data || [];
+        if(!list.length){
+          grid.innerHTML = '<div style="text-align:center;color:#666;padding:20px;">暂无成员</div>';
+          return;
+        }
+
+        grid.innerHTML = '';
+
+        list.forEach(user => {
+          const item = document.createElement('div');
+          item.className = 'fighter-item';
+
+          const fighterId = user.userId || user.id;
+          const fighterName = user.nickname || user.username || ('用户' + (fighterId || ''));
+
+          item.textContent = fighterName;
+          item.dataset.userId = String(fighterId || '');
+          item.dataset.fighterName = fighterName;
+
+          item.addEventListener('click', function(){
+            if(!currentClubIsAdmin){
+              return;
+            }
+
+            const oldSelected = grid.querySelector('.fighter-item.selected');
+            if(oldSelected){
+              oldSelected.classList.remove('selected');
+            }
+
+            item.classList.add('selected');
+
+            if(typeof window.openFighterManagement === 'function'){
+              window.openFighterManagement({
+                userId: fighterId,
+                fighterName: fighterName,
+                username: user.username || '',
+                nickname: user.nickname || ''
+              });
+            }
+          });
+
+          grid.appendChild(item);
+        });
+      }).catch(() => {
+        grid.innerHTML = '<div style="text-align:center;color:#666;padding:20px;">成员加载失败</div>';
+      });
+    }
+    window.loadClubMembersGlobal = loadClubMembers;
+    window.getCurrentClubIdGlobal = function(){
+      return currentClubId;
+    };
+
+    function bindClubManagement(){
+      const btn = cloneReplace(byId('clubManagementBtn'));
+      if(btn){
+        btn.addEventListener('click', function(){
+          loadCurrentUser().then(user => {
+            if(!user){ alertMsg('请先登录'); return; }
+            const clubId = user.clubId || user.clubid;
+            if(!clubId){ alertMsg('你还没有加入俱乐部'); return; }
+            currentClubId = clubId;
+            text(byId('currentClubTitle'), '我的俱乐部');
+            loadClubMembers(clubId);
+            const quitBtn = byId('quitClubBtn');
+            const editBtnEl = byId('editInfoBtn');
+            const manageBtnEl = byId('manageApplicationsBtn');
+            if(quitBtn) quitBtn.style.display = 'none';
+            if(editBtnEl) editBtnEl.style.display = 'none';
+            if(manageBtnEl) manageBtnEl.style.display = 'none';
+            jsonFetch(c + '/club/detail?clubId=' + encodeURIComponent(clubId)).then(res => {
+              if(res.success && res.data){
+                text(byId('currentClubTitle'), res.data.clubName || '我的俱乐部');
+                const userId = String(user.id || user.userId || user.uid || '').trim();
+                const adminId = String(res.data.adminId || res.data.adminid || '').trim();
+                const playerType = String(user.playerType || user.playertype || '').trim();
+                const isAdmin = !!userId && !!adminId && userId === adminId && playerType === '2';
+
+                currentClubIsAdmin = isAdmin;
+
+                if(quitBtn) quitBtn.style.display = isAdmin ? 'none' : 'inline-block';
+                if(editBtnEl) editBtnEl.style.display = isAdmin ? 'inline-block' : 'none';
+                if(manageBtnEl) manageBtnEl.style.display = isAdmin ? 'inline-block' : 'none';
+              } else {
+                currentClubIsAdmin = false;
+                if(quitBtn) quitBtn.style.display = 'inline-block';
+              }
+            }).catch(()=>{
+              currentClubIsAdmin = false;
+              if(quitBtn) quitBtn.style.display = 'inline-block';
+            });
+            show(byId('clubManagementModal')); document.body.style.overflow = 'hidden';
+          });
+        });
+      }
+      const quitBtn = cloneReplace(byId('quitClubBtn'));
+      if(quitBtn){
+        quitBtn.addEventListener('click', function(){
+          if(!currentClubId){ alertMsg('未找到俱乐部'); return; }
+          if(!confirm('确定退出当前俱乐部吗？')) return;
+          const body = new URLSearchParams(); body.append('clubId', currentClubId);
+          jsonFetch(c + '/club/quit', { method:'POST', headers:{'Content-Type':'application/x-www-form-urlencoded;charset=UTF-8'}, body })
+                  .then(res => {
+                    if(res.success){ alertMsg('已退出俱乐部'); hide(byId('clubManagementModal')); document.body.style.overflow = 'auto'; loadCurrentUser().then(loadClubList); }
+                    else { alertMsg(res.error || res.msg || '退出失败'); }
+                  }).catch(() => alertMsg('网络错误，请稍后重试'));
+        });
+      }
+      const editBtn = cloneReplace(byId('editInfoBtn'));
+      if(editBtn){
+        editBtn.addEventListener('click', function(){
+          if(!currentClubId){ alertMsg('未找到俱乐部'); return; }
+          jsonFetch(c + '/club/detail?clubId=' + encodeURIComponent(currentClubId)).then(res => {
+            if(!(res.success && res.data)){ alertMsg(res.error || res.msg || '加载俱乐部信息失败'); return; }
+            const club = res.data;
+            const modal = byId('clubEditModal');
+            const form = cloneReplace(byId('clubEditForm'));
+            if(!form){ alertMsg('未找到编辑表单'); return; }
+            const nameInput = form.querySelector('#editClubName');
+            const introInput = form.querySelector('#editClubIntro');
+            const charCount = form.querySelector('#editCharCount');
+            const avatarInput = form.querySelector('#clubAvatarInput');
+            const avatarPreview = form.querySelector('#clubAvatarPreview');
+            const defaultAvatar = c + '/images/default_club.png';
+            editAvatarFile = null;
+
+            function renderAvatar(src){
+              if(!avatarPreview) return;
+              let url = defaultAvatar;
+              if(src){
+                if(/^data:image\//i.test(src) || /^blob:/i.test(src) || /^https?:\/\//i.test(src)) url = src;
+                else url = fileUrl(src);
+              }
+              avatarPreview.innerHTML = '<img src="' + url + '" alt="俱乐部头像预览" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">';
+              const img = avatarPreview.querySelector('img');
+              if(img){ img.onerror = function(){ this.onerror = null; this.src = defaultAvatar; }; }
+            }
+
+            if(nameInput) nameInput.value = club.clubName || '';
+            if(introInput) introInput.value = club.description || club.clubIntro || '';
+            if(charCount) charCount.textContent = (introInput && introInput.value ? introInput.value.length : 0);
+            renderAvatar(club.avatar);
+
+            if(avatarPreview && avatarInput){
+              avatarPreview.addEventListener('click', function(){ avatarInput.click(); });
+            }
+            if(introInput && charCount){
+              introInput.addEventListener('input', function(){
+                if(this.value.length > 999) this.value = this.value.substring(0, 999);
+                charCount.textContent = this.value.length;
+              });
+            }
+            if(avatarInput){
+              avatarInput.addEventListener('change', function(){
+                const file = this.files && this.files[0] ? this.files[0] : null;
+                if(!file) return;
+                if(!file.type || file.type.indexOf('image/') !== 0){ alertMsg('请选择图片文件'); this.value = ''; return; }
+                if(file.size > 2 * 1024 * 1024){ alertMsg('图片大小不能超过2MB'); this.value = ''; return; }
+                editAvatarFile = file;
+                const reader = new FileReader();
+                reader.onload = function(e){ renderAvatar(e.target.result); };
+                reader.readAsDataURL(file);
+              });
+            }
+
+            form.addEventListener('submit', function(e){
+              e.preventDefault();
+              const clubName = nameInput && nameInput.value ? nameInput.value.trim() : '';
+              const clubIntro = introInput && introInput.value ? introInput.value.trim() : '';
+              if(!clubName){ alertMsg('请输入俱乐部名称'); if(nameInput) nameInput.focus(); return; }
+              if(!clubIntro){ alertMsg('请输入俱乐部简介'); if(introInput) introInput.focus(); return; }
+              const submitBtn = form.querySelector('button[type="submit"]');
+              const old = submitBtn ? submitBtn.textContent : '';
+              if(submitBtn){ submitBtn.disabled = true; submitBtn.textContent = '保存中...'; }
+              const fd = new FormData();
+              fd.append('clubId', currentClubId);
+              fd.append('clubName', clubName);
+              fd.append('clubIntro', clubIntro);
+              if(editAvatarFile) fd.append('clubAvatar', editAvatarFile);
+              fetch(c + '/club/update', { method:'POST', body: fd }).then(r => r.json()).then(res2 => {
+                if(submitBtn){ submitBtn.disabled = false; submitBtn.textContent = old; }
+                if(!(res2.success)){ alertMsg(res2.error || res2.msg || '编辑失败'); return; }
+                alertMsg('编辑成功');
+                hide(modal); document.body.style.overflow = 'auto';
+                editAvatarFile = null;
+                loadClubList();
+                loadClubMembers(currentClubId);
+                jsonFetch(c + '/club/detail?clubId=' + encodeURIComponent(currentClubId)).then(detailRes => {
+                  if(detailRes.success && detailRes.data){
+                    text(byId('currentClubTitle'), detailRes.data.clubName || '我的俱乐部');
+                  }
+                }).catch(()=>{});
+              }).catch(() => {
+                if(submitBtn){ submitBtn.disabled = false; submitBtn.textContent = old; }
+                alertMsg('网络错误，请稍后重试');
+              });
+            });
+
+            const closeBtn = modal ? modal.querySelector('.club-edit-close-modal') : null;
+            if(closeBtn){
+              closeBtn.onclick = function(){
+                hide(modal);
+                document.body.style.overflow = 'auto';
+                editAvatarFile = null;
+                if(avatarInput) avatarInput.value = '';
+              };
+            }
+            if(modal) modal.setAttribute('data-club-id', currentClubId);
+            show(modal); document.body.style.overflow = 'hidden';
+          }).catch(() => alertMsg('加载俱乐部信息失败'));
+        });
+      }
+      function loadApplications(clubId){
+        const listBox = byId('applicationsList');
+        const emptyBox = byId('noApplications');
+        if(!listBox || !emptyBox) return;
+        listBox.innerHTML = '<div style="padding:20px;text-align:center;color:#999;">加载中...</div>';
+        emptyBox.style.display = 'none';
+        listBox.style.display = 'block';
+        jsonFetch(c + '/club/apply/list?clubId=' + encodeURIComponent(clubId)).then(res => {
+          if(!res.success){
+            listBox.innerHTML = '';
+            listBox.style.display = 'none';
+            emptyBox.style.display = 'block';
+            emptyBox.innerHTML = '<p>' + escapeHtml(res.error || res.msg || '加载申请失败') + '</p>';
+            return;
+          }
+          const arr = Array.isArray(res.data) ? res.data : [];
+          if(!arr.length){
+            listBox.innerHTML = '';
+            listBox.style.display = 'none';
+            emptyBox.style.display = 'block';
+            emptyBox.innerHTML = '<p>暂无申请信息</p>';
+            return;
+          }
+          emptyBox.style.display = 'none';
+          listBox.style.display = 'block';
+          listBox.innerHTML = '';
+          arr.forEach(item => {
+            const applyId = item.applyId || item.id || '';
+            const userId = item.userId || item.id || '';
+            const nickname = item.nickname || item.username || ('用户' + userId);
+            const details = item.applyMessage || '该用户没有填写申请信息';
+            const avatar = item.avatar ? fileUrl(item.avatar) : (c + '/images/default_club.png');
+            const div = document.createElement('div');
+            div.className = 'application-item';
+            div.innerHTML = ''
+                    + '<div class="application-info">'
+                    +   '<div style="display:flex;align-items:center;gap:12px;margin-bottom:10px;">'
+                    +     '<img src="' + avatar + '" style="width:48px;height:48px;border-radius:50%;object-fit:cover;flex-shrink:0;" onerror="this.onerror=null;this.src=\'' + c + '/images/default_club.png\'">'
+                    +     '<div>'
+                    +       '<div class="application-id">申请用户ID: ' + escapeHtml(userId) + '</div>'
+                    +       '<div class="application-nickname">昵称: ' + escapeHtml(nickname) + '</div>'
+                    +     '</div>'
+                    +   '</div>'
+                    +   '<div class="application-details">申请信息: ' + escapeHtml(details) + '</div>'
+                    + '</div>'
+                    + '<div class="application-actions">'
+                    +   '<button type="button" class="btn-approve" data-id="' + escapeHtml(applyId) + '">同意</button>'
+                    +   '<button type="button" class="btn-reject" data-id="' + escapeHtml(applyId) + '">拒绝</button>'
+                    + '</div>';
+            listBox.appendChild(div);
+          });
+          bindApplicationActionButtons(clubId);
+        }).catch(() => {
+          listBox.innerHTML = '';
+          listBox.style.display = 'none';
+          emptyBox.style.display = 'block';
+          emptyBox.innerHTML = '<p>加载申请失败</p>';
+        });
+      }
+
+      function bindApplicationActionButtons(clubId){
+        const approveBtns = document.querySelectorAll('#applicationsList .btn-approve');
+        const rejectBtns = document.querySelectorAll('#applicationsList .btn-reject');
+        approveBtns.forEach(btn => {
+          btn.onclick = function(){
+            const applyId = this.getAttribute('data-id');
+            handleApplication(clubId, applyId, 'approve');
+          };
+        });
+        rejectBtns.forEach(btn => {
+          btn.onclick = function(){
+            const applyId = this.getAttribute('data-id');
+            handleApplication(clubId, applyId, 'reject');
+          };
+        });
+      }
+
+      function handleApplication(clubId, applyId, action){
+        const url = action === 'approve' ? '/club/apply/approve' : '/club/apply/reject';
+        const txt = action === 'approve' ? '同意' : '拒绝';
+        fetch(c + url, {
+          method:'POST',
+          headers:{'Content-Type':'application/x-www-form-urlencoded;charset=UTF-8'},
+          body:'applyId=' + encodeURIComponent(applyId)
+        }).then(r => r.json()).then(res => {
+          if(!res.success){ alertMsg(res.error || res.msg || (txt + '失败')); return; }
+          alertMsg(txt + '成功');
+          loadApplications(clubId);
+          loadClubMembers(clubId);
+        }).catch(() => alertMsg('网络错误，请稍后重试'));
+      }
+
+      const manageModal = byId('manageApplicationsModal');
+      const manageCloseBtn = manageModal ? manageModal.querySelector('.club-manageappli-close-modal') : null;
+      if(manageCloseBtn){
+        manageCloseBtn.onclick = function(){
+          hide(manageModal);
+          document.body.style.overflow = 'auto';
+        };
+      }
+      if(manageModal){
+        manageModal.onclick = function(e){
+          if(e.target === manageModal){
+            hide(manageModal);
+            document.body.style.overflow = 'auto';
+          }
+        };
+      }
+      const manageBtn = cloneReplace(byId('manageApplicationsBtn'));
+      if(manageBtn){
+        manageBtn.addEventListener('click', function(){
+          if(!currentClubId){ alertMsg('未找到俱乐部'); return; }
+          loadApplications(currentClubId);
+          show(manageModal);
+          document.body.style.overflow = 'hidden';
+        });
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', function(){
+      bindLogin();
+      bindRegister();
+      bindPersonalCenter();
+      bindSecurity();
+      bindWallet();
+      bindClubList();
+      bindCreateClub();
+      bindClubManagement();
+      loadCurrentUser();
+      loadClubList();
+    });
+  })();
+</script>
 </html>

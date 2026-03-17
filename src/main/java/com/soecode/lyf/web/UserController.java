@@ -2,11 +2,13 @@ package com.soecode.lyf.web;
 
 import com.soecode.lyf.dto.Result;
 import com.soecode.lyf.entity.User;
+import com.soecode.lyf.service.AccountService;
 import com.soecode.lyf.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
@@ -20,6 +22,10 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private AccountService accountService;
+
 
     /**
      * 用户登录
@@ -69,6 +75,7 @@ public class UserController {
         // 其他字段可选，保持null
         boolean success = userService.addUser(user);
         if (success) {
+            accountService.getOrCreateAccount(user.getUserId()); // 创建账户
             return new Result<>(true, "注册成功");
         } else {
             return new Result<>(false, "注册失败，请稍后重试");
@@ -184,15 +191,6 @@ public class UserController {
         return "login";
     }
 
-    /**
-     * 处理登录请求
-     */
-    @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public String login(String username, String password, Model model) {
-        // 这里应该实现实际的登录逻辑
-        // 暂时返回登录页面
-        return "login";
-    }
 
     /**
      * 显示注册页面
@@ -202,13 +200,31 @@ public class UserController {
         return "register";
     }
 
-    /**
-     * 处理注册请求
-     */
-    @RequestMapping(value = "/register", method = RequestMethod.POST)
-    public String register(User user, Model model) {
-        // 这里应该实现实际的注册逻辑
-        // 暂时重定向到登录页面
-        return "redirect:/user/login";
+    @RequestMapping(value = "/changePassword", method = RequestMethod.POST, produces = "application/json;charset=utf-8")
+    @ResponseBody
+    public Result<String> changePassword(HttpSession session, String oldPassword, String newPassword) {
+        User sessionUser = (User) session.getAttribute("user");
+        if (sessionUser == null) {
+            return new Result<>(false, "未登录");
+        }
+        User user = userService.getById(sessionUser.getUserId());
+        if (user == null) {
+            session.invalidate();
+            return new Result<>(false, "用户不存在");
+        }
+        // 验证旧密码（目前是明文，根据实际加密方式调整）
+        if (!user.getPassword().equals(oldPassword)) {
+            return new Result<>(false, "旧密码错误");
+        }
+        // 更新密码
+        user.setPassword(newPassword);
+        boolean success = userService.updateUser(user);
+        if (success) {
+            return new Result<>(true, "密码修改成功");
+        } else {
+            return new Result<>(false, "密码修改失败");
+        }
     }
+
+
 }

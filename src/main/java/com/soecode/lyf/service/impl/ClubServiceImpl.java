@@ -26,13 +26,10 @@ public class ClubServiceImpl implements ClubService {
 
     @Override
     public Club getById(long clubId) {
-        return null;
-    }
-
-    @Override
-    public Club getById(Long clubId) {
         return ClubDao.queryById(clubId);
     }
+
+
 
     @Override
     public boolean addClub(Club club) {

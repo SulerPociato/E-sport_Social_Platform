@@ -40,7 +40,7 @@ CREATE TABLE `order` (
                          amount DECIMAL(10,2) NOT NULL COMMENT '单价',
                          quantity DECIMAL(5,2) NOT NULL COMMENT '小时',
                          total_amount DECIMAL(10,2) NOT NULL COMMENT '总金额',
-                         status TINYINT DEFAULT 0 COMMENT '状态:0待支付 1已支付 2进行中 3已完成 4已取消',
+                         status TINYINT DEFAULT 0 COMMENT '状态',
                          pay_time DATETIME COMMENT '支付时间',
                          complete_time DATETIME COMMENT '完成时间',
                          create_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,

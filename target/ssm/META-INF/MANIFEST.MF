@@ -1,5 +1,5 @@
 Manifest-Version: 1.0
 Created-By: IntelliJ IDEA
-Built-By: KIMU
-Build-Jdk: Oracle OpenJDK 21.0.9
+Built-By: 32186
+Build-Jdk: Microsoft OpenJDK 21.0.10
 

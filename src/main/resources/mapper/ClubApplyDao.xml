@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.soecode.lyf.dao.ClubApplyDao">
+
+    <resultMap id="ClubApplyResultMap" type="com.soecode.lyf.entity.ClubApply">
+        <id column="id" property="applyId"/>
+        <result column="club_id" property="clubId"/>
+        <result column="user_id" property="userId"/>
+        <result column="apply_message" property="applyMessage"/>
+        <result column="status" property="status"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+
+        <result column="username" property="username"/>
+        <result column="nickname" property="nickname"/>
+        <result column="avatar" property="avatar"/>
+    </resultMap>
+
+    <insert id="insert" parameterType="com.soecode.lyf.entity.ClubApply" useGeneratedKeys="true" keyProperty="applyId">
+        INSERT INTO club_apply(
+            club_id,
+            user_id,
+            apply_message,
+            status,
+            create_time,
+            update_time
+        ) VALUES (
+                     #{clubId},
+                     #{userId},
+                     #{applyMessage},
+                     #{status},
+                     NOW(),
+                     NOW()
+                 )
+    </insert>
+
+    <select id="queryById" parameterType="long" resultMap="ClubApplyResultMap">
+        SELECT
+            ca.id,
+            ca.club_id,
+            ca.user_id,
+            ca.apply_message,
+            ca.status,
+            ca.create_time,
+            ca.update_time,
+            u.username,
+            u.nickname,
+            u.avatar
+        FROM club_apply ca
+                 LEFT JOIN user u ON ca.user_id = u.id
+        WHERE ca.id = #{applyId}
+    </select>
+
+    <select id="queryPendingByClubId" parameterType="long" resultMap="ClubApplyResultMap">
+        SELECT
+            ca.id,
+            ca.club_id,
+            ca.user_id,
+            ca.apply_message,
+            ca.status,
+            ca.create_time,
+            ca.update_time,
+            u.username,
+            u.nickname,
+            u.avatar
+        FROM club_apply ca
+                 LEFT JOIN user u ON ca.user_id = u.id
+        WHERE ca.club_id = #{clubId}
+          AND ca.status = 0
+        ORDER BY ca.create_time DESC
+    </select>
+
+    <select id="queryPendingByClubIdAndUserId" resultMap="ClubApplyResultMap">
+        SELECT
+            ca.id,
+            ca.club_id,
+            ca.user_id,
+            ca.apply_message,
+            ca.status,
+            ca.create_time,
+            ca.update_time,
+            u.username,
+            u.nickname,
+            u.avatar
+        FROM club_apply ca
+                 LEFT JOIN user u ON ca.user_id = u.id
+        WHERE ca.club_id = #{clubId}
+          AND ca.user_id = #{userId}
+          AND ca.status = 0
+            LIMIT 1
+    </select>
+
+    <update id="updateStatus">
+        UPDATE club_apply
+        SET status = #{status},
+            update_time = NOW()
+        WHERE id = #{applyId}
+    </update>
+
+    <select id="queryAnyPendingByUserId" parameterType="long" resultMap="ClubApplyResultMap">
+        SELECT
+            ca.id,
+            ca.club_id,
+            ca.user_id,
+            ca.apply_message,
+            ca.status,
+            ca.create_time,
+            ca.update_time,
+            u.username,
+            u.nickname,
+            u.avatar
+        FROM club_apply ca
+                 LEFT JOIN user u ON ca.user_id = u.id
+        WHERE ca.user_id = #{userId}
+          AND ca.status = 0
+        ORDER BY ca.create_time DESC
+            LIMIT 1
+    </select>
+
+</mapper>

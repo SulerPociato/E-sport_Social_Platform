@@ -5,15 +5,14 @@ import java.util.Date;
 /**
  * 俱乐部实体
  */
-
 public class Club {
     private long clubId;
     private String clubName;
     private String description;
     private long adminId;
     private Date createTime;
+    private String avatar;
 
-    // 构造方法
     public Club() {
     }
 
@@ -25,51 +24,57 @@ public class Club {
         this.createTime = createTime;
     }
 
-    // Getter方法
     public long getClubId() {
         return clubId;
     }
-    
-    public String getClubName(){
-        return clubName;
-    }
-    
-    public String getDescription(){
-        return description;
-    }
-    
-    public long getAdminId(){
-        return adminId;
-    }
-    
-    public Date getCreateTime(){
-        return createTime;
-    }
-    
-    // Setter方法
+
     public void setClubId(long clubId) {
         this.clubId = clubId;
     }
-    
+
+    public String getClubName() {
+        return clubName;
+    }
+
     public void setClubName(String clubName) {
         this.clubName = clubName;
     }
-    
+
+    public String getDescription() {
+        return description;
+    }
+
     public void setDescription(String description) {
         this.description = description;
     }
-    
+
+    public long getAdminId() {
+        return adminId;
+    }
+
     public void setAdminId(long adminId) {
         this.adminId = adminId;
     }
-    
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
     }
 
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
+
     @Override
-    public String toString(){
+    public String toString() {
         return "Club [clubId=" + clubId + ", clubName=" + clubName + ", description=" + description
-                + ", adminId=" + adminId + ", createTime=" + createTime + "]";
+                + ", adminId=" + adminId + ", createTime=" + createTime + ", avatar=" + avatar + "]";
     }
 }

@@ -10,6 +10,7 @@ public class Order {
 
     private long orderId; // 订单ID
     private String orderNo; // 订单号
+    private String gameName;
     private long customerId; // 下单用户ID
     private long playerId; // 接单打手ID
     private BigDecimal amount; // 单价
@@ -147,6 +148,15 @@ public class Order {
     public void setPlayer(User player) {
         this.player = player;
     }
+
+    public String getGameName() {
+        return gameName;
+    }
+
+    public void setGameName(String gameName) {
+        this.gameName = gameName;
+    }
+
 
     @Override
     public String toString() {
