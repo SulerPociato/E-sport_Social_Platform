@@ -1,9 +1,0 @@
-<%  
-    String path = request.getContextPath();  
-    String basePath = request.getScheme() + "://"  
-            + request.getServerName() + ":" + request.getServerPort()  
-            + path + "/";  
-    request.setAttribute("basePath", basePath);
-%>
-
-<%@include file="bootstrap.jsp"%>
