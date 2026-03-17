@@ -1,0 +1,3 @@
+USE e_sport_platform;
+ALTER TABLE `order` ADD COLUMN game_name VARCHAR(50) NOT NULL DEFAULT '' COMMENT '游戏名称';
+ALTER TABLE `order` ADD COLUMN detail VARCHAR(50) NOT NULL DEFAULT '' COMMENT '描述';
