@@ -1,0 +1,2 @@
+USE e_sport_platform;
+ALTER TABLE club ADD COLUMN avatar VARCHAR(255) DEFAULT NULL COMMENT '俱乐部头像';

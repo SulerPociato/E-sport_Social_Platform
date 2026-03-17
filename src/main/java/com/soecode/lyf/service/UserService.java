@@ -18,17 +18,28 @@ public interface UserService {
     User getById(long userId);
 
     /**
-     * 添加用户
+     * 根据用户名获取用户
+     * @param username 用户名
+     * @return 用户对象
      */
+    User getByUsername(String username);
+
+    List<User> getByClubId(long clubId);
+
     boolean addUser(User user);
 
     /**
      * 更新用户信息
      */
     boolean updateUser(User user);
-
+//加入俱乐部
+    boolean joinClub(long userId, long clubId);
+//    退出俱乐部
+    boolean quitClub(long userId);
     /**
      * 删除用户
      */
+    boolean updatePlayerType(Long userId, Integer playerType);
+
     boolean deleteUser(long userId);
 }

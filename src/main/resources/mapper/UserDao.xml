@@ -49,6 +49,15 @@
         WHERE username = #{username}
     </select>
 
+    <select id="queryByClubId" parameterType="long" resultMap="UserResultMap">
+        SELECT
+            id, username, password, email, phone, nickname,
+            avatar, gender, description, order_count,
+            player_type, club_id, status, create_time, update_time
+        FROM user
+        WHERE club_id = #{clubId}
+        ORDER BY id ASC
+    </select>
     <insert id="insert" parameterType="User" useGeneratedKeys="true" keyProperty="userId">
         INSERT INTO user(
             username, password, email, phone, nickname, avatar,
@@ -77,6 +86,25 @@
                         status = #{status},
                         update_time = NOW()
         WHERE id = #{userId}
+    </update>
+    <update id="joinClub">
+        UPDATE user
+        SET club_id = #{param2},
+            update_time = NOW()
+        WHERE id = #{param1}
+    </update>
+
+    <update id="quitClub">
+        UPDATE user
+        SET club_id = null,
+            update_time = NOW()
+        WHERE id = #{userId}
+    </update>
+
+    <update id="updatePlayerType">
+        update user
+        set player_type = #{playerType}
+        where id = #{userId}
     </update>
 
     <delete id="delete" parameterType="long">

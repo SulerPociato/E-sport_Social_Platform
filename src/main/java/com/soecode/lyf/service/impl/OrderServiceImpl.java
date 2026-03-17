@@ -68,7 +68,7 @@ public class OrderServiceImpl implements OrderService {
         try {
             return orderDao.queryByPlayerId(playerId, offset, limit);
         } catch (Exception e) {
-            logger.error("获取打手订单失败，打手ID: {}, 错误: {}", playerId, e.getMessage());
+            logger.error("获取打手订单失败，打手ID: " + playerId, e);
             return null;
         }
     }
@@ -196,4 +196,5 @@ public class OrderServiceImpl implements OrderService {
             return 0;
         }
     }
+
 }

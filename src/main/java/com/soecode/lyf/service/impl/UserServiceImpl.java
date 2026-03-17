@@ -33,6 +33,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public List<User> getByClubId(long clubId) {
+        return userDao.queryByClubId(clubId);
+    }
+
+    @Override
     public boolean addUser(User user) {
         try {
             int result = userDao.insert(user);
@@ -55,6 +60,28 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public boolean quitClub(long userId) {
+        try {
+            int result = userDao.quitClub(userId);
+            return result > 0;
+        } catch (Exception e) {
+            logger.error("quit club error", e);
+            return false;
+        }
+    }
+
+    @Override
+    public boolean joinClub(long userId, long clubId) {
+        try {
+            int result = userDao.joinClub(userId, clubId);
+            return result > 0;
+        } catch (Exception e) {
+            logger.error("join club error", e);
+            return false;
+        }
+    }
+
+    @Override
     public boolean deleteUser(long userId) {
         try {
             int result = userDao.delete(userId);
@@ -63,5 +90,9 @@ public class UserServiceImpl implements UserService {
             logger.error("删除用户异常: {}", e.getMessage());
             return false;
         }
+    }
+    @Override
+    public boolean updatePlayerType(Long userId, Integer playerType) {
+        return userDao.updatePlayerType(userId, playerType) > 0;
     }
 }
