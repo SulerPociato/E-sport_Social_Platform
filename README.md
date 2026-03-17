@@ -1,39 +1,219 @@
-## 功能模块
 
-### 1. 游戏管理
-- 访问地址：`/game/list`
-- 功能：查看游戏列表、游戏详情
+## 安装部署步骤
 
-### 2. 陪玩服务管理
-- 访问地址：`/companion/list`
-- 功能：查看陪玩服务列表、服务详情、按游戏分类查看
+### 1. 环境准备
 
-### 3. API接口
-- 游戏详情API：`/game/{id}/json`
-- 陪玩服务详情API：`/companion/{id}/json`
+#### 安装JDK
+```bash
+# 验证JDK安装
+java -version
+javac -version
+```
 
-## 测试方法
+#### 安装Maven
+```bash
+# 验证Maven安装
+mvn -version
+```
+
+#### 安装MySQL
+```bash
+# 启动MySQL服务
+sudo systemctl start mysql  # Linux
+# 或通过服务管理器启动MySQL
+```
+
+### 2. 数据库配置
+
+#### 创建数据库
+```sql
+-- 执行项目中的SQL脚本
+mysql -u root -p < src/main/sql/e_sport_platform.sql
+```
+
+#### 修改数据库配置
+编辑 `src/main/resources/jdbc.properties`：
+```properties
+jdbc.driver=com.mysql.cj.jdbc.Driver
+jdbc.url=jdbc:mysql://localhost:3306/e_sport_platform?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
+jdbc.username=root
+jdbc.password=your_password
+```
+
+### 3. 项目构建
+
+#### 方式一：使用Maven命令
+```bash
+# 清理并打包项目
+mvn clean package
+
+# 跳过测试打包
+mvn clean package -DskipTests
+```
+
+#### 方式二：使用IDE
+1. 导入项目到IDE（IntelliJ IDEA/Eclipse）
+2. 配置Maven
+3. 执行Maven构建
+
+### 4. 部署到Tomcat
+
+#### 方式一：直接部署WAR包
+1. 将生成的 `target/ssm.war` 复制到Tomcat的webapps目录
+2. 启动Tomcat服务器
+3. 访问 `http://localhost:8080/ssm`
+
+#### 方式二：IDE内嵌Tomcat
+1. 配置Tomcat服务器
+2. 部署项目
+3. 启动服务器
+
+## 功能模块说明
+
+### 1. 游戏管理模块
+- **访问路径**: `/game/list`
+- **功能描述**: 查看游戏列表和游戏详情
+- **相关文件**:
+  - 控制器: [GameController.java](file:///d:/ssm-master/src/main/java/com/soecode/lyf/web/GameController.java)
+  - 服务层: [GameService.java](file:///d:/ssm-master/src/main/java/com/soecode/lyf/service/GameService.java)
+  - 数据层: [GameDao.java](file:///d:/ssm-master/src/main/java/com/soecode/lyf/dao/GameDao.java)
+  - 页面: [list.jsp](file:///d:/ssm-master/src/main/webapp/WEB-INF/jsp/game/list.jsp)
+
+### 2. 陪玩服务管理模块
+- **访问路径**: `/companion/list`
+- **功能描述**: 查看陪玩服务列表、服务详情、按游戏分类查看
+- **相关文件**:
+  - 控制器: [CompanionServiceController.java](file:///d:/ssm-master/src/main/java/com/soecode/lyf/web/CompanionServiceController.java)
+  - 服务层: [CompanionServiceService.java](file:///d:/ssm-master/src/main/java/com/soecode/lyf/service/CompanionServiceService.java)
+  - 数据层: [CompanionServiceDao.java](file:///d:/ssm-master/src/main/java/com/soecode/lyf/dao/CompanionServiceDao.java)
+  - 页面: [list.jsp](file:///d:/ssm-master/src/main/webapp/WEB-INF/jsp/companion/list.jsp)
+
+### 3. 用户管理模块
+- **访问路径**: `/user/list`
+- **功能描述**: 用户信息管理
+- **相关文件**:
+  - 控制器: [UserController.java](file:///d:/ssm-master/src/main/java/com/soecode/lyf/web/UserController.java)
+  - 服务层: [UserService.java](file:///d:/ssm-master/src/main/java/com/soecode/lyf/service/UserService.java)
+  - 数据层: [UserDao.java](file:///d:/ssm-master/src/main/java/com/soecode/lyf/dao/UserDao.java)
+
+## API接口文档
+
+### 游戏相关API
+- `GET /game/list` - 获取游戏列表
+- `GET /game/{id}/json` - 获取游戏详情(JSON格式)
+- `GET /game/detail` - 游戏详情页面
+
+### 陪玩服务相关API
+- `GET /companion/list` - 获取陪玩服务列表
+- `GET /companion/{id}/json` - 获取陪玩服务详情(JSON格式)
+- `GET /companion/detail` - 陪玩服务详情页面
+- `GET /companion/game_list` - 按游戏分类查看陪玩服务
+
+## 测试指南
 
 ### 1. 单元测试
-运行对应的测试类验证DAO和Service层功能：
-- `GameDaoTest`
-- `CompanionServiceDaoTest`
-- `GameServiceImplTest`
-- `CompanionServiceServiceImplTest`
+```bash
+# 运行所有测试
+mvn test
+
+# 运行特定测试类
+mvn test -Dtest=GameDaoTest
+```
 
 ### 2. 功能测试
-1. 启动Tomcat服务器
-2. 访问 `http://localhost:8080/game/list` 查看游戏列表
-3. 访问 `http://localhost:8080/companion/list` 查看陪玩服务列表
+1. 启动应用服务器
+2. 访问以下URL进行功能测试：
+   - 游戏列表: `http://localhost:8080/game/list`
+   - 陪玩服务: `http://localhost:8080/companion/list`
+   - 用户列表: `http://localhost:8080/user/list`
 
-## 技术栈
-- 后端：Spring + SpringMVC + MyBatis
-- 数据库：MySQL
-- 前端：JSP + Bootstrap
-- 构建工具：Maven
+### 3. 数据库测试
+项目包含完整的测试数据，可通过SQL脚本初始化。
 
-## 注意事项
-1. 确保MySQL服务已启动
-2. 数据库字符集设置为utf8mb4以支持emoji
-3. 项目使用C3P0连接池，请确保连接池配置正确
-4. 所有删除操作均为逻辑删除（status=0）
+## 配置说明
+
+### Spring配置文件
+- **spring-dao.xml**: 数据访问层配置
+- **spring-service.xml**: 业务层配置
+- **spring-web.xml**: Web层配置
+
+### MyBatis配置
+- **mybatis-config.xml**: MyBatis全局配置
+- **mapper/*.xml**: 各模块的SQL映射文件
+
+### 日志配置
+- **logback.xml**: 日志级别、输出格式等配置
+
+## 常见问题解决
+
+### 1. 数据库连接失败
+**问题**: `Communications link failure`
+**解决**: 检查MySQL服务是否启动，数据库配置是否正确
+
+### 2. 字符编码问题
+**问题**: 中文显示乱码
+**解决**: 确保数据库字符集为utf8mb4，连接参数包含`characterEncoding=utf8`
+
+### 3. 端口冲突
+**问题**: `Address already in use`
+**解决**: 修改Tomcat端口或停止占用端口的进程
+
+### 4. 依赖下载失败
+**问题**: Maven依赖下载超时
+**解决**: 配置国内镜像源或使用代理
+
+## 开发规范
+
+### 代码结构规范
+- 遵循MVC分层架构
+- 包名使用小写，类名使用大驼峰命名法
+- 配置文件统一放在resources目录
+
+### 数据库设计规范
+- 表名使用小写，字段名使用下划线分隔
+- 主键使用BIGINT自增
+- 时间字段使用TIMESTAMP类型
+
+### 日志规范
+- 使用SLF4J接口，Logback实现
+- 合理设置日志级别
+- 关键操作记录操作日志
+
+## 性能优化建议
+
+### 数据库优化
+1. 为常用查询字段添加索引
+2. 合理使用连接池配置
+3. 避免N+1查询问题
+
+### 应用优化
+1. 使用缓存减少数据库访问
+2. 合理配置线程池
+3. 静态资源使用CDN加速
+
+## 安全注意事项
+
+1. 生产环境修改默认数据库密码
+2. 配置适当的访问权限
+3. 对用户输入进行验证和过滤
+4. 使用HTTPS协议传输敏感数据
+
+## 扩展开发指南
+
+### 添加新模块步骤
+1. 创建实体类
+2. 创建DAO接口和映射文件
+3. 创建Service接口和实现类
+4. 创建Controller
+5. 创建JSP页面
+6. 配置Spring Bean
+7. 编写单元测试
+
+### 自定义功能开发
+参考现有模块代码结构，保持代码风格一致。
+
+---
+
+**最后更新**: 2026-03-10  
+**项目版本**: 0.0.1-SNAPSHOT  
+**维护人员**: 项目开发团队

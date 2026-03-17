@@ -1,0 +1,171 @@
+电竞社交平台	
+在游戏产业中，陪玩和代练长期以来处于灰色地带，但其庞大的用户需求所达到的日均上万订单，不错的营收能力与电竞的火热赛道，让陪玩和代练公司纷纷融资，在资本面前热得发烫。开黑电竞是一个陪玩、电竞社交类项目，旨在打造“国内第一娱乐电竞社交平台”。产品通过高效便捷的方式连接游戏高玩与普通玩家，真正实现了玩家们随时随地可进行技能变现、电竞教学、娱乐社交等内容。	
+用户数据分析统计、支付接口、H5、响应式轻应用	
+前端：HTML5、Ajax、JS、Vue.js		
+服务端：Spring + SpringMVC + MyBatis
+
+### 项目根目录
+ssm-master/
+├── src/                    # 源代码目录
+├── target/                 # 构建输出目录
+├── LICENSE                 # 许可证文件
+├── README.md              # 项目说明文档
+└── pom.xml                # Maven项目配置文件
+
+### 主代码目录
+src/main/
+├── java/                  # Java源代码
+│   └── com/soecode/lyf/
+│       ├── dao/           # 数据访问层接口
+│       │   ├── CompanionServiceDao.java
+│       │   ├── GameDao.java
+│       │   └── UserDao.java
+│       ├── dto/           # 数据传输对象
+│       │   └── Result.java
+│       ├── entity/        # 实体类
+│       │   ├── CompanionService.java
+│       │   ├── Game.java
+│       │   └── User.java
+│       ├── enums/         # 枚举类
+│       │   └── AppointStateEnum.java
+│       ├── exception/     # 异常处理类
+│       │   ├── AppointException.java
+│       │   ├── NoNumberException.java
+│       │   └── RepeatAppointException.java
+│       ├── service/       # 业务逻辑层
+│       │   ├── impl/      # 服务实现类
+│       │   │   ├── CompanionServiceServiceImpl.java
+│       │   │   ├── GameServiceImpl.java
+│       │   │   └── UserServiceImpl.java
+│       │   ├── CompanionServiceService.java
+│       │   ├── GameService.java
+│       │   └── UserService.java
+│       └── web/           # Web控制器层
+│           ├── CompanionServiceController.java
+│           ├── GameController.java
+│           └── UserController.java
+├── resources/             # 资源文件
+│   ├── mapper/           # MyBatis映射文件
+│   │   ├── CompanionServiceDao.xml
+│   │   ├── GameDao.xml
+│   │   └── UserDao.xml
+│   ├── spring/           # Spring配置文件
+│   │   ├── spring-dao.xml
+│   │   ├── spring-service.xml
+│   │   └── spring-web.xml
+│   ├── jdbc.properties   # 数据库连接配置
+│   ├── logback.xml       # 日志配置
+│   └── mybatis-config.xml # MyBatis配置
+├── sql/                  # 数据库脚本
+│   └── e_sport_platform.sql
+└── webapp/               # Web应用资源
+    └── WEB-INF/
+        ├── jsp/          # JSP页面文件
+        │   ├── common/   # 公共页面组件
+        │   │   ├── bootstrap.jsp
+        │   │   ├── head.jsp
+        │   │   └── tag.jsp
+        │   ├── companion/ # 陪玩服务页面
+        │   │   ├── detail.jsp
+        │   │   ├── game_list.jsp
+        │   │   ├── list.jsp
+        │   │   └── user_list.jsp
+        │   ├── game/     # 游戏管理页面
+        │   │   ├── detail.jsp
+        │   │   └── list.jsp
+        │   ├── user/     # 用户管理页面
+        │   │   └── list.jsp
+        │   ├── index.jsp # 首页
+        │   └── detail.jsp
+        ├── lib/          # 依赖库
+        │   └── [各种jar包文件]
+        └── web.xml       # Web应用配置
+
+### 测试代码目录
+src/test/
+└── java/com/soecode/lyf/
+    ├── dao/              # DAO层测试
+    │   ├── CompanionServiceDaoTest.java
+    │   └── GameDaoTest.java
+    ├── service/impl/     # 服务层测试
+    │   ├── CompanionServiceServiceImplTest.java
+    │   └── GameServiceImplTest.java
+    ├── web/              # Web层测试
+    │   ├── AbstractContextControllerTests.java
+    │   └── BookControllerTest.java
+    └── BaseTest.java     # 基础测试类
+
+### 构建输出目录
+target/
+├── classes/              # 编译后的类文件
+├── maven-status/         # Maven构建状态
+├── ssm/                  # 打包后的Web应用
+│   ├── META-INF/
+│   ├── WEB-INF/
+│   │   ├── classes/     # 运行时类文件
+│   │   ├── jsp/         # JSP页面
+│   │   ├── lib/         # 依赖库
+│   │   └── web.xml
+│   └── [其他Web资源]
+├── test-classes/         # 测试类文件
+└── ssm.war              # 最终打包文件
+
+### 整体目录
+d:\ssm-master\
+├── src/
+│   ├── main/
+│   │   ├── java/
+│   │   │   └── com/
+│   │   │       └── soecode/
+│   │   │           └── lyf/
+│   │   │               ├── dao/                          # DAO接口层
+│   │   │               │   ├── GameDao.java               # ✅ 游戏DAO
+│   │   │               │   └── CompanionServiceDao.java   # ✅ 陪玩服务DAO
+│   │   │               ├── entity/                        # 实体类层
+│   │   │               │   ├── Game.java                  # ✅ 游戏实体
+│   │   │               │   ├── User.java                  # ✅ 用户实体
+│   │   │               │   └── CompanionService.java      # ✅ 陪玩服务实体
+│   │   │               ├── service/                       # 服务层
+│   │   │               │   ├── impl/                      # 服务实现
+│   │   │               │   │   ├── GameServiceImpl.java           # ✅ 游戏服务实现
+│   │   │               │   │   └── CompanionServiceServiceImpl.java # ✅ 陪玩服务实现
+│   │   │               │   ├── GameService.java           # ✅ 游戏服务接口
+│   │   │               │   └── CompanionServiceService.java # ✅ 陪玩服务接口
+│   │   │               └── web/                           # 控制器层
+│   │   │                   ├── GameController.java         # ✅ 游戏控制器
+│   │   │                   └── CompanionServiceController.java # ✅ 陪玩服务控制器
+│   │   ├── resources/
+│   │   │   ├── mapper/                     # MyBatis映射文件
+│   │   │   │   ├── GameDao.xml             # ✅ 游戏映射文件
+│   │   │   │   └── CompanionServiceDao.xml # ✅ 陪玩服务映射文件
+│   │   │   ├── spring/                      # Spring配置文件
+│   │   │   │   ├── spring-dao.xml          # ✅ 已存在（无需修改）
+│   │   │   │   ├── spring-service.xml      # ✅ 已存在（无需修改）
+│   │   │   │   └── spring-web.xml           # ✅ 已存在（无需修改）
+│   │   │   └── mybatis-config.xml           # ✅ MyBatis配置（已更新）
+│   │   ├── sql/
+│   │   │   └── e_sport_platform.sql         # ✅ 电竞平台数据库SQL
+│   │   └── webapp/
+│   │       └── WEB-INF/
+│   │           └── jsp/
+│   │               ├── game/                # 游戏相关页面
+│   │               │   ├── list.jsp          # ✅ 游戏列表页
+│   │               │   └── detail.jsp        # ✅ 游戏详情页
+│   │               └── companion/            # 陪玩服务相关页面
+│   │                   ├── list.jsp          # ✅ 陪玩服务列表页
+│   │                   ├── game_list.jsp    # ✅ 按游戏分类列表页
+│   │                   ├── user_list.jsp     # ✅ 按用户分类列表页
+│   │                   └── detail.jsp        # ✅ 陪玩服务详情页
+│   └── test/
+│       └── java/
+│           └── com/
+│               └── soecode/
+│                   └── lyf/
+│                       ├── dao/                          # DAO测试类
+│                       │   ├── GameDaoTest.java          # ✅ 游戏DAO测试
+│                       │   └── CompanionServiceDaoTest.java # ✅ 陪玩服务DAO测试
+│                       └── service/
+│                           └── impl/                     # 服务测试类
+│                               ├── GameServiceImplTest.java          # ✅ 游戏服务测试
+│                               └── CompanionServiceServiceImplTest.java # ✅ 陪玩服务测试
+└── 电竞平台管理系统部署说明.md                            # ✅ 部署说明文档

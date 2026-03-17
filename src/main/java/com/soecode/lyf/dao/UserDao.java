@@ -2,8 +2,6 @@ package com.soecode.lyf.dao;
 
 import java.util.List;
 
-import org.apache.ibatis.annotations.Param;
-
 import com.soecode.lyf.entity.User;
 
 public interface UserDao {

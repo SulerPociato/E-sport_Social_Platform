@@ -40,6 +40,15 @@
         WHERE id = #{userId}
     </select>
 
+    <select id="queryByUsername" parameterType="String" resultMap="UserResultMap">
+        SELECT
+            id, username, password, email, phone, nickname,
+            avatar, gender, birthday, game_id, level, rating,
+            status, create_time, update_time
+        FROM user
+        WHERE username = #{username}
+    </select>
+
     <insert id="insert" parameterType="User" useGeneratedKeys="true" keyProperty="userId">
         INSERT INTO user(
             username, password, email, phone, nickname, avatar, 

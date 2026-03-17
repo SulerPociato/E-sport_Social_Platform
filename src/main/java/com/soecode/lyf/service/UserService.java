@@ -2,6 +2,7 @@ package com.soecode.lyf.service;
 
 import java.util.List;
 
+import com.soecode.lyf.entity.Club;
 import com.soecode.lyf.entity.User;
 
 public interface UserService {

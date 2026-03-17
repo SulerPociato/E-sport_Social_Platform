@@ -1,0 +1,131 @@
+### 运行环境要求：
+1.Tomcat;
+2.Maven;
+3.MySQL;
+
+
+
+### 建议编译器：
+Intellij IDEA（学生版或专业版）ps.B站有破解教程
+
+
+
+### 配置Maven环境：
+https://maven.apache.org/download.cgi官网下载apache-maven-3.9.13-bin.zip，下载解压到合适位置（我的放在C盘Program Files目录下），
+右击我的电脑->属性->高级系统设置->环境变量 在系统变量处新建变量M2_HOME，值为Maven目录（C:\Program Files\apache-maven-3.9.13），
+点击上方用户变量中的Path，编辑->新建%H2_HOME%/bin，保存
+
+
+
+### 配置Tomcat：
+apache-maven-3.9.13-bin官网下载64-bit Windows zip (pgp, sha512)，下载解压到合适位置（我的放在C盘根目录）
+
+
+
+### 配置MySQL：
+按照上课要求配置即可，记住安装过程中的端口号（3306）和密码，下载完成后按win+x+a打开管理员终端，输入mysql -V确认是否安装完成，若安装无误，
+输入mysql -u root -p后输入密码即启动成功
+
+
+
+### 下载ItelliJ IDEA：
+https://www.bilibili.com/video/BV1Y5fZBNER2/?spm_id_from=333.337.search-card.all.click如上链接可参考下载破解IDEA专业版，
+或进入官网下载学生版（学生资质申请具体问ai）
+
+
+
+### 在IDEA中部署Tomcat服务器：
+在IDEA中指定Tomcat安装目录，
+打开 IDEA，点击菜单栏 File -> Settings (Windows) 或 IntelliJ IDEA -> Preferences (Mac)。
+在设置窗口中，导航到 Build, Execution, Deployment -> Application Servers 。
+点击右侧的 + 号，从下拉列表中选择 Tomcat Server 。
+在弹出的对话框中，Tomcat Home 项选择你刚才解压的 Tomcat 文件夹的根目录（例如 D:\apache-tomcat-9.0.xx）。IDEA 会自动识别版本并填写其他信息，点击 OK 保存 。
+
+
+
+### 从Github上拉取项目：
+ 登录GitHub账号后，点击右上方头像左边的小盒子，下方会有我发的仓库邀请，点击同意后即可参与代码编辑，打开IDEA后选择克隆仓库，url路径为https://github.com/SulerPociato/E-sport_Social_Platform.git，自己选择合适的目录后即可
+
+
+
+
+### 为你的项目创建Tomcat运行配置
+点击 IDEA 右上角的下拉框，选择 Edit Configurations... 。
+在新窗口的左上角，点击 + 号，然后选择 Tomcat Server -> Local 。
+在右侧的 Server 选项卡中：
+Name：给你的配置起个名字，比如 MyTomcat。
+Application server：在下拉框中选择你刚刚配置好的 Tomcat。如果没有出现，可以点击旁边的 Configure... 按钮重新指定 。
+URL：这里会自动生成项目启动后要访问的地址，通常以 http://localhost:8080/ 开头 。
+其他选项（如端口、JVM 参数）一般保持默认即可。如果 8080 端口被占用，可以在 HTTP port 处修改 。
+
+
+
+### 部署你的项目
+在刚才的配置窗口中，切换到 Deployment 选项卡 。
+点击 + 号，选择 Artifact 。
+在弹出的列表中，选择你的项目模块（通常是以 :war exploded 结尾的选项，这表示“展开的”WAR包，便于开发时热部署）。
+在下面的 Application context 栏中，可以设置应用的访问路径。比如填 /，则访问地址就是 http://localhost:8080/；如果填 /myapp，访问地址就是 http://localhost:8080/myapp 。
+点击ok后保存点击右上绿色三角启动按钮即可
+
+
+启动前记得查看Markdown文件了解大致结构，记得修改jdbc.properties中的密码
+
+
+经以上步骤你应该可以正常启动项目并看到主页，若操作过程中遇到其他问题各异积极扔给ai解决
+
+
+
+src/main/
+├── java/com/soecode/lyf/
+│   ├── entity/新模块实体类.java
+│   ├── dao/新模块Dao.java
+│   ├── service/新模块Service.java
+│   ├── service/impl/新模块ServiceImpl.java
+│   └── web/新模块Controller.java
+├── resources/mapper/新模块Dao.xml
+└── webapp/WEB-INF/jsp/新模块/
+    ├── list.jsp
+    └── detail.jsp
+
+
+
+SSM项目添加新模块的完整操作流程
+
+第一步：确定模块功能
+明确新模块的业务需求，比如订单管理、支付系统、评论系统等。
+
+第二步：数据库设计
+    在SQL文件中添加新表结构
+    考虑表之间的关系（外键约束）
+    添加必要的索引
+
+第三步：创建实体类（Entity）
+    位置：src/main/java/com/soecode/lyf/entity/
+    包含：字段、构造函数、getter/setter方法
+
+第四步：创建DAO层
+    DAO接口：src/main/java/com/soecode/lyf/dao/
+    MyBatis映射文件：src/main/resources/mapper/
+    定义CRUD操作方法
+
+第五步：创建Service层
+    Service接口：src/main/java/com/soecode/lyf/service/
+    Service实现类：src/main/java/com/soecode/lyf/service/impl/
+    添加业务逻辑和事务管理
+
+第六步：创建Controller层
+    位置：src/main/java/com/soecode/lyf/web/
+    包含：请求映射、参数处理、返回结果
+
+第七步：创建前端页面
+    JSP页面：src/main/webapp/WEB-INF/jsp/新模块目录/
+    使用JSTL标签显示数据
+    添加JavaScript交互功能
+    
+第八步：配置检查
+    确保Spring配置正确扫描新创建的组件。
+
+第九步：测试验证
+    启动应用测试功能
+    检查日志输出
+    验证数据流转
