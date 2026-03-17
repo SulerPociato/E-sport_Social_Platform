@@ -107,7 +107,7 @@ public class OrderServiceImpl implements OrderService {
             int result = orderDao.insert(order);
             return result > 0;
         } catch (Exception e) {
-            logger.error("创建订单失败: {}", e.getMessage());
+            logger.error("创建订单失败", e);
             return false;
         }
     }
