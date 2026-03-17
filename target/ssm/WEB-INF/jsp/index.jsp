@@ -2213,12 +2213,16 @@
     if (orderDetails && charCount) {
       orderDetails.addEventListener('input', function() {
         const currentLength = this.value.length;
-        charCount.textContent = currentLength;
+        if (charCount) {
+          charCount.textContent = currentLength;
+        }
 
         // 如果超过限制，截断文本
         if (currentLength > 999) {
           this.value = this.value.substring(0, 999);
-          charCount.textContent = 999;
+          if (charCount) {
+            charCount.textContent = 999;
+          }
         }
       });
     }
@@ -2235,7 +2239,17 @@
     if (postOrderForm) {
       postOrderForm.addEventListener('submit', function(event) {
         // 阻止表单默认提交行为
+        console.log('发布订单表单提交');
         event.preventDefault();
+
+        // const submitBtn = this.querySelector('button[type="submit"]');
+        // if(!submitBtn){
+        //   console.error('发布订单表单提交按钮不存在');
+        //   return;
+        // }
+        // const originalText = submitBtn.textContent;
+        // submitBtn.textContent='订单创建中';
+        // submitBtn.disabled = true;
 
         // 获取表单数据
         const orderType = document.getElementById('orderType').value;
@@ -2263,11 +2277,15 @@
           alert('请输入订单详情');
           return;
         }
-
+        //throw new Error('测试错误');
         // 显示加载状态
-        const submitBtn = this.querySelector('.btn-primary');
+        const submitBtn = this.querySelector('button[type="submit"]');
+        if(!submitBtn){
+          console.error('发布订单表单提交按钮不存在');
+          return;
+        }
         const originalText = submitBtn.textContent;
-        submitBtn.textContent = '创建订单中...';
+        submitBtn.textContent='订单创建中';
         submitBtn.disabled = true;
 
         // 构建订单数据
@@ -2282,8 +2300,9 @@
         // 在实际应用中，这些数据应该从用户会话或选择器中获取
         orderData.append('customerId', '1'); // 临时值，实际应从session获取
         orderData.append('playerId', '2'); // 临时值，实际应从选择器获取
-
+        console.log('orderData:', Object.fromEntries(orderData));
         // 调用创建订单接口
+        console.log('即将发送请求，请求数据:', Object.fromEntries(orderData));
         fetch('/ssm_war/order/create', {
           method: 'POST',
           headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
@@ -2296,19 +2315,18 @@
 
                   if (data.success) {
                     alert('订单发布成功！');
-
-                    // 关闭弹窗
                     postOrderModal.style.display = 'none';
                     document.body.style.overflow = 'auto';
-
-                    // 重置表单
                     postOrderForm.reset();
-                    charCount.textContent = '0';
 
-                    // 刷新页面或跳转到订单列表
-                    setTimeout(() => {
-                      window.location.href = '/ssm_war/order/list';
-                    }, 1000);
+                    // 字符计数重置（如果存在）
+                    const charCountEl = document.getElementById('charCount');
+                    if (charCountEl) {
+                      charCountEl.textContent = '0';
+                    }
+
+                    // 刷新页面或跳转
+                    setTimeout(() => window.location.href = '/ssm_war/order/list', 1000);
                   } else {
                     alert('订单发布失败：' + data.error);
                   }
@@ -2374,12 +2392,12 @@
         console.log('当前订单ID已设置为:', currentOrderId);
 
         // 设置弹窗内容
-        manageOrderTitle.textContent = '管理订单 - ' + gameName;
+        if (manageOrderTitle) manageOrderTitle.textContent = '管理订单 - ' + gameName;
         manageOrderType.value = orderType;
         manageGameName.value = gameName;
         manageOrderAmount.value = orderAmount;
         manageOrderDetails.value = orderDetails;
-        manageCharCount.textContent = orderDetails ? orderDetails.length : 0;
+        if (manageCharCount) manageCharCount.textContent = orderDetails ? orderDetails.length : 0;
 
         // 显示弹窗
         manageOrderModal.style.display = 'flex';

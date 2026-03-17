@@ -42,7 +42,7 @@ public class OrderController {
             model.addAttribute("list", orders);
             return "order/list";
         } catch (Exception e) {
-            logger.error("获取订单列表失败: {}", e.getMessage());
+            logger.error("获取订单列表失败", e);
             model.addAttribute("error", "获取订单列表失败");
             return "error";
         }
