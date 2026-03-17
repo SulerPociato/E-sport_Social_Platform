@@ -32,7 +32,7 @@ public class HomeController {
         try {
             logger.info("开始处理首页请求...");
             
-            // 获取订单数据
+            // 获取订单数据（包含用户关联信息）
             List<Order> orders = orderService.getAllOrders(0, 10);
             
             if (orders == null) {
@@ -41,13 +41,22 @@ public class HomeController {
                 model.addAttribute("orderList", new java.util.ArrayList<Order>());
             } else {
                 logger.info("成功获取订单数据，数量: {}", orders.size());
+                
+                // 确保订单数据包含用户信息
+                for (Order order : orders) {
+                    if (order.getCustomer() == null) {
+                        logger.debug("订单ID={} 缺少用户信息，将显示默认信息", order.getOrderId());
+                    }
+                }
+                
                 model.addAttribute("orderList", orders);
                 
                 // 调试信息：打印前3个订单的详细信息
                 for (int i = 0; i < Math.min(3, orders.size()); i++) {
                     Order order = orders.get(i);
-                    logger.debug("订单{}: ID={}, 游戏={}, 金额={}", 
-                        i+1, order.getOrderId(), order.getGameName(), order.getTotalAmount());
+                    logger.debug("订单{}: ID={}, 游戏={}, 金额={}, 用户={}", 
+                        i+1, order.getOrderId(), order.getGameName(), order.getTotalAmount(),
+                        order.getCustomer() != null ? order.getCustomer().getNickname() : "匿名");
                 }
             }
             

@@ -73,8 +73,34 @@ public class OrderController {
      */
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     @ResponseBody
-    public Result<Boolean> create(Order order) {
+    public Result<Boolean> create(
+        @RequestParam("gameName") String gameName,
+        @RequestParam("detail") String detail,
+        @RequestParam("amount") BigDecimal amount,
+        @RequestParam("quantity") BigDecimal quantity,
+        @RequestParam("totalAmount") BigDecimal totalAmount,
+        @RequestParam("orderType") String orderType,
+        @RequestParam("customerId") Long customerId,
+        @RequestParam("playerId") Long playerId) {
+        
         try {
+            Order order = new Order();
+            order.setGameName(gameName);
+            order.setDetail(detail);
+            order.setAmount(amount);
+            order.setQuantity(quantity);
+            order.setTotalAmount(totalAmount);
+            
+            // 根据orderType设置订单状态："0"为求职订单(job)，其他为悬赏订单(bounty)
+            if ("0".equals(orderType)) {
+                order.setStatus(0); // 求职订单设置为待支付状态
+            } else {
+                order.setStatus(1); // 悬赏订单设置为已支付状态
+            }
+            
+            order.setCustomerId(customerId);
+            order.setPlayerId(playerId);
+            
             boolean result = orderService.createOrder(order);
             if (result) {
                 return new Result<Boolean>(true, "订单创建成功");
@@ -185,23 +211,23 @@ public class OrderController {
     @RequestMapping(value = "/{orderId}/update", method = RequestMethod.POST)
     @ResponseBody
     public Result<Boolean> update(@PathVariable("orderId") Long orderId,
-                                 @RequestParam("gameName") String gameName,
-                                 @RequestParam("amount") Double amount,
-                                 @RequestParam("detail") String detail,
-                                 @RequestParam("status") Integer status) {
+                                  @RequestParam("gameName") String gameName,
+                                  @RequestParam("amount") Double amount,
+                                  @RequestParam("detail") String detail,
+                                  @RequestParam("status") Integer status) {
         try {
             // 获取原始订单信息
             Order originalOrder = orderService.getOrderById(orderId);
             if (originalOrder == null) {
                 return new Result<Boolean>(false, "订单不存在");
             }
-            
+
             // 更新订单信息
             originalOrder.setGameName(gameName);
             originalOrder.setAmount(BigDecimal.valueOf(amount));
             originalOrder.setDetail(detail);
             originalOrder.setStatus(status);
-            
+
             boolean result = orderService.updateOrder(originalOrder);
             if (result) {
                 return new Result<Boolean>(true, "订单修改成功");
@@ -245,9 +271,9 @@ public class OrderController {
             if (order == null) {
                 return new Result<Boolean>(false, "订单不存在");
             }
-            
+
             logger.warn("执行物理删除操作，订单ID: {}, 订单号: {}", orderId, order.getOrderNo());
-            
+
             boolean result = orderService.deleteOrderPermanently(orderId);
             if (result) {
                 return new Result<Boolean>(true, "订单已永久删除");
