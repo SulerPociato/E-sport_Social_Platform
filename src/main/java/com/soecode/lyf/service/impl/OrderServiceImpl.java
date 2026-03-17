@@ -97,7 +97,7 @@ public class OrderServiceImpl implements OrderService {
                 logger.error("创建订单失败: 订单描述不能为空");
                 return false;
             }
-            
+
             // 生成订单号
             String orderNo = "ORD" + System.currentTimeMillis();
             order.setOrderNo(orderNo);
@@ -188,9 +188,9 @@ public class OrderServiceImpl implements OrderService {
                 logger.error("物理删除失败：订单不存在，订单ID: {}", orderId);
                 return false;
             }
-            
+
             logger.warn("执行物理删除操作，订单ID: {}, 订单号: {}", orderId, order.getOrderNo());
-            
+
             int result = orderDao.deletePermanently(orderId);
             return result > 0;
         } catch (Exception e) {
